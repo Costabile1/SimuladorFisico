@@ -1,0 +1,832 @@
+#include <SFML/Graphics.hpp>
+#include "Carga.hpp"
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <optional>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <algorithm>
+#include "imgui.h"
+#include "imgui-SFML.h"
+
+//funciones auxilares
+float calcularDistancia(float x1, float y1, float x2, float y2);
+float calcularDistanciaX(float x1, float x2);
+float calcularDistanciaY(float y1, float y2);
+
+
+//funciones relacionadas con el movmiento y fuerzas
+void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray *vectorVelocidad,Carga* cargasFijas, Carga* cargasLibres,int largoFijas,int largoLibres);
+void verificarColisiones(Carga* cargasFijas,Carga* cargasLibres, int largoFijas, int largoLibres);
+void calcularVectorFuerza(sf::VertexArray* vectorFuerza,float fuerzaX, float fuerzaY, Carga* carga);
+void calcularVectorVelocidad(sf::VertexArray* vectorVelocidad,float velocidadX, float velocidadY, Carga* carga);
+//funciones calculo de potencial
+std::vector<std::vector<float>> potencialElectrico(Carga* cargasFijas,Carga* cargasLibres, int largoFijas);
+sf::Texture drawPotencialHeatMap(sf::Texture &textura ,Carga* cargasFijas,Carga* cargasLibres, int largoFijas);
+std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float>> potenciales);
+//funciones calculo de campoElectrico
+void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2f>> *vectorCE);
+void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE);
+void escalarVector(sf::VertexArray &vector);
+//funciones Auxiliares para colores
+std::string rgbToHex(int* rgb);
+string decimalAHexadecimal(int decimal);
+char getHex(int n);
+int getnum(char c);
+void hexTorgb(std::string hexa, int rgb[3]);
+//funciones confi de vetana
+bool VentanaConfi(Carga * cargasFijas,Carga *cargasLibres,int *cantCargasFijas,bool *mostrarVectorVelocidad,bool *mostrarVectorFuerza,bool *mostrarMapaPotencial);
+void representarEjECartesiano(sf::VertexArray *ejeX,sf::VertexArray *ejeY,sf::Vector2f origen);
+void cargasConfi(Carga * cargas, int i);
+void actualizarPosSegunOffset();
+void cargaLibreConfi();
+void manejoProgramaCorriendo(bool &cambio);
+void manejoProgramaPausado(bool &cambio);
+void manejoProgramaDetendio(bool &cambio);
+void mostrarDatosCargaLibre();
+
+const float K = 8.99*pow(10,9);
+const int _ANCHO=1900,_LARGO=1000;
+const int cant_cuadriculasX = 50;
+const int cant_cuadriculasY = 50;
+const sf::Vector2i cant_cuadriculas(cant_cuadriculasX,cant_cuadriculasY);
+const float tiempo=0.2; // constante que indica cada cuantos segundos actualizo la ventana
+const sf::Color _color_cargaFija(0,0,255);
+const sf::Color _color_cargaLibre(255,247,0);
+
+
+//variables configurables
+float origenX=0;
+float origenY=0;
+int cantCargasFijas=0;
+const int cantCargasLibres=1;
+bool mostrarVectorVelocidad=false;
+bool mostrarVectorFuerza=false;
+bool mostrarMapaPotencial=false;
+bool programaPausado=false;
+bool programaDetenido=true;
+bool cerrarPrograma=false;
+bool mostrarEjeCordenado=false;
+bool mostrarCampoELectrico=false;
+sf::VertexArray vectorFuerza(sf::PrimitiveType::LineStrip, 2);
+sf::VertexArray vectorVelocidad(sf::PrimitiveType::LineStrip, 2);
+sf::VertexArray ejeX(sf::PrimitiveType::LineStrip, 2);
+sf::VertexArray ejeY(sf::PrimitiveType::LineStrip, 2);
+
+
+
+Carga cargasFijas[3];
+Carga cargasLibres[cantCargasLibres]; 
+
+int largoFijas = sizeof(cargasFijas)/sizeof(cargasFijas[0]);
+int largoLibres = sizeof(cargasLibres)/sizeof(cargasLibres[0]);
+int primera = 1;
+
+int main(){
+    // Crea la ventana principal
+    sf::RenderWindow window(sf::VideoMode({_ANCHO, _LARGO}), "SFML works!");
+    ImGui::SFML::Init(window);
+    //limita los fps
+    window.setFramerateLimit(60);
+
+
+
+    //bluce sencuario o de seteo
+    while(true){
+
+        //actualizacion de valores;
+        for(int i=0;i<largoFijas;i++){
+            cargasFijas[i].shape.setFillColor(_color_cargaFija);
+
+        }
+
+        for(int i=0;i<largoLibres;i++){
+            cargasLibres[i].shape.setFillColor(_color_cargaLibre);
+        }
+
+        //crea la textura del gradiente de potencial
+        sf::Texture texture;
+        if(mostrarMapaPotencial){
+            texture = drawPotencialHeatMap(texture,cargasFijas,cargasLibres,largoFijas);
+        }
+        sf::Sprite fondo(texture);
+    
+        //calcula el campo electrico
+        std::vector<std::vector<sf::Vector2f>> vectorCE;
+        if(mostrarCampoELectrico){
+            calcularCampoElectrico(&vectorCE);
+        }
+        //LOOP PRINCIPAL
+        sf::Clock clock;
+        while (window.isOpen())
+        {
+            while (const std::optional event = window.pollEvent()) //pollEvento ejecuta los procesos en cola, sino devuevle null
+            {
+                ImGui::SFML::ProcessEvent(window, *event);
+                if (event->is<sf::Event::Closed>()) //verifica si en el evento es de cierre
+                    window.close();
+            }
+
+            ImGui::SFML::Update(window, clock.restart());
+
+            if(VentanaConfi(cargasFijas,cargasLibres,&cantCargasFijas,&mostrarVectorVelocidad,&mostrarVectorFuerza,&mostrarMapaPotencial)){
+                //salimos del while para cambiar los datos e iniciar otra vez la simulacion
+                break;
+            }
+            
+           
+            if(mostrarEjeCordenado && origenX!=0 && origenY!=0){
+                std::cout<<"calcule el eje cordenado"<<std::endl;
+                representarEjECartesiano(&ejeX,&ejeY,sf::Vector2f(origenX,origenY));  
+            }
+            
+            
+            //se genera el movimeinto y se hace la simulacion
+            if(!programaPausado && !programaDetenido){
+                calculoFuerzas(&vectorFuerza,&vectorVelocidad,cargasFijas,cargasLibres,largoFijas,largoLibres);
+                verificarColisiones(cargasFijas,cargasLibres,largoFijas,largoLibres);
+            }
+
+            window.clear();
+            if(mostrarEjeCordenado){
+                std::cout<<"dibujando eje"<<std::endl;
+                window.draw(ejeX);
+                window.draw(ejeY);
+            }
+            if(mostrarCampoELectrico){
+                drawVectoresCE(window,&vectorCE);
+            }
+            window.draw(vectorFuerza);
+            window.draw(vectorVelocidad);
+            window.draw(fondo);
+
+            for(int i=0;i<largoFijas;i++){
+                cargasFijas[i].draw(window);
+            }
+            for(int i=0;i<largoLibres;i++){
+                cargasLibres[i].draw(window);
+            }
+
+            
+
+            ImGui::SFML::Render(window);
+            window.display();
+        }
+        ImGui::SFML::Render(window);
+        window.display();
+        if(cerrarPrograma){
+            break;
+        }
+    }
+    ImGui::SFML::Shutdown();
+    return 0;
+}
+
+
+
+float calcularDistancia(float x1, float y1, float x2, float y2){
+    float distancia = sqrt(pow(x2-x1,2)+pow(y2-y1,2));
+    return distancia;
+}
+
+float calcularDistanciaX(float x1, float x2){
+    float distancia = x2-x1;
+    return distancia;
+}
+
+float calcularDistanciaY(float y1, float y2){
+    float distancia = y2-y1;
+    return distancia;
+}
+
+
+void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocidad,Carga* cargasFijas,Carga* cargasLibres,int largoFijas,int largoLibres){
+    //std::cout<<"lamme a actualizar"<<std::endl;
+    float distancia,distanciaX,distanciaY;
+    
+    float fuerzaX,fuerzaY;
+    for(int i=0;i<largoLibres && cargasLibres[i].x!=NULL && cargasLibres[i].y!=NULL;i++){
+        float campoElectricoX=0,campoElectricoY=0;
+        for(int j=0;j<largoFijas && cargasFijas[j].x!=NULL && cargasFijas[j].y!=NULL ;j++){
+
+  
+            //
+            //calculo la distnaica 
+            distancia=calcularDistancia(cargasFijas[j].x,cargasFijas[j].y,cargasLibres[i].x,cargasLibres[i].y);
+            distanciaX = calcularDistanciaX(cargasFijas[j].x,cargasLibres[i].x);
+            distanciaY = calcularDistanciaY(cargasFijas[j].y,cargasLibres[i].y);
+            std::cout<<"distancia: "<<distancia<<std::endl;
+            std::cout<<"distanciaX: "<<distanciaX<<std::endl;
+            std::cout<<"distanciaY: "<<distanciaY<<std::endl;
+
+            //calculo componentes campo electrico
+            campoElectricoX += K*(cargasFijas[j].valor/pow(distancia,2))*distanciaX/distancia;
+            campoElectricoY += K*(cargasFijas[j].valor/pow(distancia,2))*distanciaY/distancia;
+
+        }
+
+        //calculo componentes fuerza
+        fuerzaX = campoElectricoX*cargasLibres[i].valor;
+        fuerzaY = campoElectricoY*cargasLibres[i].valor;
+
+        if(mostrarVectorFuerza){
+            calcularVectorFuerza(vectorFuerza,fuerzaX,fuerzaY,&cargasLibres[i]);
+        }
+        if(mostrarVectorVelocidad){
+            calcularVectorVelocidad(vectorVelocidad,cargasLibres[i].vX,cargasLibres[i].vY,&cargasLibres[i]);
+        }
+        cargasLibres[i].update(fuerzaX,fuerzaY,0,0,tiempo);
+    }
+}
+
+void verificarColisiones(Carga* cargasFijas,Carga* cargasLibres, int largoFijas, int largoLibres){
+    float distancia,sumaradios;
+    for(int i=0;i<largoLibres;i++){
+        for(int j=0;j<largoFijas;j++){
+            distancia = calcularDistancia(cargasFijas[j].x,cargasFijas[j].y,cargasLibres[i].x,cargasLibres[i].y);
+            sumaradios=cargasFijas[j].radio+cargasLibres[i].radio;
+            if(distancia<sumaradios){
+                //hay conolision
+                std::cout<<"hay colision"<<std::endl;
+                
+                cargasLibres[i].x = 10.f;
+                cargasLibres[i].y = 10.f;
+                cargasLibres[i].shape.setPosition({cargasLibres[i].x,cargasLibres[i].y});
+                cargasLibres[i].aX = 0;
+                cargasLibres[i].aY = 0;
+
+                programaDetenido=true;
+            }
+        }   
+    }
+}
+
+std::vector<std::vector<float>> potencialElectrico(Carga* cargasFijas,Carga* cargasLibres, int largoFijas){
+    /****Objetivo de la funcion
+     * dividir la ventana total en n cuadriculas
+     * en cada cuadricula obtener el valor central que representaria el centro geometrico de cada cuadricula cuadrada
+     * es punto sera utiliado para calcular el potencial
+     *  */ 
+    //float potenciales[10][10];
+    std::vector<std::vector<float>> potenciales;
+    std::vector<float> fila;
+    int anchoCuadriculado = _ANCHO/cant_cuadriculas.x;
+
+    int largoCuadriculado = _LARGO/cant_cuadriculas.y;
+
+    
+    float distancia,potencial;
+    float x_calcular,y_calcular;
+    int i,j;
+    int control_cantidad_de_potenciales=0;
+
+    for(i=1;i<=cant_cuadriculas.x;i++){
+
+        for(j=1;j<=cant_cuadriculas.y;j++){
+            potencial=0;
+            for(int k=0;k<largoFijas && cargasFijas[k].x!=NULL && cargasFijas[k].y!=NULL;k++){
+                // el punto va a ser la mitad de la cuadricula
+                x_calcular=((i-1)*anchoCuadriculado)+(anchoCuadriculado/2);
+                y_calcular=((j-1)*largoCuadriculado)+(largoCuadriculado/2);
+                distancia = calcularDistancia(cargasFijas[k].x,cargasFijas[k].y,x_calcular,y_calcular);
+
+                //calculamos el potencial
+                potencial += K*((cargasFijas[k]).valor/distancia);
+                control_cantidad_de_potenciales++;
+            }
+            fila.push_back({potencial});
+            
+        }
+        potenciales.push_back(fila);
+        fila.clear();
+    }
+
+    return potenciales;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float>> potenciales){
+    //std::map<float,sf::Vector2<int>> mapaPotencialPosicion;
+    std::map<float,std::string> mapaColor;
+    float arrAux[cant_cuadriculas.x*cant_cuadriculas.y];
+
+    sf::Vector2<int> posicion;
+    int i,j,k=0;
+
+    for(i=0;i<cant_cuadriculas.x;i++){
+        for(j=0;j<cant_cuadriculas.y;j++,k++){
+            //ordenar un arreglo bidimencional en una dimencion
+            arrAux[k]=potenciales[i][j];  
+        }
+    }
+
+    //ordenado de mayor a menor
+    for(i=0;i<sizeof(arrAux)/sizeof(float);i++){
+        for(j=i+1;j<sizeof(arrAux)/sizeof(float);j++){
+            if(arrAux[i]<arrAux[j]){
+                float aux = arrAux[i];
+                arrAux[i]=arrAux[j];
+                arrAux[j]=aux;
+            }
+        }
+    }    
+    int bandera=1;
+    int rgb[3];
+    int rgbAux[3];
+    int control=0;
+    std::string hexaString;
+    for(i=0;i<sizeof(arrAux)/sizeof(float);i++){ //begin retorna la key con el menor valor
+        if(bandera==1){
+            rgb[0]=255;
+            rgb[1]=0;
+            rgb[2]=0;
+            bandera=0;
+        }else{
+            if(i<=255){
+                rgb[1]+=1;
+            }else if(i<=255*2){
+                rgb[0]-=1;
+            }else if(i<=255*3){
+                rgb[2]+=1;
+            }else if(i<=255*4){
+                rgb[1]-=1;
+            }else if(i<=255*4){
+                rgb[0]+=1;
+            }
+            hexaString = rgbToHex(rgb);
+            hexTorgb(hexaString,rgbAux);
+            mapaColor.insert({arrAux[i],hexaString});
+        }
+        control++;
+    }
+    return mapaColor;
+}
+
+
+std::string rgbToHex(int* rgb) {
+    int n;
+    std::string aux;
+    std::string hex;
+    for(int i=0;i<3;i++){
+        hex+=decimalAHexadecimal(rgb[i]);
+    }
+    return hex;
+}
+
+string decimalAHexadecimal(int decimal) {
+    if (decimal == 0) return "00";
+
+    string hex = "";
+    string caracteresHex = "0123456789ABCDEF";
+
+    while (decimal > 0) {
+        int resto = decimal % 16;      // Obtenemos el resto (el dígito hex)
+        hex += caracteresHex[resto];   // Buscamos el carácter equivalente
+        decimal /= 16;                 // Dividimos el número para la siguiente iteración
+    }
+
+    // Como los restos se obtienen de derecha a izquierda, hay que dar vuelta el string
+    reverse(hex.begin(), hex.end());
+    if(hex.length()==1){
+        hex="0"+hex;
+    }
+    
+    return hex;
+}
+
+char getHex(int n){
+    if(n<10){
+        return n + '0';
+    }else{
+        if(n==10){
+            return 'A';
+        }else if(n==11){
+            return 'B';
+        }else if(n==12){
+            return 'C';
+        }else if(n==13){
+            return 'D';
+        }else if(n==14){
+            return 'E';
+        }else if(n==15){
+            return 'F';
+        }else{
+            return -1;
+        }
+    }
+}
+
+int getnum(char c){
+    if(c=='0'){
+        return 0;
+    }else if(c=='A'){
+        return 10;
+    }else if(c=='B'){
+        return 11;
+    }else if(c=='C'){
+        return 12;
+    }else if(c=='D'){
+        return 13;
+    }else if(c=='E'){
+        return 14;
+    }else if(c=='F'){
+        return 15;
+    }else{
+        return (int) (c - '0');
+    }
+}
+
+void hexTorgb(std::string hexa, int rgb[3]){
+    int n1,n2;
+    for(int i=0;i<hexa.length();i+=2){
+        n1=getnum(hexa[i]);
+        n2=getnum(hexa[i+1]);
+        rgb[i/2]=n1*16+n2;
+    }
+        
+}
+
+
+void calcularVectorFuerza(sf::VertexArray* vectorFuerza,float fuerzaX, float fuerzaY, Carga* carga){
+    sf::Vector2f origen(carga->x,carga->y);
+    sf::Vector2f destino(carga->x+fuerzaX*60,carga->y+fuerzaY*60);
+    
+    //sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
+    (*vectorFuerza)[0].position=origen;
+    (*vectorFuerza)[0].color=sf::Color::Red;
+    (*vectorFuerza)[1].position=destino;
+    (*vectorFuerza)[1].color=sf::Color::Red;
+    
+}
+//podria hacer que estas 2 funciones sean una sola: verterFuerzaCarga y calcularVectorVelocidad
+void calcularVectorVelocidad(sf::VertexArray* vectorVelocidad,float velocidadX, float velocidadY, Carga* carga){
+    sf::Vector2f origen(carga->x,carga->y);
+    sf::Vector2f destino(carga->x+velocidadX*5,carga->y+velocidadY*5);
+
+    //sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
+    (*vectorVelocidad)[0].position=origen;
+    (*vectorVelocidad)[0].color=sf::Color::Green;
+    (*vectorVelocidad)[1].position=destino;
+    (*vectorVelocidad)[1].color=sf::Color::Green;
+
+    //(*window).draw(vectores);
+}
+
+
+
+
+sf::Texture drawPotencialHeatMap(sf::Texture &textura ,Carga* cargasFijas,Carga* cargasLibres, int largoFijas){
+    std::vector<std::vector<float>> potenciales = potencialElectrico(cargasFijas,cargasLibres,largoFijas);
+    std::map<float,std::string> mapaColor = mapaPotencialElectrico(potenciales);
+    sf::Image fondo({_ANCHO, _LARGO});
+    
+    int hexa;
+    int rgb[4];
+    int control=0;
+    int i,j;
+    unsigned int x=0;
+    unsigned int y=0;
+    for( i=1;i<cant_cuadriculas.x;i++){
+        for( j=1;j<cant_cuadriculas.y-1;j++){
+
+            
+            std::string hexaString = mapaColor[potenciales[i-1][j-1]];
+            hexTorgb(hexaString,rgb);                
+
+            sf::Color color(rgb[0],rgb[1],rgb[2],100);
+            
+            for(x=(i-1)*(_ANCHO/cant_cuadriculas.x);x<(i)*(_ANCHO/cant_cuadriculas.x);x++){
+                for(y=(j-1)*(_LARGO/cant_cuadriculas.y);y<(j)*(_LARGO/cant_cuadriculas.y);y++){
+                    
+                    fondo.setPixel({x,y},color);
+                }
+            }
+            
+        }
+    }
+
+    //sf::Texture texture;
+
+    
+    bool success = textura.loadFromImage(fondo);
+    std::cout<<"success: "<<success<<std::endl;
+    return textura;
+}
+
+
+bool VentanaConfi(
+    Carga * cargasFijas,Carga *cargasLibres,int *cantCargasFijas,bool *mostrarVectorVelocidad,
+    bool *mostrarVectorFuerza,bool *mostrarMapaPotencial){
+    bool cambio=false;
+    bool cambiar_valorLibre;
+    
+    ImGui::Begin("Ventana de Control");
+    if(programaDetenido){
+        manejoProgramaDetendio(cambio);
+    }else if(programaPausado){
+        manejoProgramaPausado(cambio);
+    }else if(!programaDetenido && !programaPausado){
+        manejoProgramaCorriendo(cambio);
+    }else{
+        std::cout<<"explote, no estoy ni pausado, ni detenido, ni corriendo"<<std::endl;
+        exit(-1);
+    }
+    ImGui::End();
+    return cambio;
+
+}
+
+void cargasConfi(Carga * cargas, int i){
+    if(i<0){
+        return;
+    }
+    ImGui::PushID(i);
+    bool radio =ImGui::InputFloat("radio",&(cargas[i].radio));
+    ImGui::InputFloat("posicion en x",&(cargas[i].x_original));//es un areglo de Cargas
+    if(ImGui::InputFloat("posicion en y",&(cargas[i].y_original))){
+        cargas[i].y_original = cargas[i].y_original*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
+    } 
+    bool valor = ImGui::InputFloat("valor",&(cargas[i].valor),0.0f,0.0f,"%.10f");
+    bool masa = ImGui::InputFloat("masa",&(cargas[i].masa),0.0f,0.0f,"%.10f");
+    
+    
+    
+    if(mostrarEjeCordenado){
+        cargas[i].offsetX=origenX;
+        cargas[i].offsetY=origenY;
+    }
+    if(programaDetenido || programaPausado){
+        cargas[i].shape.setRadius(cargas[i].radio);
+        cargas[i].actualizarPosicion(cargas[i].x_original + cargas[i].offsetX,cargas[i].y_original + cargas[i].offsetY);
+    
+    }
+    
+    ImGui::PopID();
+}
+
+void manejoProgramaDetendio(bool &cambio){
+    ImGui::Text("Coloca un eje de cordenadas");
+    ImGui::InputFloat("Origen en x",&origenX);
+    ImGui::InputFloat("Origen en y",&origenY);
+    if(origenX!=0 && origenY!=0){
+        if(ImGui::Checkbox("dibujar eje cordenado",&mostrarEjeCordenado)){
+            cambio=true;
+            if(mostrarEjeCordenado==false){
+                origenX==0;
+                origenY==0;
+            }
+        }
+    } 
+    ImGui::Text("Ajusta los valores fisicos:");
+    ImGui::InputInt("cantidad de cargas fijas (maximo 3)", &cantCargasFijas,1,3);
+    if(cantCargasFijas!=0){
+        if(cantCargasFijas>=1){
+            ImGui::Text("carga los valores de tus cargas 1 fijas");
+            cargasConfi(cargasFijas,0);
+        }
+        if(cantCargasFijas>=2){
+            ImGui::Text("carga los valores de tus cargas 2 fijas");
+            cargasConfi(cargasFijas,1);
+        }
+        if(cantCargasFijas>=3){
+            ImGui::Text("carga los valores de tus cargas 3 fijas");
+            cargasConfi(cargasFijas,2);
+        }
+    }
+    cargaLibreConfi();
+    if(ImGui::Checkbox("dibujar heatMap potencial",&mostrarMapaPotencial)){
+        actualizarPosSegunOffset();
+        cambio=true;
+    }
+    if(ImGui::Checkbox("dibujar campo electrico",&mostrarCampoELectrico)){
+        actualizarPosSegunOffset();
+        cambio=true;
+    }
+
+    if(ImGui::Checkbox("guardar cambios y reiniciar simulacion",&cambio)){
+        cambio=true;
+        programaDetenido=false;
+        programaPausado=false;
+        mostrarCampoELectrico=false;
+        actualizarPosSegunOffset();
+    }
+    if(ImGui::Checkbox("Cerrar Programa",&cerrarPrograma)){
+        cambio=true;
+        programaDetenido=true;
+    }
+
+}
+
+void manejoProgramaPausado(bool &cambio){
+    bool aux=false;
+    if(ImGui::Checkbox("dibujar vector velocidad",&mostrarVectorVelocidad)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("dibujar vector fuerza",&mostrarVectorFuerza)){
+        cambio=true;
+    }
+    mostrarDatosCargaLibre();
+    if(ImGui::Checkbox("dibujar heatMap potencial",&mostrarMapaPotencial)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("dibujar campo electrico",&mostrarCampoELectrico)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("Reanudar Programa",&aux)){
+        cambio=true;
+        mostrarCampoELectrico=false;
+        programaPausado=false;
+    }
+    if(ImGui::Checkbox("Detener Simulacion",&programaDetenido)){
+        cambio=true;
+        programaDetenido=true;
+    }
+    if(ImGui::Checkbox("Cerrar Programa",&cerrarPrograma)){
+        cambio=true;
+        programaDetenido=true;
+    }
+}
+
+void manejoProgramaCorriendo(bool &cambio){
+    if(ImGui::Checkbox("dibujar vector velocidad",&mostrarVectorVelocidad)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("dibujar vector fuerza",&mostrarVectorFuerza)){
+        cambio=true;
+    }
+    mostrarDatosCargaLibre();
+    if(ImGui::Checkbox("dibujar heatMap potencial",&mostrarMapaPotencial)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("Pausar Simulacion",&programaPausado)){
+        cambio=true;
+    }
+    if(ImGui::Checkbox("Detener Simulacion",&programaDetenido)){
+        cambio=true;
+        programaDetenido=true;
+    }
+    if(ImGui::Checkbox("Cerrar Programa",&cerrarPrograma)){
+        cambio=true;
+        programaDetenido=true;
+    }
+}
+
+void cargaLibreConfi(){
+    ImGui::Text("carga los valores de tu cargas libres");
+    ImGui::InputFloat("radio",&(cargasLibres[0].radio));
+        ImGui::InputFloat("posicion en x",&(cargasLibres[0].x_original));//es un areglo de Cargas
+        if(ImGui::InputFloat("posicion en y",&(cargasLibres[0].y_original))){
+            cargasLibres[0].y_original = cargasLibres[0].y_original * (-1);
+        }
+        ImGui::InputFloat("valor",&(cargasLibres[0].valor),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("masa",&(cargasLibres[0].masa));
+        
+        if(mostrarEjeCordenado){
+            cargasLibres[0].offsetX=origenX;
+            cargasLibres[0].offsetY=origenY;
+        };
+        if(programaDetenido ){
+            cargasLibres[0].actualizarPosicion(cargasLibres[0].x_original + cargasLibres[0].offsetX,cargasLibres[0].y_original + cargasLibres[0].offsetY);
+            cargasLibres[0].aX=0;
+            cargasLibres[0].aY=0;
+            cargasLibres[0].vX=0;
+            cargasLibres[0].vY=0;
+            cargasLibres[0].shape.setFillColor(_color_cargaLibre);
+            cargasLibres[0].shape.setRadius(cargasLibres[0].radio);
+        }
+        
+}
+
+void representarEjECartesiano(sf::VertexArray *ejeX,sf::VertexArray *ejeY,sf::Vector2f origen){
+    sf::Vector2f inicioRectaX(0,origen.y);
+    sf::Vector2f finalRectaX(_ANCHO,origen.y);
+    sf::Vector2f inicioRectaY(origen.x,0);
+    sf::Vector2f finalRectaY(origen.x, _LARGO);
+    (*ejeX)[0].position=inicioRectaX;
+    (*ejeX)[0].color=sf::Color::White;
+    (*ejeX)[1].position=finalRectaX;
+    (*ejeX)[1].color=sf::Color::White;
+    (*ejeY)[0].position=inicioRectaY;
+    (*ejeY)[0].color=sf::Color::White;
+    (*ejeY)[1].position=finalRectaY;
+    (*ejeY)[1].color=sf::Color::White;
+}
+
+void actualizarPosSegunOffset(){
+    for(int i=0;i<largoFijas;i++){
+        cargasFijas[i].x = cargasFijas[i].x_original + cargasFijas[i].offsetX;
+        cargasFijas[i].y = cargasFijas[i].y_original + cargasFijas[i].offsetY;
+        cargasFijas[i].actualizarPosicion(cargasFijas[i].x,cargasFijas[i].y);
+    }
+    cargasLibres[0].x = cargasLibres[0].x_original + cargasLibres[0].offsetX;
+    cargasLibres[0].y = cargasLibres[0].y_original + cargasLibres[0].offsetY;
+    cargasLibres[0].actualizarPosicion(cargasLibres[0].x,cargasLibres[0].y);
+}
+
+void mostrarDatosCargaLibre(){
+    for(int i=0;i<cantCargasLibres;i++){
+        ImGui::PushID(i);
+        ImGui::Text("Datos de la carga: ");
+        float posx=(cargasLibres[i].x-origenX);
+        float posy = (cargasLibres[i].y-origenY)*(-1); //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
+        ImGui::InputFloat("Posicion X : ",&posx);
+        ImGui::InputFloat("Posicion Y : ",&posy);
+        float velocidadModulo = calcularDistancia(vectorVelocidad[0].position.x,vectorVelocidad[0].position.y,vectorVelocidad[1].position.x,vectorVelocidad[1].position.y);
+        ImGui::InputFloat("Velocidad Modulo : ",&(velocidadModulo));
+        float velocidadcompX = vectorVelocidad[1].position.x-vectorVelocidad[0].position.x;
+        float velocidadcompY = (vectorVelocidad[1].position.y-vectorVelocidad[0].position.y)*-1; //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
+        ImGui::InputFloat("Velocidad componenteX : ",&(velocidadcompX),0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("Velocidad componenteY : ",&(velocidadcompY),0.000f,0.0f,"%.10f");
+        float fuerzaModulo = calcularDistancia(vectorFuerza[0].position.x,vectorFuerza[0].position.y,vectorFuerza[1].position.x,vectorFuerza[1].position.y);
+        float fuerzacompX =vectorFuerza[1].position.x - vectorFuerza[0].position.x;
+        float fuerzacompY = (vectorFuerza[1].position.y - vectorFuerza[0].position.y)*(-1); //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
+        ImGui::InputFloat("Fuerza Modulo",&fuerzaModulo,0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("Fuerza componenteX",&fuerzacompX,0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("Fuerza componenteY",&fuerzacompY,0.000f,0.0f,"%.10f");
+        ImGui::PopID();
+    }
+    
+}
+void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE){
+    
+    std::vector<sf::Vector2f> fila;
+    sf::Vector2f vectorCampoElectrico(0,0);
+    float distanciaTotal, distanciaX, distanciaY;
+    float x_calcular,y_calcular;
+    float campoElectricoX,campoElectricoY;
+    int anchoCuadriculado = _ANCHO/cant_cuadriculas.x;
+    int largoCuadriculado = _LARGO/cant_cuadriculas.y;
+    for(int i=1;i<cant_cuadriculas.x;i++){
+        for(int j=1;j<cant_cuadriculas.y;j++){
+            campoElectricoX=0;
+            campoElectricoY=0;
+            for(int k=0;k<largoFijas;k++){
+                x_calcular = (i-1)*(anchoCuadriculado)+(anchoCuadriculado/2);
+                y_calcular = (j-1)*(largoCuadriculado)+(largoCuadriculado/2);
+                // if(calcularDistancia(x_calcular,y_calcular,cargasFijas[0].x,cargasFijas[0].y)<(cargasFijas[0].radio + 40) ||
+                //     calcularDistancia(x_calcular,y_calcular,cargasFijas[1].x,cargasFijas[1].y)<(cargasFijas[1].radio + 40) ||
+                //     calcularDistancia(x_calcular,y_calcular,cargasFijas[2].x,cargasFijas[2].y)<(cargasFijas[2].radio + 40)
+                // ){
+                //     continue;
+                // }
+                distanciaTotal = calcularDistancia(x_calcular,y_calcular,cargasFijas[k].x,cargasFijas[k].y);
+                distanciaX = calcularDistanciaX(x_calcular,cargasFijas[k].x);
+                distanciaY = calcularDistanciaY(y_calcular,cargasFijas[k].y);
+
+                campoElectricoX += K*(cargasFijas[k].valor/pow(distanciaTotal,2))*distanciaX/distanciaTotal;
+                campoElectricoY += K*(cargasFijas[k].valor/pow(distanciaTotal,2))*distanciaY/distanciaTotal;
+            }
+            vectorCampoElectrico.x = campoElectricoX;
+            vectorCampoElectrico.y = campoElectricoY;
+            fila.push_back(vectorCampoElectrico);
+        }
+        (*vectorCE).push_back(fila);
+        fila.clear();
+    
+    }
+}
+
+void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2f>> *vectorCE){
+    int k=0;
+    for(int i=1;i<cant_cuadriculas.x;i++){
+        for(int j=1;j<cant_cuadriculas.y;j++,k++){
+            sf::Vector2f origen((i-1)*(_ANCHO/cant_cuadriculas.x) + (_ANCHO/cant_cuadriculas.x)/2,(j-1)*(_LARGO/cant_cuadriculas.y) + (_LARGO/cant_cuadriculas.y)/2);       
+            sf::Vector2f destino(origen.x+(*vectorCE)[i-1][j-1].x ,origen.y+(*vectorCE)[i-1][j].y);
+            sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
+            vectores[0].position=origen;
+            vectores[0].color=sf::Color::Red;
+            vectores[1].position=destino;
+            vectores[1].color=sf::Color::Red;
+            if(calcularDistancia(origen.x,origen.y,destino.x,destino.y)>60){
+                escalarVector(vectores);
+            }
+            window.draw(vectores);
+        }
+    }
+}
+
+void escalarVector(sf::VertexArray &vector){
+    float largoVector = calcularDistancia(vector[0].position.x,vector[0].position.y,vector[1].position.x,vector[1].position.y);
+    //float componenteUnitariaX = calcularDistanciaX(vector[0].position.x,vector[1].position.x)/largoVector;
+    //float componenteUnitariaY = calcularDistanciaY(vector[0].position.y,vector[1].position.y)/largoVector;
+    std::cout<<"el largo antes era: "<<largoVector<<std::endl;
+    std::cout<<"componente x"<<vector[1].position.x-vector[0].position.x<<std::endl;
+    std::cout<<"componente y"<<vector[1].position.y-vector[0].position.y<<std::endl;
+    float factorScalar = 60/largoVector;
+
+    float xPrima =  (vector[1].position.x - vector[0].position.x ) * factorScalar;
+    float yPrima = (vector[1].position.y - vector[0].position.y) * factorScalar;
+
+    float disTotalX= xPrima + vector[0].position.x;
+    float disTotalY = yPrima + vector[0].position.y;
+
+    vector[1].position.x = disTotalX;
+    vector[1].position.y = disTotalY;
+
+    std::cout<<"!!NUEVAAA componente x"<<vector[1].position.x-vector[0].position.x<<std::endl;
+    std::cout<<"!!NUEVAAA componente y"<<vector[1].position.y-vector[0].position.y<<std::endl;
+    std::cout<<"!!!!El largo ahora es: "<<calcularDistancia(vector[0].position.x,vector[0].position.y,vector[1].position.x,vector[1].position.y)<<std::endl;
+}
