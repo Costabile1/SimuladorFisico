@@ -1,6 +1,10 @@
 *.exe
 *.o
 .vscode/
-historial.md
-InicializacionesInteresantes.md
-arial.ttf
+
+
+#--archivos sueltos
+.historial
+.InicializacionesInteresantes
+.arial.tff
+noMeSubas
