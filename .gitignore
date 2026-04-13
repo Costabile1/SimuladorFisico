@@ -1,8 +1,9 @@
-.historial
-InicializacionesInteresantes
-.arial
-noMeSubas.md
 
+*.md 
+!README.md
+!historia.md
+
+*.ttf
 *.exe
 *.o
 .vscode/
