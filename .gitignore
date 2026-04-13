@@ -1,6 +1,6 @@
 *.exe
 *.o
 .vscode/
-.historial.md
-.InicializacionesInteresantes.md
-.arial.ttf
+historial.md
+InicializacionesInteresantes.md
+arial.ttf
