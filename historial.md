@@ -345,3 +345,32 @@ cambios:
         :nose como hacer lo de la particula, ya que muetra los datos una vez el programa se dispara.
         =>!!!tal vex podria hacer configurable el valor del tiempo para que el programa pueda ir a distintas velocidades, una velocidad muy lenta te dejaria ver los valores iniciales, pero no con tanta precicion
         =>deberia implementar una particula ficticcia que no este en el arreglo de cargasLibres, que se use y se tire.
+
+    
+# 13/04/2026
+    =>agrege que se pueda poner un punto para calcular el campo eelectrico en componentes y potencial, pero da cualqueir cosa
+    =>cambie el orde y ahora los vectores velocidad y potencia se ven correctamente arriba de la particula
+
+
+# 14/04/2026
+    =>hacer una particula artificial aparte, funciona como el orto, si quiero que se comporte bien tendria que utilizar las funciones ya creadas que si funcionan bien, nose por que con lo nuevo que hice se rompe todo.
+    ahora que lo pienso nisiquiera se como funciona el tema de la posiccione en la particual libre
+    por que seteo x-original, le agrego el ofset, y mando a actualizar movimiento, pero en que momento seteo cargalibre.x, ni puta idea, nose como funciona eso.
+    el codigo ya adquirio cierta complejidad, y con lo de agregar un punto de estudio solo complique las cosas, por que quise hacerlo tipo parche y nose por que las cosas andan re raras, el sistema esta echi para funcionar con las clases y la carga, deberia seguir por ahora
+    pero ya cerca de las 1000 lineas el codgio se hace mas enrevedado y dficil de seguir, por mas que intente mantener las cosa moduladas
+
+# 16/04/2026
+    =>cambie los arreglos de cargas por vectores de clase, carga para las fijas y cargaLibre para las libres, basicamente cambie absolutamente todo el codigo, casi que para nada por que la idea era hacer un vector cargaLibre que contenga la carga libre como la carga de estudio, la cual no tendria metodo update(), pero creo que no es posible eso, porlomenos con lo que se ahora.
+    pornde fue medio al pedo, vectores y punteros por todos lados para que haga lo mismo
+    pero ahora se comporta distinto, el vector velocidad es mucho menor que antes, acelera menos la aprticula, tengo que corroborar si eso es correcto o esra roto.
+    polomenos aprendi a agregar una clase hija y ahora todas las funciones calcualrCampoElectrico y potencual como van a depender de la forma de la carga es un metodo de la clase, no esta mas suelto en el codigo.
+    y ahora al ser un vector el vector de cargasFijas es dinamico.
+    faltaria la tarea mas aburrida que es corroborar que todo funcione
+    al final el objetivo era meter una carga de estudio sin hacer funciones especificas para eso pero no lo logre.
+    imagino que c permite eso pero creo que es muy dificil, necesiyaria un conocimiento de POO en c que no tengo lamentablemente.
+
+    Proximos pasos:
+        hacer todas las funciones para que de informacion de una particula de estudio en un punto fijo. podria hacer una variable que controle si es de estuido, que haga que no llame a update, para poder ver las fuerzas en ese punto y safo de agreagr otra carga
+        y despues tengo que ver lo del punto de estuido que te de el valor del campo y del potencial, que nose porque estaba todo roto antes, borre todas las funciones asi que tengo que hacerlo otra vez.
+
+    el programa copila pero ahora nose por vscode no me reconoce SFML asi que tengo que ver eso tambie.

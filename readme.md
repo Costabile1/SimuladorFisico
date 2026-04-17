@@ -29,15 +29,25 @@ que neceitaria tener para que sea una buena herramienta de estudio y enseñanza 
     Objetivos a terminar:
         1-mejorar la visualizacion del potencial (completado)
         2-mostrar vectores campo electrico en todo el mapa (completado)
-        3-poder elegir un punto y ver valores del campo electrico y potencial
+        3-poder elegir un punto y ver valores del campo electrico y potencial 
+        3,5-intentar poner los vectores fuerza y velocidad arriba de la particula para que se vean mejor. (completado)
         4-tener a vista los valores modulares de vector velocidad y aceleracion y fuerza (opcinal mostrar en componentes x,y) (completado)
         5-poder representar un eje. (completado)
         6-Ordenar el gui, para que solo puedas tocar las cosas que debes (completado)
 
+    Nuevos Objetivos:
+        1-cmabiar las clases, crear clase general, =>cargaMovil, CargaFija e implementarlo en el codigo
+        2-la carga de estudio no va tener aceleracion ni funcion update()
+        
 
-## v0.02 ## TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
+
+
+## v0.0.2  TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
     planos infinitos y fragmentos finitos largos
-
+    hilos,
+    cargas con radio, potencial constante dentro,
+    cargas con 2 radios
+    que cada tipo de carga tenga su propiafuncion calculoCampoElectrioc(), ya que depende de la forma.
 
 
 #### Objetivos ranqueados ##
