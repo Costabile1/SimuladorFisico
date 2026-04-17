@@ -240,7 +240,6 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
             calcularVectorVelocidad(vectorVelocidad,(*(cargasLibres[i])).vX,(*(cargasLibres[i])).vY,cargasLibres[i]);
         }
         (*(cargasLibres[i])).update(fuerzaX,fuerzaY,tiempo);
-        std::cout<<"hola"<<std::endl;
         
     }
 }
@@ -741,6 +740,7 @@ void puntoEstudioConfi(){
     if(ImGui::InputFloat("Posicion en X: ",&(cargaEstudio->x_original))){
     }
     if(ImGui::InputFloat("Posicion en Y: ",&(cargaEstudio->y_original))){
+        cargaEstudio->y_original = cargaEstudio->y_original*(-1);
     }
     if(mostrarEjeCordenado){
             cargaEstudio->offsetX=origenX;
