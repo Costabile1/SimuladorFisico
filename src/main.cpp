@@ -240,7 +240,7 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
             calcularVectorVelocidad(vectorVelocidad,(*(cargasLibres[i])).vX,(*(cargasLibres[i])).vY,cargasLibres[i]);
         }
         (*(cargasLibres[i])).update(fuerzaX,fuerzaY,tiempo);
-        
+        std::cout<<"hola"<<std::endl;
         
     }
 }
