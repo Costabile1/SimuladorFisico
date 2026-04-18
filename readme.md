@@ -36,15 +36,14 @@ que neceitaria tener para que sea una buena herramienta de estudio y enseñanza 
         6-Ordenar el gui, para que solo puedas tocar las cosas que debes (completado)
 
     Nuevos Objetivos:
-        1-cmabiar las clases, crear clase general, =>cargaMovil, CargaFija e implementarlo en el codigo
-        2-la carga de estudio no va tener aceleracion ni funcion update()
+        1-cmabiar las clases, crear clase general, =>cargaMovil, CargaFija e implementarlo en el codigo (completado)
+        2-la carga de estudio no va tener aceleracion ni funcion update() (completado)
         
 
 
 
 ## v0.0.2  TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
     planos infinitos y fragmentos finitos largos
-    hilos,
     cargas con radio, potencial constante dentro,
     cargas con 2 radios
     que cada tipo de carga tenga su propiafuncion calculoCampoElectrioc(), ya que depende de la forma.

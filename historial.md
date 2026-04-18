@@ -374,3 +374,21 @@ cambios:
         y despues tengo que ver lo del punto de estuido que te de el valor del campo y del potencial, que nose porque estaba todo roto antes, borre todas las funciones asi que tengo que hacerlo otra vez.
 
     el programa copila pero ahora nose por vscode no me reconoce SFML asi que tengo que ver eso tambie.
+
+    proximos pasos:
+        =>dibujar el vector en x en Y y el total en el punto estudio
+        =>hacer que el punto de estudio este centrado
+        =>dibujar el numero del potencial en la pantalla?
+
+
+# 17/04/2026
+    Logica de Plano infinito:
+        lo vamos a crear un muchas cargas ordenadas en una columna larga de largo =largo de la ventana(tal vex mas para evitar problemas con el campo de las otras cargas), solo se podra mover en X, en Y esta fijo
+        para calcular el campo vamos a hacer la particula, contra todas las demas? (computacionalmente dificil) ya que vamos a iterar continuamente por un montont de cargas.
+        Ademas solo va a haber carga por celda, por ende el margen de error puede ser mas alto
+        para dibujar los vectores del campo electrico va a ser mas facil ya que vamos a iterar por las celdas en x,y, dependiendo de la fila en la que estemos solo vamos a calcular el campo contra la carga en su fila, de esa forma solo habra campo en X, lo cual coincide con el campo de un plano
+        (MENTIRA) por que me acorde que hay uan ecuacion fija para el campo electrico y ademas el campo electrico de un plano Infinito es constante.
+
+        =>finalize lo de mostrar los vectores campo electrico en el punto de estudio en modulo y componente y el punto ya esta centado.
+        =>poner el numero del potencial en la patalla me parece una grasada.
+        =>queda arrancar con el plano infinito.

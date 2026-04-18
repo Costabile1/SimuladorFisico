@@ -55,7 +55,7 @@ void puntoEstudioConfi();
 //funciones para la puntoEstudio:
 void calcularCEPE();
 void calcularPEPE();
-
+void drawVectorCEPE(sf::RenderWindow &window);
 //const float K = 8.99*pow(10,9);
 const int _ANCHO=1900,_LARGO=1000;
 const int cant_cuadriculasX = 50;
@@ -176,6 +176,7 @@ int main(){
                 cargaEstudio->draw(window);
                 calcularCEPE();
                 calcularPEPE();
+                drawVectorCEPE(window);
             }
 
             window.draw(vectorFuerza);
@@ -748,6 +749,7 @@ void puntoEstudioConfi(){
     }
     if(programaDetenido || programaPausado){
         cargaEstudio->shape.setRadius(4);
+        cargaEstudio->radio=4;
         cargaEstudio->actualizarPosicion(cargaEstudio->x_original + cargaEstudio->offsetX,cargaEstudio->y_original + cargaEstudio->offsetY);
     }
     ImGui::Checkbox("Mostrar Datos del punto",&mostrarDatosPuntoEstudio);
@@ -920,4 +922,31 @@ void calcularPEPE(){
         (*(cargasFijas[i])).calcularPotencial(aux,distanciaTotal);
         potencialPuntoEstudio+=aux;
     }
+}
+
+void drawVectorCEPE(sf::RenderWindow &window){
+    std::cout<<"estoy en draw"<<std::endl;
+    sf::VertexArray vectorCEtotal(sf::PrimitiveType::LineStrip, 2);
+    sf::VertexArray vectorCEX(sf::PrimitiveType::LineStrip, 2);
+    sf::VertexArray vectorCEY(sf::PrimitiveType::LineStrip, 2);
+
+    std::cout<<"Campo X: "<<campoElectricoPuntoEstudio.x<<"Y "<<campoElectricoPuntoEstudio.y<<std::endl;
+    float posX=cargaEstudio->x_original+cargaEstudio->offsetX;
+    float posY = cargaEstudio->y_original+cargaEstudio->offsetY;
+
+    vectorCEtotal[0].position = {posX , posY};
+    vectorCEtotal[0].color=sf::Color::Red;
+    vectorCEtotal[1].position = {posX + campoElectricoPuntoEstudio.x , posY + campoElectricoPuntoEstudio.y};
+    vectorCEtotal[1].color=(sf::Color::Red);
+    window.draw(vectorCEtotal);
+    vectorCEX[0].position = {posX,posY};
+    vectorCEX[0].color=sf::Color::Red;
+    vectorCEX[1].position = {posX + campoElectricoPuntoEstudio.x,(posY)};
+    vectorCEX[1].color=(sf::Color::Red);
+    window.draw(vectorCEX);
+    vectorCEY[0].position = {posX,posY};
+    vectorCEY[0].color=sf::Color::Red;
+    vectorCEY[1].position = {((posX)),posY + (campoElectricoPuntoEstudio.y)};
+    vectorCEY[1].color=(sf::Color::Red);
+    window.draw(vectorCEY);
 }
