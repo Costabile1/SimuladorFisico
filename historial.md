@@ -392,3 +392,42 @@ cambios:
         =>finalize lo de mostrar los vectores campo electrico en el punto de estudio en modulo y componente y el punto ya esta centado.
         =>poner el numero del potencial en la patalla me parece una grasada.
         =>queda arrancar con el plano infinito.
+
+    noche:
+        ya arrme las clases Plano para menjar los planos
+        =>al final va a ser un rectableshape larguisimo como todo el largo de la pantalla
+        y para el campo simplemente voy a usar la ecuacion de planoInfito, solo se necesita pedir la densidad de carga
+        =>voy a calcular el campo electrico en todos los puntos, para que se pueda crear un Capasitor con extio,
+        =>el maximo de planos infinitos es 4 por ahora y el size de los planos esta totalmente harcodeado en unos valores que se me ocurriones, en ancho=5 y el largo es de 1100 que seria el alrgo de la pantalla.
+
+
+# 18/04/2026
+    =>termine de hacer la funcion que calcula el cmapo electrico con las placas, funciona Perfecto
+    =>pude hacer que vaya en coherencia con el campo de las particulas (PARA DIBUJAR LOS VECTORES NOMAS)
+    =>las particulas de estudio y las libres no las sienten ya que tienen sus propias funciones e iteran por solo las cargas fijas
+    =>tambien cambie los vectores para darme cuenta para donde van(es temprar creo pero veo imposible hacer una flecha ya que dependeria mucho de para donde va el vector)
+
+    a realizar:
+        =>que las aprticulas y punto estudio tengan en cuenta las fuerzas de los planos
+        =>opcion: calcular el campo total, con todos los chiches que lo pueden cambiar (QUE YA LO HAGO)
+        y directamente pasarse por parametro a las funciones de estas
+        =>tambien deberia aclarar y esclarificar todo el proceso de calculo de campos, ya que aveces es un puntero y otra vezces es literalmente el campo, es un nudo terrible
+        ASI QUE PRIMERO TENGO QUE ARREGLAR ESO.
+
+    !!inportante: me di cuenta que los std::cout relentizan una locura el programa. en especial cuando enstan en loop(obviamente)
+
+# 19/04/2026
+    => pude con exito hacer que las cargas libres y los puntos de estudio sintieran enl campo generado por los planos.
+    => al final cambie las funciones que calculan el campo para las cargas y los puntos de estudio, simplemente agregre el calculo del campo para el plano y solo sumo ese campo a las componentes X en cada iteracion al campo total
+    =>tambien cambie la funcion verificarColision para que detecte con exito las colisiones de las cargas contra los planos
+    =>todo funciona correctamente asi que esta seria la version beta
+    =>ya hay varias de las funcionalidades finales que me gustaria para sacar la primera version.
+
+    siguientes Pasos:
+        =>cargas con radio, potencial constante dentro,
+        =>cargas con 2 radios
+        =>cargas Huecas. con todo lo que ello conlleva, que adentro no haya campo si no encerramos carga para respetar la ley de gauss
+        =>por ahora el radio solo es visual y para verificar colisiones, estamos trabajando con las cargas puntuales.
+        =>para cargas con radio real tendria que usar otra ecuacion, ej la de gaus para calcular el campo Electrico, pero nose como lo voy a ahacer aun
+        =>es algo complejo pero me pareece importante agregarlo.
+        

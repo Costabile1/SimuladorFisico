@@ -1,25 +1,31 @@
 #include "Plano.hpp"
-
+#include <iostream>
 Plano::Plano(float densidadCarga,float offsetX,float offsetY, float x_original,float y_original,float x, float y){
     this->densidadCarga = densidadCarga;
     this->offsetX = offsetX;
-    this->offsetY = offsetY;
     this->x_original = x_original;
-    this->y_original = y_original;
     this->x = x;
-    this->y=y;
+
 }
 
 Plano::Plano(){
     this->densidadCarga = 0;
     this->offsetX = 0;
-    this->offsetY = 0;
     this->x_original = 0;
-    this->y_original = 0;
     this->x = 0;
-    this->y=0;
 }
 
-double Plano::calcularCEPLano(){
+double Plano::cacularCampoElectrico(){
     return (this->densidadCarga/(2*epsilon0));
+}
+
+void Plano::setearPosicion(float x){
+    shape.setPosition({x,this->y});
+}
+
+void Plano::draw(sf::RenderWindow &window){
+    window.draw(this->shape);
+}
+void Plano::setearTamaño(){
+    shape.setSize({ancho,largo});
 }

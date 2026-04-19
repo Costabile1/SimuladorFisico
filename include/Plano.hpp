@@ -7,11 +7,17 @@ class Plano{
         const double epsilon0 = 8.854*pow(10,-12);
         sf::RectangleShape shape;
         float densidadCarga;
-        float offsetX,offsetY;
-        float x_original,y_original;
-        float x,y;
+        float offsetX;
+        float x_original;
+        float x;
+        const float y=0;
+        const float ancho=5;
+        const float largo=1100;
     public:
         Plano(float densidadCarga,float offsetX,float offsetY, float x_original,float y_original,float x, float y);
         Plano();
-        double calcularCEPLano();
+        double cacularCampoElectrico();
+        void setearPosicion(float x);
+        void setearTamaño();
+        void draw(sf::RenderWindow &window);
 };
