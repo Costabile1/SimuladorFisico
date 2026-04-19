@@ -42,7 +42,7 @@ que neceitaria tener para que sea una buena herramienta de estudio y enseñanza 
 
 
 
-### BETA v0.0.2  TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
+### BETA v0.1.0  TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
     planos infinitos (completado)
     que cada tipo de carga tenga su propiafuncion calculoCampoElectrioc(), ya que depende de la forma. (completado)
 
