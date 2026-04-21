@@ -430,4 +430,49 @@ cambios:
         =>por ahora el radio solo es visual y para verificar colisiones, estamos trabajando con las cargas puntuales.
         =>para cargas con radio real tendria que usar otra ecuacion, ej la de gaus para calcular el campo Electrico, pero nose como lo voy a ahacer aun
         =>es algo complejo pero me pareece importante agregarlo.
+
+    
+# 20/04/2026
+  =>cree la clase CargaEsferica, que hereda de Carga, la carga Esfericas tiene otro shape que es el del radio interior negro. se dibujan en orden, primero el radio exterior con color y luego el radio interior negro para dar la sensacion de que es hueco.
+  Ademas el draw de la carga esferica va primera de toda las cosas que se dibujan, para que de la sensacion de que lo engro es el fonde y queda como queda, no hay mucho mas que hacer.
+  =>cambie un poco manejoProgramaDetenido Cree funciones gestionCarga,plano,Esfera, lo que hace que este mas ordenado la funcion principal y las funciones gestion, gestionan la cantidad de cargas,planos y llama a las funciones para cargar datos.
+  =>tambien no se pueden poner planos y esferas juntas, para simplificar, no me parece que sea relevante juntar esferas con planos, van a estar separadas
+  =>hay un tema con los ID, las funcion esferaConfi le paso un numer harcodeado para el id de los input por que nose porque me toma com ids iguales apesar de que en uno pongo var i=1,2,3 y el otro le paso pow(i,2) o i*500 me lo toma como igual nose por que.
+
+    siguiente paso:
+        La fisica de el conductor
+        si el conductor esfericco tiene Q=0, no genera campo, esta en equilibrio
+        si a un conductor en equilibrio le colocamos una carga q, esta genera un campo interior que sigue la ley de gaus, inducioendo una carga -q, y afuera queda una carga+q por ende afuera el campo es el de una carga puntual
+        =>pensar como calcular y dibujar el campo con la ley de gauss, inducir cargas
+        =>pensar en desacoplar totalmente lo que hice hasta ahora, con las cargas esfericas
+        =>que las funciones normales de calcular campo, ni se llamen.
+
+        =>hacer que tampoco se puedan poner cargas Fijas a placer, sino que solo se puedan poner en en el centro geometrico de la CargasEsfericas 
+        =>pensar incluso si vale la pena simular el movimeinto de una particual libre ahi
+        =>pensar que todas las demas esferas tambien van a tener que estar centradas, sino el calculo se rompe todo.
+        pero por ahora vamos a arrancar con un conductor Esferico cargado y descargado, y una carga puntual ya sea positiva o negativa, tiene que inducir cargas.
+
+        =>hice un digrama que indica todos los pasos
+        =>cambie CargaEsferica para que tenga 2 floar staticos que van a representar la posicion, de esta manera todas las Cargas Esfericas Comparten la misma posicion asi todas estan centradas
         
+        me falta:
+            =>hacer que las fijas tambine esten centradas
+            =>me quede haciendo el for que va a calcular el campo dentro de la esfera ams grande.
+
+
+# 21/04/2026
+    =>termine la funcion que calcula y dibuja y hace todo basicamente con las esferas conductoras
+    =>arranca e itera por todas las posiciones en un cuadrado centrado en las cordenadas estaticas si hay alguna carga fija dentro
+    entonces itera por ese cuadrado, y si esta dentro del radio interior de la esfera conductora, calcula el campo y dibuja el vector, todo la misma funcion
+
+    Apreciacion: => recorrer de esta forma crea unos vectores mucho mas lindos en patron que la otra forma que vine usando simpre.
+
+    =>la parte que quiero agregar 2 esferas conductoras Esta rota, se  mete a memoria que no existe.
+    =>pero ahora me voy a poner a hacer el dibujito de las cargas negativas y positivas para que sea intuitivo lo que pasa
+
+    ya funciona correctamente el dibujo de las cargas inducidas y se comportan de forma correcta en una funcion aparte
+    =>ya se simula de forma correcta cuando un conductor tiene una carga Puntual dentro y se dibuja correctamente el campo dentro de Ella
+
+    Falta:
+        =>dibujar y calcular el campo fuera del conductor
+        =la funcion para poner varios conductores concentricos y calcular su campo sigue rota, hay que arreglarla.

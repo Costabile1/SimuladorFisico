@@ -1,11 +1,10 @@
-#include "Carga.hpp"
-#include <iostream>
-#include <chrono>
+#include "CargaEsferica.hpp"
 #include <cmath>
 
+float CargaEsferica::x_static = 0;
+float CargaEsferica::y_static = 0;
 
-
-Carga::Carga(float x, float y, float valor, float masa, float radio, float offsetX, float offsetY){
+CargaEsferica::CargaEsferica(float x, float y, float valor, float masa, float radio, float offsetX, float offsetY, float radio_int){
     this->offsetX = offsetX;
     this->offsetY = offsetY;
     this->x_original = x;
@@ -15,14 +14,15 @@ Carga::Carga(float x, float y, float valor, float masa, float radio, float offse
     this->valor = valor;
     this->radio = radio;
     this->masa = masa;
-
+    this->radio_int = radio_int;
 
     shape.setRadius(radio);
+    shape_int.setRadius(radio_int);
     actualizarPosicion(x,y);
 
 }
 
-Carga::Carga(){
+CargaEsferica::CargaEsferica(){
     this->offsetX = 0;
     this->offsetY = 0;
     this->x_original = NULL;
@@ -32,25 +32,21 @@ Carga::Carga(){
     this->valor = 0;
     this->radio = 0;
     this->masa = 0;
-
+    this->radio_int=0;
 
     shape.setRadius(radio);
+    shape_int.setFillColor(sf::Color::Black);
     actualizarPosicion(x,y);
 }
 
-void Carga::draw(sf::RenderWindow &window){
-    window.draw(this->shape);
-}
 
-void Carga::actualizarPosicion(float x, float y){
+void CargaEsferica::actualizarPosicion(float x, float y){
     shape.setPosition({x-this->radio,y-this->radio});
+    shape_int.setPosition({x-this->radio_int,y-this->radio_int});
 }
 
-void Carga::cacularCampoElectrico(sf::Vector2f &campoElectrico,float distanciaTotal, float distanciaX, float distanciaY){
-    campoElectrico.x += K*(this->valor/pow(distanciaTotal,2))*distanciaX/distanciaTotal;
-    campoElectrico.y += K*(this->valor/pow(distanciaTotal,2))*distanciaY/distanciaTotal;
-}
-
-void Carga::calcularPotencial(float &potencial,float distancia){
-    potencial = K*((this->valor)/distancia);
+void CargaEsferica::draw(sf::RenderWindow &window){
+    window.draw(this->shape);
+    window.draw(this->shape_int);
+    
 }

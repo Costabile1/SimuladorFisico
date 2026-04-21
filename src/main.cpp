@@ -2,6 +2,7 @@
 #include "Carga.hpp"
 #include "CargaLibre.hpp"
 #include "Plano.hpp"
+#include "CargaEsferica.hpp"
 #include <typeinfo>
 #include <iostream>
 #include <string>
@@ -19,6 +20,10 @@ float calcularDistancia(float x1, float y1, float x2, float y2);
 float calcularDistanciaX(float x1, float x2);
 float calcularDistanciaY(float y1, float y2);
 
+
+//funciones para las Esferas
+void organizadorCEEsferaConductora(sf::RenderWindow &window);
+void dibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera);
 //funciones PLano
 void planoConfi(int i);
 
@@ -55,12 +60,17 @@ void manejoProgramaPausado(bool &cambio);
 void manejoProgramaDetendio(bool &cambio);
 void mostrarDatosCargaLibre();
 void puntoEstudioConfi();
+void gestionCargasFijas();
+void gestionPlanos();
+void gestionCargasLigadasEsfera();
+void gestionCargasEsfericas();
+void esferaConfi(int i, int id);
 
 //funciones para la puntoEstudio:
 void calcularCEPE();
 void calcularPEPE();
 void drawVectorCEPE(sf::RenderWindow &window);
-//const float K = 8.99*pow(10,9);
+const float K = 8.99*pow(10,9);
 const int _ANCHO=1900,_LARGO=1000;
 const int cant_cuadriculasX = 50;
 const int cant_cuadriculasY = 50;
@@ -73,6 +83,7 @@ Carga *cargaEstudio = new Carga();
 std::vector<Carga*> cargasFijas;
 std::vector<CargaLibre*> cargasLibres = {new CargaLibre()};
 std::vector<Plano*> planos;
+std::vector<CargaEsferica*> esferas;
 
 
 //variables configurables
@@ -81,6 +92,7 @@ float origenY=0;
 int cantCargasFijas=0;
 const int cantCargasLibres=1;
 int cantidadPlanos=0;
+int cantidadCargasEsfericas=0;
 bool mostrarVectorVelocidad=false;
 bool mostrarVectorFuerza=false;
 bool mostrarMapaPotencial=false;
@@ -89,8 +101,9 @@ bool programaDetenido=true;
 bool cerrarPrograma=false;
 bool mostrarEjeCordenado=false;
 bool mostrarCampoELectrico=false;
+bool mostrarCEconEsferas=false;
 bool mostrarDatosPuntoEstudio=false;
-
+bool PonerCargaFijaCentro=false;
 sf::Vector2f vectorPosicionDeEstudio(0,0);
 sf::Vector2f campoElectricoPuntoEstudio(0,0);
 float potencialPuntoEstudio=0;
@@ -149,12 +162,14 @@ int main(){
 
             ImGui::SFML::Update(window, clock.restart());
 
-        
+            //dibujamos primero esto para que todo este por encima
+            
 
             if(VentanaConfi()){
                 //salimos del while para cambiar los datos e iniciar otra vez la simulacion
                 break;
             }
+            
           
            
             if(mostrarEjeCordenado && origenX!=0 && origenY!=0){
@@ -170,10 +185,14 @@ int main(){
             }
  
             window.clear();
+            for(int i=0;i<cantidadCargasEsfericas;i++){
+                esferas[i]->draw(window);
+            }
             if(mostrarEjeCordenado){
                 window.draw(ejeX);
                 window.draw(ejeY);
             }
+            
             if(mostrarCampoELectrico){
                 drawVectoresCE(window,(std::vector<std::vector<sf::Vector2f>> *)p_vectorCE);
             }
@@ -188,6 +207,10 @@ int main(){
             }
             for(int i=0;i<cantidadPlanos;i++){
                 planos[i]->draw(window);
+            }
+            
+            if(cantidadCargasEsfericas!=0 && mostrarCEconEsferas){
+                organizadorCEEsferaConductora(window);
             }
             
             if(mostrarDatosPuntoEstudio){
@@ -629,84 +652,41 @@ void manejoProgramaDetendio(bool &cambio){
             }
         }
     } 
-    ImGui::Text("Ajusta los valores fisicos:");
-    if(ImGui::InputInt("cantidad de cargas fijas (maximo 3)", &cantCargasFijas,1,3)){
-        if(cantCargasFijas<0){
-            cantCargasFijas=0;
-            return;
-        } 
-        if(cantCargasFijas>cargasFijas.size()){
-            for(int i=0;i<cantCargasFijas-cargasFijas.size();i++){
-                cargasFijas.push_back(new Carga());
-            }
-        }else if(cantCargasFijas<cargasFijas.size()){
-            for(int i=0;i<cargasFijas.size()-cantCargasFijas;i++){
-                cargasFijas.pop_back();
-            }
-        }
-    }
-   
-    if(cantCargasFijas!=0){
-        if(cantCargasFijas>=1){
-            ImGui::Text("carga los valores de tus cargas 1 fijas");
-            cargasConfi(0);
-        }
-        if(cantCargasFijas>=2){
-            ImGui::Text("carga los valores de tus cargas 2 fijas");
-            cargasConfi(1);
-        }
-        if(cantCargasFijas>=3){
-            ImGui::Text("carga los valores de tus cargas 3 fijas");
-            cargasConfi(2);
-        }
-    }
-
-    cargaLibreConfi();
+    
+    //esquema de if para Aislar a la cargas Esfericas Conductoras.
     puntoEstudioConfi();
-
-    if(ImGui::InputInt("ingrese cantidad de Planos Infinitos (maximo 4)",&cantidadPlanos,1,4)){   
-        if(cantidadPlanos<0){
-            cantidadPlanos=0;
-            return;
-        } 
-        if(cantidadPlanos>planos.size()){
-            for(int i=0;i<cantidadPlanos-planos.size();i++){
-                planos.push_back(new Plano());
-            }
-        }else if(cantidadPlanos<planos.size()){
-            for(int i=0;i<cargasFijas.size()-cantidadPlanos;i++){
-                planos.pop_back();
-            }
+    if(cantidadPlanos==0 && cantidadCargasEsfericas==0){
+        gestionCargasFijas();
+        cargaLibreConfi();
+        gestionPlanos();
+        gestionCargasEsfericas();
+        if(ImGui::Checkbox("dibujar campo electrico",&mostrarCampoELectrico)){
+            actualizarPosSegunOffset();
+            cambio=true;
+        }
+    }else if(cantidadPlanos!=0){
+        gestionCargasFijas();
+        cargaLibreConfi();
+        gestionPlanos();
+        if(ImGui::Checkbox("dibujar campo electrico",&mostrarCampoELectrico)){
+            actualizarPosSegunOffset();
+            cambio=true;
+        }
+    } else if(cantidadCargasEsfericas!=0){
+        gestionCargasEsfericas();
+        gestionCargasLigadasEsfera();
+        if(ImGui::Checkbox("dibujar campo electrico Esferas",&mostrarCEconEsferas)){
+            //actualizarPosSegunOffset();
+            cambio=true;
         }
     }
-
-    if(cantidadPlanos!=0){
-        if(cantidadPlanos>=1){
-            ImGui::Text("carga los valores de tu plano 1");
-            planoConfi(0);
-        }
-        if(cantidadPlanos>=2){
-            ImGui::Text("carga los valores de tu plano 2");
-            planoConfi(1);
-        }
-        if(cantidadPlanos>=3){
-            ImGui::Text("carga los valores de tus plano 3");
-            planoConfi(2);
-        }
-        if(cantidadPlanos>=4){
-            ImGui::Text("carga los valores de tus plano 3");
-            planoConfi(3);
-        }
-    }
-
+    
+    
     if(ImGui::Checkbox("dibujar heatMap potencial",&mostrarMapaPotencial)){
         actualizarPosSegunOffset();
         cambio=true;
     }
-    if(ImGui::Checkbox("dibujar campo electrico",&mostrarCampoELectrico)){
-        actualizarPosSegunOffset();
-        cambio=true;
-    }
+   
 
     if(ImGui::Checkbox("guardar cambios y reiniciar simulacion",&cambio)){
         cambio=true;
@@ -780,6 +760,183 @@ void manejoProgramaCorriendo(bool &cambio){
         programaDetenido=true;
     }
 }
+
+void gestionCargasFijas(){
+    ImGui::Text("Ajusta los valores fisicos:");
+    if(ImGui::InputInt("cantidad de cargas fijas (maximo 3)", &cantCargasFijas,1,3)){
+        if(cantCargasFijas<0){
+            cantCargasFijas=0;
+            return;
+        } 
+        if(cantCargasFijas>cargasFijas.size()){
+            for(int i=0;i<cantCargasFijas-cargasFijas.size();i++){
+                cargasFijas.push_back(new Carga());
+            }
+        }else if(cantCargasFijas<cargasFijas.size()){
+            for(int i=0;i<cargasFijas.size()-cantCargasFijas;i++){
+                cargasFijas.pop_back();
+            }
+        }
+    }
+   
+    if(cantCargasFijas!=0){
+        if(cantCargasFijas>=1){
+            ImGui::Text("carga los valores de tus cargas 1 fijas");
+            cargasConfi(0);
+        }
+        if(cantCargasFijas>=2){
+            ImGui::Text("carga los valores de tus cargas 2 fijas");
+            cargasConfi(1);
+        }
+        if(cantCargasFijas>=3){
+            ImGui::Text("carga los valores de tus cargas 3 fijas");
+            cargasConfi(2);
+        }
+    }
+}
+
+void gestionPlanos(){
+    if(ImGui::InputInt("ingrese cantidad de Planos Infinitos (maximo 4)",&cantidadPlanos,1,4)){   
+        if(cantidadPlanos<0){
+            cantidadPlanos=0;
+            return;
+        } 
+        if(cantidadPlanos>planos.size()){
+            for(int i=0;i<cantidadPlanos-planos.size();i++){
+                planos.push_back(new Plano());
+            }
+        }else if(cantidadPlanos<planos.size()){
+            for(int i=0;i<cargasFijas.size()-cantidadPlanos;i++){
+                planos.pop_back();
+            }
+        }
+    }
+
+    if(cantidadPlanos!=0){
+        if(cantidadPlanos>=1){
+            ImGui::Text("carga los valores de tu plano 1");
+            planoConfi(0);
+        }
+        if(cantidadPlanos>=2){
+            ImGui::Text("carga los valores de tu plano 2");
+            planoConfi(1);
+        }
+        if(cantidadPlanos>=3){
+            ImGui::Text("carga los valores de tus plano 3");
+            planoConfi(2);
+        }
+        if(cantidadPlanos>=4){
+            ImGui::Text("carga los valores de tus plano 3");
+            planoConfi(3);
+        }
+    }
+}
+   
+void gestionCargasEsfericas(){
+    
+    if(ImGui::InputInt("ingrese cantidad de Cargas Esfericas",&cantidadCargasEsfericas,1,2)){  
+        if(cantidadCargasEsfericas<0){
+            cantidadCargasEsfericas=0;
+            return;
+        } 
+        if(cantidadCargasEsfericas>esferas.size()){
+            for(int i=0;i<cantidadCargasEsfericas-esferas.size();i++){
+                esferas.push_back(new CargaEsferica());
+            }
+        }else if(cantidadCargasEsfericas<esferas.size()){
+            for(int i=0;i<esferas.size()-cantidadCargasEsfericas;i++){
+                esferas.pop_back();
+            }
+        }
+    }
+
+    if(cantidadCargasEsfericas!=0){
+        if(cantidadCargasEsfericas>=1){
+            ImGui::Text("carga los valores de tu Esfera 1");
+            esferaConfi(0,20);
+        }
+        if(cantidadCargasEsfericas>=2){
+            ImGui::Text("carga los valores de tu Esfera 2");
+            esferaConfi(1,21);
+        }
+    }
+
+}
+
+void gestionCargasLigadasEsfera(){
+    if(ImGui::Checkbox("ingresar una carga Fija en el Centro",&PonerCargaFijaCentro)){
+        if(cargasFijas.size()==0){
+            cantCargasFijas=1;
+            cargasFijas.push_back(new Carga());
+        }else{
+            cantCargasFijas=0;
+            cargasFijas.pop_back();
+        }
+    }
+    if(PonerCargaFijaCentro){
+        ImGui::InputFloat("radio",&(cargasFijas[0]->radio));
+        // ImGui::InputFloat("posicion en x",&(cargasFijas[0]->x_original));//es un areglo de Cargas
+        // if(ImGui::InputFloat("posicion en y",&(cargasFijas[0]->y_original))){
+        //     cargasFijas[0]->y_original = cargasFijas[0]->y_original*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
+        // } 
+        cargasFijas[0]->x_original = esferas[0]->x_static;
+        cargasFijas[0]->y_original = esferas[0]->y_static;
+       
+        ImGui::InputFloat("valor",&(cargasFijas[0]->valor),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("masa",&(cargasFijas[0]->masa),0.0f,0.0f,"%.10f");
+        
+        
+        
+        if(mostrarEjeCordenado){
+            cargasFijas[0]->offsetX=origenX;
+            cargasFijas[0]->offsetY=origenY;
+        }
+        if(programaDetenido || programaPausado){
+            cargasFijas[0]->shape.setRadius(cargasFijas[0]->radio);
+            cargasFijas[0]->actualizarPosicion(cargasFijas[0]->x_original + cargasFijas[0]->offsetX,cargasFijas[0]->y_original + cargasFijas[0]->offsetY);
+        
+        }
+        if(cargasFijas[0]->valor<0){
+            cargasFijas[0]->shape.setFillColor(_color_cargaFija);
+        } else{
+            cargasFijas[0]->shape.setFillColor(sf::Color(255,123,56));
+        }
+        
+    }
+    
+    
+}
+
+void esferaConfi(int i,int id){
+    ImGui::PushID(id);
+    ImGui::InputFloat("radio Exterior",&(esferas[i]->radio));
+    ImGui::InputFloat("radio Interior",&(esferas[i]->radio_int));
+    ImGui::InputFloat("posicion en x",&(esferas[i]->x_static));
+    if(ImGui::InputFloat("posicion en y",&(esferas[i]->y_static))){
+        esferas[i]->y_static = esferas[i]->y_static*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
+    } 
+    ImGui::InputFloat("valor",&(esferas[i]->valor),0.0f,0.0f,"%.10f");
+    ImGui::InputFloat("masa",&(esferas[i]->masa),0.0f,0.0f,"%.10f");
+    
+    
+    
+    if(mostrarEjeCordenado){
+        esferas[i]->offsetX=origenX;
+        esferas[i]->offsetY=origenY;
+    }
+    if(programaDetenido || programaPausado){
+        esferas[i]->shape.setRadius(esferas[i]->radio);
+        esferas[i]->shape_int.setRadius(esferas[i]->radio_int);
+        esferas[i]->actualizarPosicion(esferas[i]->x_static + esferas[i]->offsetX,esferas[i]->y_static + esferas[i]->offsetY);
+    }
+    esferas[i]->shape.setFillColor(sf::Color(136,136,136));
+
+    //esferas[i]->shape_int.setFillColor(sf::Color::Black);
+    
+    ImGui::PopID();
+}
+
+
 
 void cargaLibreConfi(){
 
@@ -1092,4 +1249,161 @@ void drawVectorCEPE(sf::RenderWindow &window){
     vectorCEY[1].position = {((posX)),posY + (campoElectricoPuntoEstudio.y)};
     vectorCEY[1].color=(sf::Color::Red);
     window.draw(vectorCEY);
+}
+
+void organizadorCEEsferaConductora(sf::RenderWindow &window){
+    if(cantCargasFijas>1){
+        std::cout<<"no acepto mas de 1 carga fija en el mapa"<<std::endl;
+    }
+    if(cantidadCargasEsfericas>1 || cantCargasFijas!=0){
+       //balance de cargas inducidas
+       int i=esferas.size() -1;
+       float cargaDentro = cargasFijas[0]->valor;
+       float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
+       float cargaExterior_inducida = esferas[i]->valor + cargaInterior_inducida*(-1);
+
+       dibujarCargas(window,cargaInterior_inducida,cargaExterior_inducida,i);
+       //itero dentro de todo el radio interior (osea lo negro) de la carga Esferica conductora, y voy calculando el campo todo lo que se me pinte (podria calcularlo mucho mas de lo que lo vengo haciendo)
+        sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
+        
+        float x_inicial=(esferas[i]->x_static+esferas[i]->offsetX)-esferas[i]->radio_int;
+        float y_inicial=(esferas[i]->y_static+esferas[i]->offsetY)-esferas[i]->radio_int; 
+        
+        float posX= esferas[i]->x_static+esferas[i]->offsetX;
+        float posY = esferas[i]->y_static+esferas[i]->offsetY;
+        
+        for(float x=x_inicial;x<(esferas[i]->x_static+esferas[i]->offsetX)+esferas[i]->radio_int;x+=20){
+            for(float y=y_inicial;y<(esferas[i]->y_static+esferas[i]->offsetY)+esferas[i]->radio_int;y+=20){
+                sf::Vector2f campoElectricoInterior(0,0);
+                if(esferas[i]->radio_int>=sqrt((pow(posX-x,2)+pow(posY-y,2)))){
+                    float distanciaTotal = calcularDistancia(x,y,posX,posY);
+                    float distanciaX = calcularDistanciaX(posX,x);
+                    float distanciaY = calcularDistanciaY(posY,y);
+
+                    cargasFijas[0]->cacularCampoElectrico(campoElectricoInterior,distanciaTotal,distanciaX,distanciaY);
+
+                    vectorCE[0].position = {x , y};
+                    vectorCE[0].color=sf::Color::White;
+                    vectorCE[1].position = {x + campoElectricoInterior.x , y + campoElectricoInterior.y};
+                    vectorCE[1].color=(sf::Color::Red);
+                    if(calcularDistancia(x,y,x + campoElectricoInterior.x,y + campoElectricoInterior.y)>60){
+              
+                        escalarVector(vectorCE);
+                
+                    }
+                    window.draw(vectorCE);
+                }
+            }
+        }
+        //no funciona
+        if(i!=0){
+            for(int j=i-1;j<=0;j--){
+                cargaDentro = cargaExterior_inducida;
+                cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
+                cargaExterior_inducida = esferas[j]->valor + cargaInterior_inducida*(-1);
+                float posX= esferas[j]->x_static+esferas[j]->offsetX;
+                float posY = esferas[j]->y_static+esferas[j]->offsetY;
+                
+                float x_inicial=(esferas[j]->x_static+esferas[j]->offsetX)-esferas[j]->radio_int;
+                float y_inicial=(esferas[j]->y_static+esferas[j]->offsetY)-esferas[j]->radio_int;
+                
+                for(float x=x_inicial;x<(esferas[j]->x_static+esferas[j]->offsetX)+esferas[j]->radio_int;x+=20){
+                    for(float y=y_inicial;y<(esferas[j]->y_static+esferas[j]->offsetY)+esferas[j]->radio_int;y+=20){
+                        sf::Vector2f campoElectricoInterior(0,0);
+                        if(esferas[j]->radio_int>=sqrt((pow(posX-x,2)+pow(posY-y,2))) && esferas[j+1]->radio<=sqrt((pow(posX-x,2)+pow(posY-y,2)))){
+                            float distanciaTotal = calcularDistancia(x,y,posX,posY);
+                            float distanciaX = calcularDistanciaX(posX,x);
+                            float distanciaY = calcularDistanciaY(posY,y);
+
+                            campoElectricoInterior.x += K*(cargaDentro/pow(distanciaTotal,2))*distanciaX/distanciaTotal;
+                            campoElectricoInterior.y += K*(cargaDentro/pow(distanciaTotal,2))*distanciaY/distanciaTotal;
+
+                            vectorCE[0].position = {x , y};
+                            vectorCE[0].color=sf::Color::White;
+                            vectorCE[1].position = {x + campoElectricoInterior.x , y + campoElectricoInterior.y};
+                            vectorCE[1].color=(sf::Color::Red);
+                            if(calcularDistancia(x,y,x + campoElectricoInterior.x,y + campoElectricoInterior.y)>60){
+              
+                                escalarVector(vectorCE);
+                        
+                            }
+                            window.draw(vectorCE);
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+
+void dibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera){
+    int cIdibujar,cEdibujar;
+    float cIcalc=cargaInterior*pow(10,9);
+    if(abs(cIcalc)<1){
+        cIdibujar=4;
+    }else if(abs(cIcalc)>100){
+        cIdibujar=100;
+    }else{
+        cIdibujar = 10;
+    }
+    float cEcalc=cargaExterior*pow(10,9);
+    if(abs(cEcalc)<1){
+        cEdibujar=4;
+    }else if(abs(cEcalc)>100){
+        cEdibujar=100;
+    }else{
+        cEdibujar = 10;
+    }
+    float radio=0;
+    int i=0;
+    for(float titha=0;i<cIdibujar;titha+=85,i++){
+        float radian_titha = titha*(M_PI/180);
+        if(cargaInterior<0){
+            radio = esferas[n_esfera]->radio_int;
+        }else{
+            radio = esferas[n_esfera]->radio;
+        }
+        float x =radio*cos(radian_titha)  + esferas[n_esfera]->x_static + esferas[n_esfera]->offsetX;
+        float y= radio*sin(radian_titha) + esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
+        //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
+        int largo=8,alto=3;
+        sf::RectangleShape menos({largo,alto});
+        menos.setFillColor(sf::Color::Blue);
+        menos.setPosition({x,y});
+        window.draw(menos);
+    }
+    i=0;
+    for(float titha=0;i<cEdibujar;titha+=85,i++){
+        float radian_titha = titha*(M_PI/180);
+        if(cargaInterior<0){
+            radio = esferas[n_esfera]->radio;
+        }else{
+            radio = esferas[n_esfera]->radio_int;
+        }
+        float x =radio*cos(radian_titha) + esferas[n_esfera]->x_static + esferas[n_esfera]->offsetX;
+        float y= radio*sin(radian_titha)+ esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
+        //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
+        sf::ConvexShape mas(12);
+        int radio=4;
+        int eje=1;
+        int ancho=1;
+        mas.setPoint(1,{-radio,-ancho});
+        mas.setPoint(2,{-radio,+ancho});
+        mas.setPoint(3,{-eje,+eje});
+        mas.setPoint(4,{-ancho,+radio});
+        mas.setPoint(5,{+ancho,+radio});
+        mas.setPoint(6,{+eje,+eje});
+        mas.setPoint(7,{+radio,+ancho});
+        mas.setPoint(8,{+radio,-ancho});
+        mas.setPoint(9,{+eje,-eje});
+        mas.setPoint(10,{+ancho,-radio});
+        mas.setPoint(11,{-ancho,-radio});
+        mas.setPoint(12,{-eje,-eje});
+
+        mas.setFillColor(sf::Color::Red);
+        mas.setPosition({x,y});
+        window.draw(mas);
+    }
 }

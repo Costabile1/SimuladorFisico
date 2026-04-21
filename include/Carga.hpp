@@ -22,10 +22,10 @@ class Carga{
     public:
         Carga(float x, float y, float valor, float masa,float radio, float offsetX, float offsetY);
         Carga();
-        void draw(sf::RenderWindow &window);
+        virtual void draw(sf::RenderWindow &window);
         virtual void cacularCampoElectrico(sf::Vector2f &campoElectrico,float distanciaTotal, float distanciaX, float distanciaY);
         virtual void calcularPotencial(float &potencial,float distancia);
-        void actualizarPosicion(float x, float y); //funcion que tiene en cuenta el radio para corregir el desfase creado por sfml.
+        virtual void actualizarPosicion(float x, float y); //funcion que tiene en cuenta el radio para corregir el desfase creado por sfml.
 
 };
 
