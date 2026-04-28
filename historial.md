@@ -476,3 +476,70 @@ cambios:
     Falta:
         =>dibujar y calcular el campo fuera del conductor
         =la funcion para poner varios conductores concentricos y calcular su campo sigue rota, hay que arreglarla.
+
+
+    Bueno Ya funciona todo bastabte bien:
+        =>los conductores cargados tienen campos fuera como una carga puntual
+        =>los conductores con una carga dentro se gener campo de forma correcta
+        =>los conductores con conductores tambien se generan campo e interactuan correctamente
+
+    falta:
+        => el codigo es horrible esta todo junto y super repetido
+        =>que se vean las carguitas correctas si esta cargado
+        =>que se vean las cargitas en el segunda esfera conductora
+        =>creo que hay muchos vectores, habria que reducir la cantidad
+        =>Y en general ya estariamos en funcionalidad.
+        =>faltaria hacer arreglos y ajustes para que representen bien los problemas de FISICA 3 electrodinamica clasica.
+
+
+# 23/04/2026
+    =>mejore el codigo que dibujaba las particulas, ahora es mas ordenado, gestion dibujo cargas sigue el esquema en draw.io, ahora hay 2 funciones auxulaires que dibujan una los positivos y otra los negativos, se usan para SOlar para dibujar inicialmente la carga y se llaman dentro de la funcion GestionDibujo para hacer todos los manejos de cuando hay cargas inducidas.
+    que para mi sorpresa funcionan bastante bien, aun hay que chequear, como la llamada a la funcion gestion en el segundo aro, funciona pero por mas que le cambie los aprametros como deberia hace lo que se le canta.
+    En general funciona bastante bien, sigue bastante la logica y creo respeta bien la fisica.
+
+    ya se ven las carguitas cuando eta cargado
+
+    aun asi la funcion organizadorCEEsferaConductora, sigue siendo una locura, hace magia, nose como puede ser que funcione tan bien, no se rompe, simepre calcula y muetra los campos corrrectamente, pero es larguisima y es un quilombo, asi que no la queiro tocar y se va a quedar asi, en si es una funcion compleja y hay cosas que deben quedarse complejas, nada es simplemetne cine. nose en que momento de flow focus lock in la hice.
+    lo buenoes que optimice el codigo de dibujar, que ese realmente era complejo al pedo. diagramar ayudo bastante.
+    en fin seguimos con las mismas cosas  ahacer
+
+    
+    falta:
+        =>que se vean las cargitas en el segunda esfera conductora
+        =>creo que hay muchos vectores, habria que reducir la cantidad (estan bien se vana  quedar asi)
+        =>Y en general ya estariamos en funcionalidad.
+
+    LO QUE MAS FALTA AHORA
+        =>faltaria hacer arreglos y ajustes para que representen bien los problemas de FISICA 3 electrodinamica clasica.
+        =>hacer el GUI medio entendible, tampovo quiero que sea la super cosa, pero por ahora solo lo entiendo yo
+        .
+
+
+# 27/04/2026
+    estoy haciendo el factor escala, que deberia afectar a donde se dibujan las aprticulas y al tamaño de los vectores.
+    pero claro, al estar dibujado mas lejos, donde se dibujan y donde vam a apuntar los vectores va a ser distinto.
+    por ahora hice algunos cambios en la funcionactualziar posicion.
+
+# 28/04/2026
+    voy a cambiar la funcion actualizar posicion
+    primero quiero arreglar el embroolo que es el tema de la posicion,posi_original,offset y factor escala.
+
+    X,Y =>posicion actual para particulas que se mueven x,Y = x,Y_original*factorEscala + offset.
+    X;Y => van a desaparecer.
+
+    ahora: el factor escala se va a cambiar literalmente la posicion de las cargas.
+    =>el tema es que ahora la distancia no es real, por ende deberia dividirse por el factorEscala.
+
+    al final esta todo como estaba antes, creooo
+    por que literalmente me puse a toquetear lo que ya funcionaba y termine rompiendo todo
+    el tema de las posiciones x,y,original y no orginal y ofset esta todo atado con alamabre pero funciona, pero no tengo idea como
+    quedara asi. 
+    al final habia logrado algo con el tema del factor escala pero los vectores se iban ala carajo.
+    ahora el tema es que recien me doy cuenta, los vectores campo electrico no se dibujan correctamente, estan como desfasados. la carga n1 tiene mucha mas influencia en los vectores que la segunda por ejemplo y donde el campo deberia dar=0, da !=0 porlomenos en la demostracion de graficos y en la caga estudio
+    la carga libre si se mueve deacuerdo a la fiscia correctamente
+    por ende
+    PROBLEMAS EN EL CALCULO DEL CAMPO ELECTRICO QUE MUESTRA LOS VECTORES
+    PROBLEMA CON EL CALCULO DEL CAMPO EN EL PUNTO ESTUDIO
+    LA CARGA LIBRE SE CALCULA BIEN
+    MIRAR ESO.
+

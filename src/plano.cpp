@@ -20,7 +20,7 @@ double Plano::cacularCampoElectrico(){
 }
 
 void Plano::setearPosicion(float x){
-    shape.setPosition({x,this->y});
+    shape.setPosition({x+offsetX,this->y});
 }
 
 void Plano::draw(sf::RenderWindow &window){

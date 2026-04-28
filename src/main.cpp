@@ -23,7 +23,9 @@ float calcularDistanciaY(float y1, float y2);
 
 //funciones para las Esferas
 void organizadorCEEsferaConductora(sf::RenderWindow &window);
-void dibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera);
+void gestiondibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera);
+void dibujarCargasNegativas(sf::RenderWindow &window,float radio,int i, int cant=50);
+void dibujarCargasPositivas(sf::RenderWindow &window,float radio, int i,int cant=50);
 //funciones PLano
 void planoConfi(int i);
 
@@ -87,6 +89,7 @@ std::vector<CargaEsferica*> esferas;
 
 
 //variables configurables
+float factorEscala=1.0;
 float origenX=0;
 float origenY=0;
 int cantCargasFijas=0;
@@ -187,6 +190,14 @@ int main(){
             window.clear();
             for(int i=0;i<cantidadCargasEsfericas;i++){
                 esferas[i]->draw(window);
+                if(!mostrarCEconEsferas){
+                    if(esferas[i]->valor>0){
+                        dibujarCargasPositivas(window,esferas[i]->radio,i);
+                    } else if(esferas[i]->valor<0){
+                        dibujarCargasNegativas(window,esferas[i]->radio,i);
+                    }
+                }
+                
             }
             if(mostrarEjeCordenado){
                 window.draw(ejeX);
@@ -626,7 +637,7 @@ void cargasConfi(int i){
     }
     if(programaDetenido || programaPausado){
         cargasFijas[i]->shape.setRadius(cargasFijas[i]->radio);
-        cargasFijas[i]->actualizarPosicion(cargasFijas[i]->x_original + cargasFijas[i]->offsetX,cargasFijas[i]->y_original + cargasFijas[i]->offsetY);
+        cargasFijas[i]->actualizarPosicion((cargasFijas[i]->x_original + cargasFijas[i]->offsetX),(cargasFijas[i]->y_original + cargasFijas[i]->offsetY));
     
     }
     if(cargasFijas[i]->valor<0){
@@ -643,6 +654,7 @@ void manejoProgramaDetendio(bool &cambio){
     ImGui::Text("Coloca un eje de cordenadas");
     ImGui::InputFloat("Origen en x",&origenX);
     ImGui::InputFloat("Origen en y",&origenY);
+    ImGui::InputFloat("Factor Escala: ",&factorEscala,0.0f,0.0f,"%.1f");
     if(origenX!=0 && origenY!=0){
         if(ImGui::Checkbox("dibujar eje cordenado",&mostrarEjeCordenado)){
             cambio=true;
@@ -930,7 +942,7 @@ void esferaConfi(int i,int id){
         esferas[i]->actualizarPosicion(esferas[i]->x_static + esferas[i]->offsetX,esferas[i]->y_static + esferas[i]->offsetY);
     }
     esferas[i]->shape.setFillColor(sf::Color(136,136,136));
-
+    
     //esferas[i]->shape_int.setFillColor(sf::Color::Black);
     
     ImGui::PopID();
@@ -982,7 +994,7 @@ void puntoEstudioConfi(){
     if(programaDetenido || programaPausado){
         cargaEstudio->shape.setRadius(4);
         cargaEstudio->radio=4;
-        cargaEstudio->actualizarPosicion(cargaEstudio->x_original + cargaEstudio->offsetX,cargaEstudio->y_original + cargaEstudio->offsetY);
+        cargaEstudio->actualizarPosicion((cargaEstudio->x_original + cargaEstudio->offsetX),(cargaEstudio->y_original + cargaEstudio->offsetY));
     }
     ImGui::Checkbox("Mostrar Datos del punto",&mostrarDatosPuntoEstudio);
     if(mostrarDatosPuntoEstudio){
@@ -1251,56 +1263,61 @@ void drawVectorCEPE(sf::RenderWindow &window){
     window.draw(vectorCEY);
 }
 
+//esta funcion hace magia
 void organizadorCEEsferaConductora(sf::RenderWindow &window){
     if(cantCargasFijas>1){
         std::cout<<"no acepto mas de 1 carga fija en el mapa"<<std::endl;
     }
+    float cargaExterior_inducida = esferas[0]->valor;
+    sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
     if(cantidadCargasEsfericas>1 || cantCargasFijas!=0){
        //balance de cargas inducidas
-       int i=esferas.size() -1;
-       float cargaDentro = cargasFijas[0]->valor;
-       float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
-       float cargaExterior_inducida = esferas[i]->valor + cargaInterior_inducida*(-1);
-
-       dibujarCargas(window,cargaInterior_inducida,cargaExterior_inducida,i);
-       //itero dentro de todo el radio interior (osea lo negro) de la carga Esferica conductora, y voy calculando el campo todo lo que se me pinte (podria calcularlo mucho mas de lo que lo vengo haciendo)
-        sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
+        int i=esferas.size() -1;
+        cargaExterior_inducida=esferas[i]->valor;
         
-        float x_inicial=(esferas[i]->x_static+esferas[i]->offsetX)-esferas[i]->radio_int;
-        float y_inicial=(esferas[i]->y_static+esferas[i]->offsetY)-esferas[i]->radio_int; 
-        
-        float posX= esferas[i]->x_static+esferas[i]->offsetX;
-        float posY = esferas[i]->y_static+esferas[i]->offsetY;
-        
-        for(float x=x_inicial;x<(esferas[i]->x_static+esferas[i]->offsetX)+esferas[i]->radio_int;x+=20){
-            for(float y=y_inicial;y<(esferas[i]->y_static+esferas[i]->offsetY)+esferas[i]->radio_int;y+=20){
-                sf::Vector2f campoElectricoInterior(0,0);
-                if(esferas[i]->radio_int>=sqrt((pow(posX-x,2)+pow(posY-y,2)))){
-                    float distanciaTotal = calcularDistancia(x,y,posX,posY);
-                    float distanciaX = calcularDistanciaX(posX,x);
-                    float distanciaY = calcularDistanciaY(posY,y);
+        if(cantCargasFijas==1){
+            float cargaDentro = cargasFijas[0]->valor;
+            float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
+            cargaExterior_inducida = esferas[i]->valor + cargaInterior_inducida*(-1);
+            gestiondibujarCargas(window,cargaInterior_inducida,cargaInterior_inducida*(-1),i);
+            //itero dentro de todo el radio interior (osea lo negro) de la carga Esferica conductora, y voy calculando el campo todo lo que se me pinte (podria calcularlo mucho mas de lo que lo vengo haciendo)
+            sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
+            
+            float x_inicial=(esferas[i]->x_static+esferas[i]->offsetX)-esferas[i]->radio_int;
+            float y_inicial=(esferas[i]->y_static+esferas[i]->offsetY)-esferas[i]->radio_int; 
+            
+            float posX= esferas[i]->x_static+esferas[i]->offsetX;
+            float posY = esferas[i]->y_static+esferas[i]->offsetY;
+            
+            for(float x=x_inicial;x<(esferas[i]->x_static+esferas[i]->offsetX)+esferas[i]->radio_int;x+=20){
+                for(float y=y_inicial;y<(esferas[i]->y_static+esferas[i]->offsetY)+esferas[i]->radio_int;y+=20){
+                    sf::Vector2f campoElectricoInterior(0,0);
+                    if(esferas[i]->radio_int>=sqrt((pow(posX-x,2)+pow(posY-y,2)))){
+                        float distanciaTotal = calcularDistancia(x,y,posX,posY);
+                        float distanciaX = calcularDistanciaX(posX,x);
+                        float distanciaY = calcularDistanciaY(posY,y);
 
-                    cargasFijas[0]->cacularCampoElectrico(campoElectricoInterior,distanciaTotal,distanciaX,distanciaY);
+                        cargasFijas[0]->cacularCampoElectrico(campoElectricoInterior,distanciaTotal,distanciaX,distanciaY);
 
-                    vectorCE[0].position = {x , y};
-                    vectorCE[0].color=sf::Color::White;
-                    vectorCE[1].position = {x + campoElectricoInterior.x , y + campoElectricoInterior.y};
-                    vectorCE[1].color=(sf::Color::Red);
-                    if(calcularDistancia(x,y,x + campoElectricoInterior.x,y + campoElectricoInterior.y)>60){
-              
-                        escalarVector(vectorCE);
-                
+                        vectorCE[0].position = {x , y};
+                        vectorCE[0].color=sf::Color::White;
+                        vectorCE[1].position = {x + campoElectricoInterior.x , y + campoElectricoInterior.y};
+                        vectorCE[1].color=(sf::Color::Red);
+                        if(calcularDistancia(x,y,x + campoElectricoInterior.x,y + campoElectricoInterior.y)>60){
+                            escalarVector(vectorCE);
+                        }
+                        window.draw(vectorCE);
                     }
-                    window.draw(vectorCE);
                 }
             }
         }
-        //no funciona
+        sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
         if(i!=0){
-            for(int j=i-1;j<=0;j--){
-                cargaDentro = cargaExterior_inducida;
-                cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
+            for(int j=i-1;j>=0;j--){
+                float cargaDentro = cargaExterior_inducida;
+                float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
                 cargaExterior_inducida = esferas[j]->valor + cargaInterior_inducida*(-1);
+                gestiondibujarCargas(window,cargaInterior_inducida, cargaInterior_inducida*(-1),j); //en teoria va eso pero tambien parece funcionar con : cargaExterior_inducida
                 float posX= esferas[j]->x_static+esferas[j]->offsetX;
                 float posY = esferas[j]->y_static+esferas[j]->offsetY;
                 
@@ -1333,38 +1350,76 @@ void organizadorCEEsferaConductora(sf::RenderWindow &window){
                 }
             }
         }
+    }else{
+        cargaExterior_inducida = esferas[0]->valor;
+    }
         
+    float posX= esferas[0]->x_static+esferas[0]->offsetX;
+    float posY = esferas[0]->y_static+esferas[0]->offsetY;
+    float x_inicial=0;
+    float y_inicial=0;
+        
+    for(float x=x_inicial;x<_ANCHO;x+=20){
+        for(float y=y_inicial;y<_LARGO;y+=20){
+            sf::Vector2f campoElectricoInterior(0,0);
+            if(esferas[0]->radio<=sqrt((pow(posX-x,2)+pow(posY-y,2)))){
+                float distanciaTotal = calcularDistancia(x,y,posX,posY);
+                float distanciaX = calcularDistanciaX(posX,x);
+                float distanciaY = calcularDistanciaY(posY,y);
+
+                campoElectricoInterior.x += K*(cargaExterior_inducida/pow(distanciaTotal,2))*distanciaX/distanciaTotal;
+                campoElectricoInterior.y += K*(cargaExterior_inducida/pow(distanciaTotal,2))*distanciaY/distanciaTotal;
+
+                vectorCE[0].position = {x , y};
+                vectorCE[0].color=sf::Color::White;
+                vectorCE[1].position = {x + campoElectricoInterior.x , y + campoElectricoInterior.y};
+                vectorCE[1].color=(sf::Color::Red);
+                if(calcularDistancia(x,y,x + campoElectricoInterior.x,y + campoElectricoInterior.y)>60){
+                    escalarVector(vectorCE);
+                }
+                window.draw(vectorCE);
+            }
+        }
     }
 }
 
 
-void dibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera){
-    int cIdibujar,cEdibujar;
-    float cIcalc=cargaInterior*pow(10,9);
-    if(abs(cIcalc)<1){
-        cIdibujar=4;
-    }else if(abs(cIcalc)>100){
-        cIdibujar=100;
-    }else{
-        cIdibujar = 10;
-    }
-    float cEcalc=cargaExterior*pow(10,9);
-    if(abs(cEcalc)<1){
-        cEdibujar=4;
-    }else if(abs(cEcalc)>100){
-        cEdibujar=100;
-    }else{
-        cEdibujar = 10;
-    }
-    float radio=0;
-    int i=0;
-    for(float titha=0;i<cIdibujar;titha+=85,i++){
-        float radian_titha = titha*(M_PI/180);
-        if(cargaInterior<0){
-            radio = esferas[n_esfera]->radio_int;
+void gestiondibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExterior, int n_esfera){
+    if(cargaExterior/abs(cargaExterior) == esferas[n_esfera]->valor/abs(esferas[n_esfera]->valor)){
+        if((esferas[n_esfera]->valor+cargaExterior)>0){
+            //dibujo mas positivas
+            dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera,100);
         }else{
-            radio = esferas[n_esfera]->radio;
+            //dubujo mas negativas
+            dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera,100);
         }
+    }else{
+        double suma= esferas[n_esfera]->valor+cargaExterior;
+        int cant=25;
+        if(suma==0) cant=0;
+        if(suma/abs(suma)>0){
+             //dibujo menos positivas
+             dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera,cant);
+        }else{
+            //dibujo menos negativas
+            dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera,cant);
+        }
+ 
+    }
+
+    if(cargaInterior<0){
+        dibujarCargasNegativas(window,esferas[n_esfera]->radio_int,n_esfera);
+        //dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera);
+    }else{
+       // dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera);
+        dibujarCargasPositivas(window,esferas[n_esfera]->radio_int,n_esfera);
+    }
+}
+
+void dibujarCargasNegativas(sf::RenderWindow &window,float radio,int n_esfera,int cant){
+    int i=0;
+    for(float titha=0;i<cant;titha+=85,i++){
+        float radian_titha = titha*(M_PI/180);
         float x =radio*cos(radian_titha)  + esferas[n_esfera]->x_static + esferas[n_esfera]->offsetX;
         float y= radio*sin(radian_titha) + esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
         //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
@@ -1374,14 +1429,12 @@ void dibujarCargas(sf::RenderWindow &window,float cargaInterior, float cargaExte
         menos.setPosition({x,y});
         window.draw(menos);
     }
-    i=0;
-    for(float titha=0;i<cEdibujar;titha+=85,i++){
+}
+
+void dibujarCargasPositivas(sf::RenderWindow &window,float radio,int n_esfera, int cant){
+    int i=0;
+    for(float titha=0;i<cant;titha+=85,i++){
         float radian_titha = titha*(M_PI/180);
-        if(cargaInterior<0){
-            radio = esferas[n_esfera]->radio;
-        }else{
-            radio = esferas[n_esfera]->radio_int;
-        }
         float x =radio*cos(radian_titha) + esferas[n_esfera]->x_static + esferas[n_esfera]->offsetX;
         float y= radio*sin(radian_titha)+ esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
         //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
