@@ -1118,7 +1118,7 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
     for(i;i<cant_cuadriculas.x;i++){
         for(int j=1;j<cant_cuadriculas.y;j++){
             sf::Vector2f vectorCampoElectrico(0,0);
-            sf::Vector2f vectorCampoElectricoAux(0,0);
+            
             for(int k=0;k<cantCargasFijas;k++){
                 x_calcular = (i-1)*(anchoCuadriculado)+(anchoCuadriculado/2);
                 y_calcular = (j-1)*(largoCuadriculado)+(largoCuadriculado/2);
@@ -1126,7 +1126,7 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
                 distanciaTotal = calcularDistancia(x_calcular,y_calcular,cargasFijas[k]->x,cargasFijas[k]->y);
                 distanciaX = calcularDistanciaX(cargasFijas[k]->x,x_calcular);
                 distanciaY = calcularDistanciaY(cargasFijas[k]->y,y_calcular);
-
+                sf::Vector2f vectorCampoElectricoAux(0,0);
                 (*(cargasFijas[k])).cacularCampoElectrico(vectorCampoElectricoAux,distanciaTotal,distanciaX,distanciaY);
                 if(vectorCEPlano.size()!=0){
                     vectorCampoElectrico.x += (vectorCampoElectricoAux.x + vectorCEPlano[i-1][j-1].x);
@@ -1205,14 +1205,14 @@ void calcularCEPE(){
         CEPlano += planos[k]->cacularCampoElectrico()*sig;
     }
 
-    sf::Vector2f aux(0,0);
+    
     for(int i=0;i<cantCargasFijas;i++){
         distanciaTotal = calcularDistancia(posX,posY,cargasFijas[i]->x,cargasFijas[i]->y);
         distanciaX = calcularDistanciaX(cargasFijas[i]->x,posX);
         distanciaY = calcularDistanciaY(cargasFijas[i]->y,posY);
      
         
-
+        sf::Vector2f aux(0,0);
         (*(cargasFijas[i])).cacularCampoElectrico(aux,distanciaTotal,distanciaX,distanciaY);
         campoElectricoPuntoEstudio.x+=aux.x;
         campoElectricoPuntoEstudio.y+=aux.y;
