@@ -5,6 +5,8 @@
 
 ![Potencial](docs/img/image-1.png)
 
+![Cargas](image.png)
+
 # Que es esto?
 -Permite crear simulaciones en un entorno 2D con cargas puntuales,planos y esferas.
 -Visualizar el Campo ELectrico como vectores.
