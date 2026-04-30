@@ -280,7 +280,7 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
             float dist = (cargasLibres[i]->x)-(planos[k]->x_original+planos[k]->offsetX);
             float sig = dist/std::abs(dist);
             if(std::abs(sig)!=1){
-                std::cout<<"no doy uno jaja peton 2"<<std::endl;
+                std::cout<<"NO di uno"<<std::endl;
             }
             CEPlano += planos[k]->cacularCampoElectrico()*sig;
         }
@@ -1093,7 +1093,7 @@ std::vector<std::vector<sf::Vector2f>> calcularCEPlano(){
                 float dist = x_calcular-(planos[k]->x_original*factorEscala+planos[k]->offsetX);
                 float sig = dist/std::abs(dist);
                 if(std::abs(sig)!=1){
-                    std::cout<<"no doy uno jaja, peton"<<std::endl;
+                    std::cout<<"no doy uno "<<std::endl;
                 }
                 float aux = planos[k]->cacularCampoElectrico()*sig;
                 vectorCampoElectrico.x+=aux;
@@ -1201,7 +1201,7 @@ void calcularCEPE(){
         float dist = (posX)-(planos[k]->x_original*factorEscala+planos[k]->offsetX);
         float sig = dist/std::abs(dist);
         if(std::abs(sig)!=1){
-            std::cout<<"no doy uno jaja peton 2"<<std::endl;
+            std::cout<<"no doy uno"<<std::endl;
         }
         CEPlano += planos[k]->cacularCampoElectrico()*sig;
     }
@@ -1321,8 +1321,6 @@ void organizadorCEEsferaConductora(sf::RenderWindow &window){
         sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
         if(i!=0){
             for(int j=i-1;j>=0;j--){
-                std::cout<<"CargaExterior INducida: "<<cargaExterior_inducida<<std::endl;
-                std::cout<<"Nivel Presicion: "<<nivelPresicion<<std::endl;
                 if(cargaExterior_inducida>0){
                     if(cargaExterior_inducida<nivelPresicion){
                         cargaExterior_inducida=0;
@@ -1330,10 +1328,8 @@ void organizadorCEEsferaConductora(sf::RenderWindow &window){
                 }else{
                     if(cargaExterior_inducida>nivelPresicion*(-1)){
                         cargaExterior_inducida=0;
-                        std::cout<<"hola";
                     }
                 }
-                std::cout<<"CargaExterior INducida: "<<cargaExterior_inducida<<std::endl;
                 float cargaDentro = cargaExterior_inducida;
                 float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
                 cargaExterior_inducida = esferas[j]->valor + cargaInterior_inducida*(-1);
@@ -1418,21 +1414,16 @@ void gestiondibujarCargas(sf::RenderWindow &window,float cargaInterior, float ca
     }else{
         double suma= esferas[n_esfera]->valor+cargaExterior;
         int cant=25;
-        std::cout<<"SUMA : "<<suma<<std::endl;
-        std::cout<<"i :  "<<n_esfera<<std::endl;
         if(suma>0){
             if(suma<nivelPresicion){
                 cant=0;
-                std::cout<<"entro a 1 con i:  "<<n_esfera<<std::endl;
             }
         }else{
             if(suma>nivelPresicion*(-1)){
                 cant=0;
-                std::cout<<"entro a 2 con i:  "<<n_esfera<<std::endl;
             }
         }
         if(suma==esferas[n_esfera]->valor){
-            std::cout<<"entro a 3 con i:  "<<n_esfera<<std::endl;
             cant=50;
         }
         if(suma/abs(suma)>0){
