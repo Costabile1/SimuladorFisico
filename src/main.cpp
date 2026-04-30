@@ -121,7 +121,7 @@ int primera = 1;
 int main(){
     // Crea la ventana principal
 
-    sf::RenderWindow window(sf::VideoMode({_ANCHO, _LARGO}), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode({_ANCHO, _LARGO}), "MLyM Simulador Fisico!");
     ImGui::SFML::Init(window);
     //limita los fps
     window.setFramerateLimit(60);

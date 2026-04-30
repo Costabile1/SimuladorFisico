@@ -1,0 +1,64 @@
+# Pautas Seguidas en la Creacion del Proyecto
+
+
+### Objetivos version ALFA 0.0.1 ### TITULO: El Origen de la carga puntual y los vectores
+cosas que ya tenemos:
+    colocar cargas fijas y moviles en la pantalla
+    graficar correctamente el mapa potencial
+    graficar los vectores fuerza y velocidad (falta dimencionarlos correctamente) y que sean una flechita
+    sistema GUI basico (falta revisar y toquetear todo para que no se rompa, mostrarles a los usuarios las unidades)
+
+que neceitaria tener para que sea una buena herramienta de estudio y enseñanza de campos ELectricos
+    mostrar vectores campo electrico en todo el mapa
+    poder elegir un punto y ver valores del campo electrico y potencial
+    tener a vista los valores modulares de vector velocidad y aceleracion y fuerza (opcinal mostrar en componentes x,y)
+    poder representar un eje.
+
+    Objetivos a terminar:
+        1-mejorar la visualizacion del potencial (completado)
+        2-mostrar vectores campo electrico en todo el mapa (completado)
+        3-poder elegir un punto y ver valores del campo electrico y potencial 
+        3,5-intentar poner los vectores fuerza y velocidad arriba de la particula para que se vean mejor. (completado)
+        4-tener a vista los valores modulares de vector velocidad y aceleracion y fuerza (opcinal mostrar en componentes x,y) (completado)
+        5-poder representar un eje. (completado)
+        6-Ordenar el gui, para que solo puedas tocar las cosas que debes (completado)
+
+    Nuevos Objetivos:
+        1-cmabiar las clases, crear clase general, =>cargaMovil, CargaFija e implementarlo en el codigo (completado)
+        2-la carga de estudio no va tener aceleracion ni funcion update() (completado)
+        
+
+
+
+### BETA v0.1.0  TITULO: Saliendo de lo Puntual hacia el Infinito y mas alla
+    planos infinitos (completado)
+    que cada tipo de carga tenga su propiafuncion calculoCampoElectrioc(), ya que depende de la forma. (completado)
+
+
+### v1.0.0 final: Cargas con radio 💀
+    cargas con radio, potencial constante dentro,
+    cargas con 2 radios
+
+# Objetivos ranqueados 
+## Basico (Completado)
+    -crear un programa que siga las relgas de la POO
+    -Simular con exito el moviento de una sola carga con respecto a una o mas cargas Estaticas de ambos signos
+    -Solo interactuaran 1 carga en movimiento a la vez
+    -representar los vectores fuerza y velocidad
+
+### 2,5 
+    -representar de forma visual el campo Electrico y los vectores
+    -representar el potencial en la ventana de facil visualizacion, (no numero enormes o diminutos) 
+    -mejorar la visualizacion de los vectores
+
+### 3
+    -repersentar otro tipo de cuerpos que no sean solo particulas puntuales
+    -representar hilos infinitos, planos (todos con gran simetria)                                                       <---- estamos aca-----
+    -elementos como cilindros infinitos y esferas huecas(hay muchos ejercicios de eso en las materias de fisica3)
+    -acomodar y consensuar tamaños para que puedan representar de la mejor forma las situaciones reales o como minimo que sea coherentes y representativos para ejercicios de fiscia3 nivel universitario
+
+### 4
+    -realizar calculos complejos para poder resolver los ejercicios
+    -Representar cuerpos que no sean simetricos, como varillas cortas o cruvas
+    -integrar el campo magnetico en la simulacion
+    -considerar simulaciones 3d

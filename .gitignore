@@ -1,7 +1,8 @@
 
 *.md 
 !README.md
-!historia.md
+!DEVLOG.md
+!GUIDELINES.md
 
 imgui.ini
 
