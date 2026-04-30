@@ -1,11 +1,11 @@
 # Simulador Fisico Electroestatica y Electrodinamica en C++
 
 
-![Induccion](docs/img/image.png)
+![Induccion](docs/img/inducciones.png)
 
-![Potencial](docs/img/image-1.png)
+![Potencial](docs/img/poteenciales.png)
 
-![Cargas](image.png)
+![Cargas](docs/img/2cargas.png)
 
 # Que es esto?
 -Permite crear simulaciones en un entorno 2D con cargas puntuales,planos y esferas.
