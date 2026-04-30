@@ -90,6 +90,7 @@ std::vector<CargaEsferica*> esferas;
 
 //variables configurables
 float factorEscala=1.0;
+float nivelPresicion = 1*pow(10,-12);
 float origenX=0;
 float origenY=0;
 int cantCargasFijas=0;
@@ -637,7 +638,7 @@ void cargasConfi(int i){
     }
     if(programaDetenido || programaPausado){
         cargasFijas[i]->shape.setRadius(cargasFijas[i]->radio);
-        cargasFijas[i]->actualizarPosicion((cargasFijas[i]->x_original + cargasFijas[i]->offsetX),(cargasFijas[i]->y_original + cargasFijas[i]->offsetY));
+        cargasFijas[i]->actualizarPosicion((cargasFijas[i]->x_original*factorEscala + cargasFijas[i]->offsetX),(cargasFijas[i]->y_original*factorEscala + cargasFijas[i]->offsetY));
     
     }
     if(cargasFijas[i]->valor<0){
@@ -968,7 +969,7 @@ void cargaLibreConfi(){
             cargasLibres[0]->offsetY=origenY;
         };
         if(programaDetenido ){
-            cargasLibres[0]->actualizarPosicion(cargasLibres[0]->x_original + cargasLibres[0]->offsetX,cargasLibres[0]->y_original + cargasLibres[0]->offsetY);
+            cargasLibres[0]->actualizarPosicion(cargasLibres[0]->x_original*factorEscala + cargasLibres[0]->offsetX,cargasLibres[0]->y_original*factorEscala + cargasLibres[0]->offsetY);
             (*(cargasLibres[0])).aX=0;
             (*(cargasLibres[0])).aY=0;
             (*(cargasLibres[0])).vX=0;
@@ -1015,7 +1016,7 @@ void planoConfi(int i){
         planos[i]->offsetX=origenX;
     }
     if(programaDetenido || programaPausado){
-        planos[i]->setearPosicion(planos[i]->x_original+planos[i]->offsetX);
+        planos[i]->setearPosicion(planos[i]->x_original*factorEscala);
     }
     if(planos[i]->densidadCarga<0){
         planos[i]->shape.setFillColor(_color_cargaFija);
@@ -1043,12 +1044,12 @@ void representarEjECartesiano(sf::VertexArray *ejeX,sf::VertexArray *ejeY,sf::Ve
 
 void actualizarPosSegunOffset(){
     for(int i=0;i<cantCargasFijas;i++){
-        cargasFijas[i]->x = cargasFijas[i]->x_original + cargasFijas[i]->offsetX;
-        cargasFijas[i]->y = cargasFijas[i]->y_original + cargasFijas[i]->offsetY;
+        cargasFijas[i]->x = cargasFijas[i]->x_original*factorEscala + cargasFijas[i]->offsetX;
+        cargasFijas[i]->y = cargasFijas[i]->y_original*factorEscala + cargasFijas[i]->offsetY;
         cargasFijas[i]->actualizarPosicion(cargasFijas[i]->x,cargasFijas[i]->y);
     }
-    cargasLibres[0]->x = cargasLibres[0]->x_original + cargasLibres[0]->offsetX;
-    cargasLibres[0]->y = cargasLibres[0]->y_original + cargasLibres[0]->offsetY;
+    cargasLibres[0]->x = cargasLibres[0]->x_original*factorEscala + cargasLibres[0]->offsetX;
+    cargasLibres[0]->y = cargasLibres[0]->y_original*factorEscala + cargasLibres[0]->offsetY;
     cargasLibres[0]->actualizarPosicion(cargasLibres[0]->x,cargasLibres[0]->y);
 }
 
@@ -1089,10 +1090,10 @@ std::vector<std::vector<sf::Vector2f>> calcularCEPlano(){
             sf::Vector2f vectorCampoElectrico(0,0);
             for(int k=0;k<cantidadPlanos;k++){
                 x_calcular = (i-1)*(anchoCuadriculado)+(anchoCuadriculado/2);
-                float dist = x_calcular-(planos[k]->x_original+planos[k]->offsetX);
+                float dist = x_calcular-(planos[k]->x_original*factorEscala+planos[k]->offsetX);
                 float sig = dist/std::abs(dist);
                 if(std::abs(sig)!=1){
-                    std::cout<<"no doy uno jaja peton"<<std::endl;
+                    std::cout<<"no doy uno jaja, peton"<<std::endl;
                 }
                 float aux = planos[k]->cacularCampoElectrico()*sig;
                 vectorCampoElectrico.x+=aux;
@@ -1123,9 +1124,9 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
                 x_calcular = (i-1)*(anchoCuadriculado)+(anchoCuadriculado/2);
                 y_calcular = (j-1)*(largoCuadriculado)+(largoCuadriculado/2);
     
-                distanciaTotal = calcularDistancia(x_calcular,y_calcular,cargasFijas[k]->x,cargasFijas[k]->y);
-                distanciaX = calcularDistanciaX(cargasFijas[k]->x,x_calcular);
-                distanciaY = calcularDistanciaY(cargasFijas[k]->y,y_calcular);
+                distanciaTotal = calcularDistancia(x_calcular,y_calcular,cargasFijas[k]->x,cargasFijas[k]->y)/factorEscala;
+                distanciaX = calcularDistanciaX(cargasFijas[k]->x,x_calcular)/factorEscala;
+                distanciaY = calcularDistanciaY(cargasFijas[k]->y,y_calcular)/factorEscala;
                 sf::Vector2f vectorCampoElectricoAux(0,0);
                 (*(cargasFijas[k])).cacularCampoElectrico(vectorCampoElectricoAux,distanciaTotal,distanciaX,distanciaY);
                 if(vectorCEPlano.size()!=0){
@@ -1197,7 +1198,7 @@ void calcularCEPE(){
     float CEPlano=0;
     ///PLANOS
     for(int k=0;k<cantidadPlanos;k++){
-        float dist = (posX)-(planos[k]->x_original+planos[k]->offsetX);
+        float dist = (posX)-(planos[k]->x_original*factorEscala+planos[k]->offsetX);
         float sig = dist/std::abs(dist);
         if(std::abs(sig)!=1){
             std::cout<<"no doy uno jaja peton 2"<<std::endl;
@@ -1207,9 +1208,9 @@ void calcularCEPE(){
 
     
     for(int i=0;i<cantCargasFijas;i++){
-        distanciaTotal = calcularDistancia(posX,posY,cargasFijas[i]->x,cargasFijas[i]->y);
-        distanciaX = calcularDistanciaX(cargasFijas[i]->x,posX);
-        distanciaY = calcularDistanciaY(cargasFijas[i]->y,posY);
+        distanciaTotal = calcularDistancia(posX,posY,cargasFijas[i]->x,cargasFijas[i]->y)/factorEscala;
+        distanciaX = calcularDistanciaX(cargasFijas[i]->x,posX)/factorEscala;
+        distanciaY = calcularDistanciaY(cargasFijas[i]->y,posY)/factorEscala;
      
         
         sf::Vector2f aux(0,0);
@@ -1310,10 +1311,29 @@ void organizadorCEEsferaConductora(sf::RenderWindow &window){
                     }
                 }
             }
+        }else{
+            if(cargaExterior_inducida>0){
+                dibujarCargasPositivas(window,esferas[i]->radio,i);
+            }else{
+                dibujarCargasNegativas(window,esferas[i]->radio,i);
+            }
         }
         sf::VertexArray vectorCE(sf::PrimitiveType::LineStrip, 2);
         if(i!=0){
             for(int j=i-1;j>=0;j--){
+                std::cout<<"CargaExterior INducida: "<<cargaExterior_inducida<<std::endl;
+                std::cout<<"Nivel Presicion: "<<nivelPresicion<<std::endl;
+                if(cargaExterior_inducida>0){
+                    if(cargaExterior_inducida<nivelPresicion){
+                        cargaExterior_inducida=0;
+                    }
+                }else{
+                    if(cargaExterior_inducida>nivelPresicion*(-1)){
+                        cargaExterior_inducida=0;
+                        std::cout<<"hola";
+                    }
+                }
+                std::cout<<"CargaExterior INducida: "<<cargaExterior_inducida<<std::endl;
                 float cargaDentro = cargaExterior_inducida;
                 float cargaInterior_inducida = cargaDentro*(-1); //induce cargas del otro signo
                 cargaExterior_inducida = esferas[j]->valor + cargaInterior_inducida*(-1);
@@ -1389,14 +1409,32 @@ void gestiondibujarCargas(sf::RenderWindow &window,float cargaInterior, float ca
         if((esferas[n_esfera]->valor+cargaExterior)>0){
             //dibujo mas positivas
             dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera,100);
-        }else{
+        }else if((esferas[n_esfera]->valor+cargaExterior)<0){
             //dubujo mas negativas
             dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera,100);
+        }else{
+            dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera);
         }
     }else{
         double suma= esferas[n_esfera]->valor+cargaExterior;
         int cant=25;
-        if(suma==0) cant=0;
+        std::cout<<"SUMA : "<<suma<<std::endl;
+        std::cout<<"i :  "<<n_esfera<<std::endl;
+        if(suma>0){
+            if(suma<nivelPresicion){
+                cant=0;
+                std::cout<<"entro a 1 con i:  "<<n_esfera<<std::endl;
+            }
+        }else{
+            if(suma>nivelPresicion*(-1)){
+                cant=0;
+                std::cout<<"entro a 2 con i:  "<<n_esfera<<std::endl;
+            }
+        }
+        if(suma==esferas[n_esfera]->valor){
+            std::cout<<"entro a 3 con i:  "<<n_esfera<<std::endl;
+            cant=50;
+        }
         if(suma/abs(suma)>0){
              //dibujo menos positivas
              dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera,cant);
@@ -1406,13 +1444,12 @@ void gestiondibujarCargas(sf::RenderWindow &window,float cargaInterior, float ca
         }
  
     }
-
     if(cargaInterior<0){
         dibujarCargasNegativas(window,esferas[n_esfera]->radio_int,n_esfera);
         //dibujarCargasPositivas(window,esferas[n_esfera]->radio,n_esfera);
-    }else{
+    }else if(cargaInterior>0){
        // dibujarCargasNegativas(window,esferas[n_esfera]->radio,n_esfera);
-        dibujarCargasPositivas(window,esferas[n_esfera]->radio_int,n_esfera);
+        dibujarCargasPositivas(window,esferas[n_esfera]->radio_int,n_esfera);    
     }
 }
 

@@ -543,3 +543,13 @@ cambios:
     LA CARGA LIBRE SE CALCULA BIEN
     MIRAR ESO.
 
+
+# 29/04/2026
+    solucione el tema del que se calculaba mal el campo elextrico en el punto estudio y en como se dibujaba, era una boludes, era que definia una vriable aux =0, fuera del for y esta la usaba para calcualr el campo Electrico y eta iba acumulando error ya que no se igualaba =0.
+
+    ya puse la funcionalidad de el factore escala, funciona en cargas puntuales y en planos.
+    Ya el punto estudio funiona correctamente con el escalado.
+
+    en cargas Esfericas funciona mal cuando hay 2 anillos y sus campos se inducen entre ellas y afuera queda todo 0
+
+    arregle un par de pequeños problemas que habia con con la induccion de cargas.
