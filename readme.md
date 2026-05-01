@@ -72,10 +72,15 @@ ejecutar: con la ruta al lib del archivo SFML
 - Ingresar carga fija en el centro: colocara una carga que comparte posicion y puede inducir carga en los conductores.
 ### dibujar campo Electrico:
 - disponible en todo momento que permite visualizar el campo Electrico con vectores: los cuales indican su sentido con el color rojo. el blanco es el  origen.
+![alt text](docs/gifs/campoElectrico-gif.gif)
+- en el caso de estar trabajando con conductores el boton dibujar campo Electrico, tambien actualizara y mostrara la induccion de cargas generadas por el sistema.
+![alt text](docs/gifs/cargasEsfericas-gif(2).gif)
 ### dibujar HeatMap Potencial Electrico:
 - calcula el potencial electrio en todo el mapa solo para las cargas Fijas no conductoras, representa con colores mas fuertes los valores altos de potenial
+![alt text](docs/gifs/potencial-gif.gif)
 ### guardar cambios e iniciar simulacion
 - cuando tenemos una carga libre, se comensara a calcular las fuerzas y su movimiento. te lleva a la ventana [programa Ejecutandose](#venta-programa-ejecutandose)
+![alt text](docs/gifs/SimulacionParticulaLibre-gif.gif)
 
 ## Venta Programa Ejecutandose
 - Botones dibujar vecotr fuerza y velocidad: muestran en tiempo real ls vectores de fuerza y velocidad que siente la particula libre
@@ -84,3 +89,4 @@ ejecutar: con la ruta al lib del archivo SFML
 - dibuajr campo Electrico y potencial Electrico [Campo Electrico](#dibujar-campo-electrico) [Potencial](#dibujar-heatmap-potencial-electrico)
 - Pausar Y Reanudar Programa
 - Detener Simulacion: retorna la carga Libre a su punto incial y te devuelve a la ventana Programa Detenido [ver Programa Detendio](#programa-detendio)
+- El programa se detendra Automaticamente cuadno la particula Libre colisione, ya sea con una carga fija o un Plano Ifinito.
