@@ -1,4 +1,4 @@
-## este Documento representa lo echo dia a dia
+# este Documento representa lo echo dia a dia
 
 # 29/03/2026
 -creacion del proyecto
