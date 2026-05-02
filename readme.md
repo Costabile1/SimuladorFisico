@@ -97,10 +97,10 @@ https://github.com/Costabile1/SimuladorFisico/releases
 ![alt text](docs/gifs/SimulacionParticulaLibre-gif.gif)
 
 ## Venta Programa Ejecutandose
-- Botones dibujar vecotr fuerza y velocidad: muestran en tiempo real ls vectores de fuerza y velocidad que siente la particula libre
-- Datos particula libre: mustra todos los datos de posicion,fueza y velocidad en modulo
+- Botones dibujar vector fuerza y velocidad: muestran en tiempo real los vectores de fuerza y velocidad que siente la particula libre
+- Datos particula libre: muestra todos los datos de posicion,fuerza y velocidad en modulo
 - tambien permite ingresar un punto de estudio mientras el programa se ejecuta [ver punto estudio](#punto-estudio)
-- dibuajr campo Electrico y potencial Electrico [Campo Electrico](#dibujar-campo-electrico) [Potencial](#dibujar-heatmap-potencial-electrico)
+- dibuajar campo Electrico y potencial Electrico [Campo Electrico](#dibujar-campo-electrico) [Potencial](#dibujar-heatmap-potencial-electrico)
 - Pausar Y Reanudar Programa
 - Detener Simulacion: retorna la carga Libre a su punto incial y te devuelve a la ventana Programa Detenido [ver Programa Detendio](#programa-detendio)
 - El programa se detendra Automaticamente cuadno la particula Libre colisione, ya sea con una carga fija o un Plano Ifinito.
