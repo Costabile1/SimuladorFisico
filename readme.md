@@ -66,6 +66,7 @@ https://github.com/Costabile1/SimuladorFisico/releases
 - primero tenemos el eje de cordenadas. podemos setear el origen en cualquier lado de la pantalla ingresando las cordenadas, en principio el mapa tiene 1900 de ancho y 1000 de alto. donde x crece hacia la derecha e Y hacia abajo.
 ![alt text](docs/img/EjeCordenado.png)
 - el factor escala nos permite escalar el sistema para poder ver con presicion, cuando las distacias son muy pequeñas.
+![alt text](docs/gifs/factorEscala-gif.gif)
 ### Punto estudio
 - Punto estudio permite calcular el campo electrico en componentes y mostrarlo en forma de vetores, ademas de calcular el Potencial, colocamos sus cordenadas respeco al eje que hayamos elegido.
 - clikear mostrar datos, mostrara un punto en las cordenadas elegidas los vectores y los datos numericos, !importante, para que se muestre correctamente, previamente se debera haber iniciado la simulacion o mostrado el campo electrico de las cargas.
@@ -107,10 +108,10 @@ https://github.com/Costabile1/SimuladorFisico/releases
 
 # Estructura del Proyecto
 ## Diagrama de Clases
-[](docs/diagramas/Simulador_Fisico-Página-3.drawio.png)
+![diagrama clases](docs/diagramas/Simulador_Fisico-Página-3.drawio.png)
 ## Arquitectura principal
-[](docs/diagramas/Simulador_Fisico-Página-2.drawio.png)
+![arquitectura Principal](docs/diagramas/Simulador_Fisico-Página-2.drawio.png)
 ## Orden de IMGUI
-[](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
+![orden Imgui](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
 ## diagrama Induccion de Cargas
-[](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)
+![induccion de cagras diagrama](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)
