@@ -18,15 +18,22 @@
 - Crear una Herramienta para ayudar a estudiantes y Profesores a entender y explicar de forma mas facil conceptos de Elextrodinamica y Electroestatica, de forma dinamica, podiendo ajustar los valores para representar problemas tipicos y situaciones tipicas dictadas en clases.
 - Simular correctamente las interaciones Electrodinamicas entre cargas de distintas formas y tamaños, utilizando las ecuaciones fisicas de la electroestatica y electrodinamica clasica.
 - Facilitar el Entendimiento de topicos como:
--movimiento de una carga en un Campo Electrico.
--Campos Generados por cargas, Planos y conductores.
--Interacciones entre cargas.
--Potenciale Electrico.
--Induccion de carga en conductores.
--interaccion de campos generados por planos infinitos
-para faciliar el estudio y aprendizaje de estos topicos dificiles de entender por su nivel de abstraccion y por ser cosas que no nos encontramos en el dia a dia.
+- movimiento de una carga en un Campo Electrico.
+- Campos Generados por cargas, Planos y conductores.
+- Interacciones entre cargas.
+- Potenciale Electrico.
+- Induccion de carga en conductores.
+- interaccion de campos generados por planos infinitos
+- para faciliar el estudio y aprendizaje de estos topicos dificiles de entender por su nivel de abstraccion y por ser cosas que no nos encontramos en el dia a dia.
 
 # Caracteristicas Principales
+- Representacion de campo electrico en forma de campo vectorial y potencial electrico en forma de mapa de calor, de cargas fijas puntuales, planos Infinitos y Conductores Esfericos
+- Simulacion de una carga Libre sometida a campos Electricos generados por otras cargas Y planos Infinitos.
+- Calcula y Dibuja el vector velocidad y fuerza que siente la particula Libre en modulo y compontentes.
+- Calcula y Dibuja el campo electrico y potencial en un punto fijo.
+- Representa la induccion de carga de forma intuitiva en conductores Esfericos huecos con una carga fija.
+- Permite colocar un eje coordenado.
+- Permite escalar el sistema para representar distancias muy pequeñas.
 
 
 ### Descargar ultima version
@@ -36,18 +43,24 @@ https://github.com/Costabile1/SimuladorFisico/releases
 
 
 # Requisitos
--instalar MingWL
--isntalar SMFL para windos
--incluir el paht del archivo include, descargado en SFML en properties.json
--crear el archivo makefile con:
-compile con la ruta al archivo include de SFML
-ejecutar: con la ruta al lib del archivo SFML 
+- instalar MingWL
+- instalar SMFL para windows
+- incluir el payh del archivo include, descargado en SFML en properties.json
+- crear el archivo makefile con:
+- compile con la ruta al archivo include de SFML
+- ejecutar: con la ruta al lib del archivo SFML 
 
 # Guia de Uso
-## Programa Detendio
-- Una vez instalado descroprimis el zip y haces click en el ejecutable sfml-simulador_fisico-app.exe
-- se arbira una interfaz en negro que sera nuestro mapa
+## Como instalalrme?
+- ve a [descargar ultima version](https://github.com/Costabile1/SimuladorFisico/releases)
+- installa el zip MLyMSimuladorFisicovx.x.x.zip 
+- haz cli en el ejecutable sfml-simulador_fisico-app.exe
+- se arbira una interfaz y lo primer que deberias ver es:
 ![alt text](docs/img/Mapa.png)
+- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [aqui para aprender a usame](#programa-detendio)
+
+
+## Programa Detendio
 - nos aparecera la ventana de control o menu el cual nos permitira trabajar con el programa, podemos agrandar y mover el menu a placer, haciendo clik en el y arrastrando.
 ![alt text](docs/img/ventanaControl.png)
 - primero tenemos el eje de cordenadas. podemos setear el origen en cualquier lado de la pantalla ingresando las cordenadas, en principio el mapa tiene 1900 de ancho y 1000 de alto. donde x crece hacia la derecha e Y hacia abajo.
@@ -90,3 +103,14 @@ ejecutar: con la ruta al lib del archivo SFML
 - Pausar Y Reanudar Programa
 - Detener Simulacion: retorna la carga Libre a su punto incial y te devuelve a la ventana Programa Detenido [ver Programa Detendio](#programa-detendio)
 - El programa se detendra Automaticamente cuadno la particula Libre colisione, ya sea con una carga fija o un Plano Ifinito.
+
+
+# Estructura del Proyecto
+## Diagrama de Clases
+[](docs/diagramas/Simulador_Fisico-Página-3.drawio.png)
+## Arquitectura principal
+[](docs/diagramas/Simulador_Fisico-Página-2.drawio.png)
+## Orden de IMGUI
+[](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
+## diagrama Induccion de Cargas
+[](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)
