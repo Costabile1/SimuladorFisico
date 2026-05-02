@@ -18,11 +18,15 @@
 - Aprendi a documentar aun que sea de forma muy simple lo echo en el dia y los cambios implementados, cosas que solucione o que rompi, y las tareas pendeitentes para el proximo dia. Esto me permitio ser mucho mas eficiente, siendo que era mucho ams facil ponerme a tono cada vez que me sentaba, leyendo lo documetad de los dias anteriores, que intentando recordar lo echo o leyendo todo el codigo.
 - siempre intente hacer el codgio los mas simple posible, pero me encontre con casos en que simplemente era imposible o muy dificl simplificar logica compleja, aprendi que hay tareas y funciones que simplemente son complejas y necesitan un codgio asi.
 - Aunque siempre intentaba terminar la itercion o el trabajo echo en el dia con el codigo funcinando, hubo muchas veces que tube que enfrentarme a que simplemento no podia resolver tal problema en ese momento, documentando lo echo y lo que faltaba por hacer, los problemas por los que no funcionaba y posibles soluciones para implementar otro dia.
+
 # por que SFML?
-
+- es una libreria muy util y facil de usar, considere que mandarme a usar librerias mas complejas era un salto al vacio que no iba con los objetivos de este proyecto.
+- me parecio la mejor opcion por su facilidad y rapida implementacion
 # por que IMGUi?
+- la idea de este proyecto no era hacer una gran presentacion o interfaz, este proyecto se centra mas en la funcionalidad y en poder entender los conceptos y visualizarlos, mas que centrarme en hacer algo lindo.
+- muy facil, rapido e intuitivo de usar.
 
-
+# Planteo de funcionalidades del programa
 ### Objetivos version ALFA 0.0.1 ### TITULO: El Origen de la carga puntual y los vectores
 - cosas que ya tenemos:
     colocar cargas fijas y moviles en la pantalla
@@ -61,9 +65,9 @@
 - cargas con radio, potencial constante dentro. (completado)
 - cargas con 2 radios (comletado)
 
-# Objetivos ranqueados 
+## Objetivos ranqueados 
 - progreso actual: objetivo 3
-## Basico (Completado)
+### Basico (Completado)
 - crear un programa que siga las relgas de la POO
 - Simular con exito el moviento de una sola carga con respecto a una o mas cargas Estaticas de ambos signos
 - Solo interactuaran 1 carga en movimiento a la vez

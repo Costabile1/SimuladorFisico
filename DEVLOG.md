@@ -5,7 +5,7 @@
 -intalacion de smfl
 -creacion de la clase carga
 -actualemten existen 1 carga fija y otra que se mueve
--se ah logrado que una carga sienta la fuerza generada por el campo Electrico de otra y se meuva en base a la leyes de la electroEstatica
+-se ah logrado que una carga sienta la fuerza generada por el campo Electrico de otra y se mueva en base a la leyes de la electroEstatica
 -se crearons las funciones calcularDistancia y calcular Aceleracion que siguen el patron:
     calcular distancia_total, distnaica en x, diantancia en y
     luego se calcula las compoentes del campo electrico
