@@ -57,7 +57,8 @@ https://github.com/Costabile1/SimuladorFisico/releases
 - haz cli en el ejecutable sfml-simulador_fisico-app.exe
 - se arbira una interfaz y lo primer que deberias ver es:
 ![alt text](docs/img/Mapa.png)
-- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [aqui para aprender a usame](#programa-detendio)
+- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [Explicacion funciones Principales](#programa-detendio)
+- O podes ir a ver [Ejemplos de como utilizamos este programa para entender y solucionar ejercicios reales](/GALLERY.md).
 
 
 ## Programa Detendio
