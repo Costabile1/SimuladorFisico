@@ -962,7 +962,7 @@ void cargaLibreConfi(){
             cargasLibres[0]->y_original = cargasLibres[0]->y_original * (-1);
         }
         ImGui::InputFloat("valor",&(cargasLibres[0]->valor),0.0f,0.0f,"%.10f");
-        ImGui::InputFloat("masa",&(cargasLibres[0]->masa));
+        ImGui::InputFloat("masa",&(cargasLibres[0]->masa),0.0f,0.0f,"%.10f");
         
         if(mostrarEjeCordenado){
             cargasLibres[0]->offsetX=origenX;
