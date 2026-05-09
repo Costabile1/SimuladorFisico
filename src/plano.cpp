@@ -29,3 +29,7 @@ void Plano::draw(sf::RenderWindow &window){
 void Plano::setearTamaño(){
     shape.setSize({ancho,largo});
 }
+
+double Plano::calcularPotencial(int dist){
+    return (-1*(abs(dist))*2*M_1_PI*K*densidadCarga)+ potencial_ref;
+}
