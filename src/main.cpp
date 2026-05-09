@@ -362,13 +362,22 @@ std::vector<std::vector<float>> potencialElectrico(){
 
     for(i=1;i<=cant_cuadriculas.x;i++){
 
+
+
         for(j=1;j<=cant_cuadriculas.y;j++){
             potencial=0;
             float potencialaux=0;
+            x_calcular=((i-1)*anchoCuadriculado)+(anchoCuadriculado/2);
+            y_calcular=((j-1)*largoCuadriculado)+(largoCuadriculado/2);
+            for(int p=0;p<planos.size();p++){
+                float dist = (x_calcular)-(planos[p]->x_original+planos[p]->offsetX);
+                float sig = dist/std::abs(dist);
+                
+                potencial+=planos[p]->calcularPotencial(dist);
+            }
             for(int k=0;k<cantCargasFijas && cargasFijas[k]->x!=NULL && cargasFijas[k]->y!=NULL;k++){
                 // el punto va a ser la mitad de la cuadricula
-                x_calcular=((i-1)*anchoCuadriculado)+(anchoCuadriculado/2);
-                y_calcular=((j-1)*largoCuadriculado)+(largoCuadriculado/2);
+                
                 distancia = calcularDistancia(cargasFijas[k]->x,cargasFijas[k]->y,x_calcular,y_calcular);
 
                 //calculamos el potencial
@@ -1015,6 +1024,8 @@ void planoConfi(int i){
     if(mostrarEjeCordenado){
         planos[i]->offsetX=origenX;
     }
+    ImGui::Text("Ingrese Valor de Potencial de Referencia V0 del Plano");
+    ImGui::InputFloat("V",&(planos[i]->potencial_ref),0.000f,0.0f,"%.15f");
     if(programaDetenido || programaPausado){
         planos[i]->setearPosicion(planos[i]->x_original*factorEscala);
     }
@@ -1227,6 +1238,12 @@ void calcularPEPE(){
     float aux=0;
     float posX=cargaEstudio->x_original+cargaEstudio->offsetX;
     float posY = cargaEstudio->y_original+cargaEstudio->offsetY;
+    for(int p=0;p<planos.size();p++){
+        float dist = (posX)-(planos[p]->x_original+planos[p]->offsetX);
+        float sig = dist/std::abs(dist);
+                
+        potencialPuntoEstudio+=planos[p]->calcularPotencial(dist);
+    }
     for(int i=0;i<cantCargasFijas;i++){
         distanciaTotal = calcularDistancia(posX,posY,cargasFijas[i]->x,cargasFijas[i]->y);
         distanciaX = calcularDistanciaX(cargasFijas[i]->x,posX);
