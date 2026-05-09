@@ -19,7 +19,7 @@ class Plano{
         Plano(float densidadCarga,float offsetX,float offsetY, float x_original,float y_original,float x, float y);
         Plano();
         double cacularCampoElectrico();
-        double calcularPotencial(int sig);
+        double calcularPotencial(int dist);
         void setearPosicion(float x);
         void setearTamaño();
         void draw(sf::RenderWindow &window);

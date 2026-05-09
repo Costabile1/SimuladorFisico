@@ -427,7 +427,7 @@ std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float
     int rgbAux[3];
     int control=0;
     std::string hexaString;
-    for(i=0;i<sizeof(arrAux)/sizeof(float);i++){ //begin retorna la key con el menor valor
+    for(i=0;i<sizeof(arrAux)/sizeof(float);i++){ 
         if(bandera==1){
             rgb[0]=255;
             rgb[1]=0;
@@ -442,8 +442,10 @@ std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float
                 rgb[2]+=1;
             }else if(i<=255*4){
                 rgb[1]-=1;
-            }else if(i<=255*4){
+            }else if(i<=255*5){
                 rgb[0]+=1;
+            }else if(i<255*6){
+                rgb[2]-=1;
             }
             hexaString = rgbToHex(rgb);
             hexTorgb(hexaString,rgbAux);
