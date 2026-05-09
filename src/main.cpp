@@ -77,7 +77,7 @@ const int _ANCHO=1900,_LARGO=1000;
 const int cant_cuadriculasX = 50;
 const int cant_cuadriculasY = 50;
 const sf::Vector2i cant_cuadriculas(cant_cuadriculasX,cant_cuadriculasY);
-const float tiempo=0.2; // constante que indica cada cuantos segundos actualizo la ventana
+float tiempo=0.001; // constante que indica cada cuantos segundos actualizo la ventana
 const sf::Color _color_cargaFija(0,0,255);
 const sf::Color _color_cargaLibre(255,247,0);
 
@@ -277,7 +277,7 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
         float CEPlano=0;
         ///PLANOS
         for(int k=0;k<cantidadPlanos;k++){
-            float dist = (cargasLibres[i]->x)-(planos[k]->x_original+planos[k]->offsetX);
+            float dist = ((cargasLibres[i]->x)-(planos[k]->x_original*factorEscala+planos[k]->offsetX))/factorEscala;
             float sig = dist/std::abs(dist);
             if(std::abs(sig)!=1){
                 std::cout<<"NO di uno"<<std::endl;
@@ -287,9 +287,9 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
         //CARGAAS PUNTUALES
         for(int j=0;j<cantCargasFijas && cargasFijas[j]->x!=NULL && cargasFijas[j]->y!=NULL ;j++){
             
-            distanciaTotal = calcularDistancia(cargasLibres[i]->x,cargasLibres[i]->y,cargasFijas[j]->x,cargasFijas[j]->y);
-            distanciaX = calcularDistanciaX(cargasFijas[j]->x,cargasLibres[i]->x);
-            distanciaY = calcularDistanciaY(cargasFijas[j]->y,cargasLibres[i]->y);
+            distanciaTotal = calcularDistancia(cargasLibres[i]->x,cargasLibres[i]->y,cargasFijas[j]->x,cargasFijas[j]->y)/factorEscala;
+            distanciaX = calcularDistanciaX(cargasFijas[j]->x,cargasLibres[i]->x)/factorEscala;
+            distanciaY = calcularDistanciaY(cargasFijas[j]->y,cargasLibres[i]->y)/factorEscala;
             (*(cargasFijas[j])).cacularCampoElectrico(campoElectrico,distanciaTotal,distanciaX,distanciaY);
 
         }
@@ -298,7 +298,6 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
         //calculo componentes fuerza
         fuerzaX = campoElectrico.x*cargasLibres[i]->valor;
         fuerzaY = campoElectrico.y*cargasLibres[i]->valor;
-
         if(mostrarVectorFuerza){
             calcularVectorFuerza(vectorFuerza,fuerzaX,fuerzaY,cargasLibres[i]);
         }
@@ -330,15 +329,17 @@ void verificarColisiones(){
             }
         }
         for(int k=0;k<cantidadPlanos;k++){
-            distancia=cargasLibres[i]->x-(planos[k]->x_original+planos[k]->offsetX);
+            distancia=cargasLibres[i]->x-(planos[k]->x_original*factorEscala+planos[k]->offsetX);
             if(std::abs(distancia)<cargasLibres[i]->radio){
                 std::cout<<"hay colision"<<std::endl;
                 (*(cargasLibres[i])).aX = 0;
                 (*(cargasLibres[i])).aY = 0;
                 programaDetenido=true;
+                std::cout<<"Velocidad X= "<<cargasLibres[i]->vX<<std::endl;
             }
         }   
     }
+    
 }
 
 std::vector<std::vector<float>> potencialElectrico(){
@@ -370,7 +371,7 @@ std::vector<std::vector<float>> potencialElectrico(){
             x_calcular=((i-1)*anchoCuadriculado)+(anchoCuadriculado/2);
             y_calcular=((j-1)*largoCuadriculado)+(largoCuadriculado/2);
             for(int p=0;p<planos.size();p++){
-                float dist = (x_calcular)-(planos[p]->x_original+planos[p]->offsetX);
+                float dist = (x_calcular)-(planos[p]->x_original*factorEscala+planos[p]->offsetX);
                 float sig = dist/std::abs(dist);
                 
                 potencial+=planos[p]->calcularPotencial(dist);
@@ -444,8 +445,12 @@ std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float
                 rgb[1]-=1;
             }else if(i<=255*5){
                 rgb[0]+=1;
-            }else if(i<255*6){
+            }else if(i<(255*6)/2){
                 rgb[2]-=1;
+            }else{
+                rgb[0]=0;
+                rgb[1]=0;
+                rgb[2]=0;
             }
             hexaString = rgbToHex(rgb);
             hexTorgb(hexaString,rgbAux);
@@ -613,6 +618,7 @@ bool VentanaConfi(){
     bool cambiar_valorLibre;
     
     ImGui::Begin("Ventana de Control");
+    ImGui::InputFloat("Tiempo: ",&tiempo,0.0f,0.0f,"%.15f");
     if(programaDetenido){
         manejoProgramaDetendio(cambio);
     }else if(programaPausado){

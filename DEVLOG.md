@@ -553,3 +553,16 @@ cambios:
     en cargas Esfericas funciona mal cuando hay 2 anillos y sus campos se inducen entre ellas y afuera queda todo 0
 
     arregle un par de pequeños problemas que habia con con la induccion de cargas.
+
+
+# 09/05/2026
+    -el potencial ya tienen en cuenta a los planos y tambien cuando se utiliza el factor escala
+    -las aprticulas libres ya se mueven correctamente cuando el factor escala es != 1, porlomenos con los planos infinitos, falta porbar con caargas fijas pero deberia funcionar bien.
+    -cambie los colores del heatmap potencial, aun falta por definir bien como van a ser los colores de heatmap potencial para que se vean lindos.
+    -cambie y agrege en en los atributos del Plano infinito la contante K y un valor de potencial de referenccia para que el potencial se dibuje bien.
+    -el potencial de referencia setea el potencial arbitrario en el plano infinito, permitiendo que se dibuje, Utilizando la ecuacion de potencial para un plano infinito que es: V=-1*2pi*densidaddeCarga*posicionX - v0, donde v0 es nuetrso valor de referencia.
+    - Tambien hice que la que antiguamente era un constante tiempo, se pueda configurar.
+    Lo que permite configurar esto es con que presicion el programa hace los movimientos, ej: con un tiempo alto, una particula que va muy rapido puede "saltarce" un plano infinito por las limitaciones de la funcion verificar colision, que solo se fija si el radio de la carga libre colisiona con la posicion del plano. Lo que permite cambiar la constante tiempo, es que una particula qeu va rapido, el programa calcule su presicion de forma mas precisa.
+    -Hacer la constten tiempo mas baja, aumenta la presicion del programa, para problemas muy presicios como los de calcular la velocidad de impacto de una carga contra un plano infinito, donde podemos setear un radio muy pequeño  un tiempo muy pequeño, para tener una gran presicion a la hora de obtener el resultado.
+
+    Problemas: encontre una lmitacion encuanto a la simulacion de cargas libres con planos Infinitos, los planos inifitos tienen campo constante en la teoria y en el programa tambien, ponerlos muy juntos o muy separados no cambia el valor del campo electrico, ni la fuerza que siente un carga, que en la teoria, en planos no infinitos, si cambia el valor del campo electrico, como el programa no tiene encuenta actualmente planos finitos, escaalr un sistema de 2 planos, hace que la carga que antes reocrria 0.1m ahora recorra muchos mas metros, afectando la velocidad con la que impacta uno de los planos, por ende, escalar planos infinitos no tiene mucho sentido fisico, ya que esto altera los resultados en gran medida, es como si estariamos separando los planos artificialmente y no "Escalando el sistema".
