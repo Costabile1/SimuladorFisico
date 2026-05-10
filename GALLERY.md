@@ -16,3 +16,16 @@
 ![imagenProblema1](docs/ejercicios/Problema1/Solucion.png)
 - chequeamos que la solucion es corrercta y que las diferencias son despreciables debidas a como la computadora redondea decimales.
 ![alt text](docs/ejercicios/Problema1/SolucionZemba.png)
+
+
+## Problema 2
+![problema](docs/ejercicios/Problema2/3Placas.png)
+- Tenemos un sistema formado por 3 placas que pueden considerarse infinitas, en problema no especifica valores especificos pero si los suficientes como para recrear el problema.
+- Ingresamos las 3 placas Infinitas, y le asignamos a cada una la relaciones de cargas que da el problema.
+![sols](docs/ejercicios/Problema2/Solucion1.png)
+- el punto a) nos pregunta por el campo Electrico generado por las placas. vamos a tener 4 zonas donde el campo va a ser disitinto. Para Ayudar con este inciso simplemente vamos a mostrar el campo Electrico.
+![sol2](docs/ejercicios/Problema2/Solucion2.png)
+- Elejimos a drede esos valores de densidad de carga respetando lo propuesto por el problemaa para ver con mayor presicion como los vectores del campo electrico cambian entre las distintas zonas.
+- el punto b) nos pide averiguar el potencial sobre todo el eje x. Podemos ayudarnos de la funcion dibujar Heatmap Potencial para poder ver y entender como se distribuyen los valores del Potencial
+![sol3](docs/ejercicios/Problema2/Solucion3.png)
+- Adicionalmente podemos usar el Punto Estudio y moverlo por todo el eje x, para averiguar los valores presicion se campo Electrico y Potencial.
