@@ -34,7 +34,7 @@
 
 ## Problema 3
 ![problema3](docs/ejercicios/Problema3/2placas1Libre(2).png)
--En este Problema tenemos 2 Planos que se pueden considerar Infinitos y una carga Libre que se va a estar moviento. Cargamos todo en el Programa con los datos dados por el problema teniendo en cuenta de convertir las unidades correctamente. Tambien notamos que al ser distancias muy pequeñas, sera recomendable aumentar la presicion del programa cambiando la variable tiempo probramos un valor inicial de 0.01.
+- En este Problema tenemos 2 Planos que se pueden considerar Infinitos y una carga Libre que se va a estar moviento. Cargamos todo en el Programa con los datos dados por el problema teniendo en cuenta de convertir las unidades correctamente. Tambien notamos que al ser distancias muy pequeñas, sera recomendable aumentar la presicion del programa cambiando la variable tiempo probramos un valor inicial de 0.01.
 ![sol1](docs/ejercicios/Problema3/Solucion1.gif)
 - Esto nos Esclarece en gran medida que es lo que sucede en el sistema.
 - Aun asi El Problema nos pide averiguar el valor final de la Velocidad justo antes de impactar con la placa. Afortunadamente nuestro programa detecta las colisiones y guarda las velocidades en el momento del impacto y las imprime por consola.
