@@ -64,6 +64,7 @@ https://github.com/Costabile1/SimuladorFisico/releases
 ## Programa Detendio
 - nos aparecera la ventana de control o menu el cual nos permitira trabajar con el programa, podemos agrandar y mover el menu a placer, haciendo clik en el y arrastrando.
 ![alt text](docs/img/ventanaControl.png)
+- lo primero que vemos es que podemos cambiar el valor tiempo con el que se ejecuta los calculos, este valor representa la presicion con la que se van a realizar los movimientos. Un valor alto sera poco preciso y un valor muy bajo sera muy preciso. (poner un valor muy bajo hara al programa muy preciso en las simulaciones de movimiento pero tambien, el movimiento sera muy lento.)
 - primero tenemos el eje de cordenadas. podemos setear el origen en cualquier lado de la pantalla ingresando las cordenadas, en principio el mapa tiene 1900 de ancho y 1000 de alto. donde x crece hacia la derecha e Y hacia abajo.
 ![alt text](docs/img/EjeCordenado.png)
 - el factor escala nos permite escalar el sistema para poder ver con presicion, cuando las distacias son muy pequeñas.
