@@ -619,7 +619,7 @@ bool VentanaConfi(){
     bool cambiar_valorLibre;
     
     ImGui::Begin("Ventana de Control");
-    ImGui::InputFloat("Tiempo: ",&tiempo,0.0f,0.0f,"%.15f");
+    ImGui::InputFloat("Seg Tiempo: ",&tiempo,0.0f,0.0f,"%.15f");
     if(programaDetenido){
         manejoProgramaDetendio(cambio);
     }else if(programaPausado){
@@ -640,13 +640,13 @@ void cargasConfi(int i){
         return;
     }
     ImGui::PushID(i);
-    bool radio =ImGui::InputFloat("radio",&(cargasFijas[i]->radio));
-    ImGui::InputFloat("posicion en x",&(cargasFijas[i]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
-    if(ImGui::InputFloat("posicion en y",&(cargasFijas[i]->y_original),0.0f,0.0f,"%.10f")){
+    bool radio =ImGui::InputFloat("Metros radio ",&(cargasFijas[i]->radio));
+    ImGui::InputFloat("Metros posicion en x",&(cargasFijas[i]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
+    if(ImGui::InputFloat("Metros posicion en y",&(cargasFijas[i]->y_original),0.0f,0.0f,"%.10f")){
         cargasFijas[i]->y_original = cargasFijas[i]->y_original*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
     } 
-    bool valor = ImGui::InputFloat("valor",&(cargasFijas[i]->valor),0.0f,0.0f,"%.10f");
-    bool masa = ImGui::InputFloat("masa",&(cargasFijas[i]->masa),0.0f,0.0f,"%.10f");
+    bool valor = ImGui::InputFloat("C valor",&(cargasFijas[i]->valor),0.0f,0.0f,"%.10f");
+    bool masa = ImGui::InputFloat("Kg masa",&(cargasFijas[i]->masa),0.0f,0.0f,"%.10f");
     
     
     
@@ -913,8 +913,8 @@ void gestionCargasLigadasEsfera(){
         cargasFijas[0]->x_original = esferas[0]->x_static;
         cargasFijas[0]->y_original = esferas[0]->y_static;
        
-        ImGui::InputFloat("valor",&(cargasFijas[0]->valor),0.0f,0.0f,"%.10f");
-        ImGui::InputFloat("masa",&(cargasFijas[0]->masa),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("C valor",&(cargasFijas[0]->valor),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("Kg masa",&(cargasFijas[0]->masa),0.0f,0.0f,"%.10f");
         
         
         
@@ -940,14 +940,14 @@ void gestionCargasLigadasEsfera(){
 
 void esferaConfi(int i,int id){
     ImGui::PushID(id);
-    ImGui::InputFloat("radio Exterior",&(esferas[i]->radio));
-    ImGui::InputFloat("radio Interior",&(esferas[i]->radio_int));
-    ImGui::InputFloat("posicion en x",&(esferas[i]->x_static),0.0f,0.0f,"%.10f");
-    if(ImGui::InputFloat("posicion en y",&(esferas[i]->y_static),0.0f,0.0f,"%.10f")){
+    ImGui::InputFloat("M radio Exterior",&(esferas[i]->radio));
+    ImGui::InputFloat("M radio Interior",&(esferas[i]->radio_int));
+    ImGui::InputFloat("M posicion en x",&(esferas[i]->x_static),0.0f,0.0f,"%.10f");
+    if(ImGui::InputFloat("M posicion en y",&(esferas[i]->y_static),0.0f,0.0f,"%.10f")){
         esferas[i]->y_static = esferas[i]->y_static*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
     } 
-    ImGui::InputFloat("valor",&(esferas[i]->valor),0.0f,0.0f,"%.10f");
-    ImGui::InputFloat("masa",&(esferas[i]->masa),0.0f,0.0f,"%.10f");
+    ImGui::InputFloat("C valor",&(esferas[i]->valor),0.0f,0.0f,"%.10f");
+    ImGui::InputFloat("Kg masa",&(esferas[i]->masa),0.0f,0.0f,"%.10f");
     
     
     
@@ -973,14 +973,14 @@ void cargaLibreConfi(){
 
     ImGui::Text("carga los valores de tu cargas libres");
 
-    ImGui::InputFloat("radio",&(cargasLibres[0]->radio));
+    ImGui::InputFloat("Metros radio",&(cargasLibres[0]->radio));
    
-        ImGui::InputFloat("posicion en x",&(cargasLibres[0]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
-        if(ImGui::InputFloat("posicion en y",&(cargasLibres[0]->y_original),0.0f,0.0f,"%.10f")){
+        ImGui::InputFloat("Metros posicion en x",&(cargasLibres[0]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
+        if(ImGui::InputFloat("Metros posicion en y",&(cargasLibres[0]->y_original),0.0f,0.0f,"%.10f")){
             cargasLibres[0]->y_original = cargasLibres[0]->y_original * (-1);
         }
-        ImGui::InputFloat("valor",&(cargasLibres[0]->valor),0.0f,0.0f,"%.10f");
-        ImGui::InputFloat("masa",&(cargasLibres[0]->masa),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("C valor",&(cargasLibres[0]->valor),0.0f,0.0f,"%.10f");
+        ImGui::InputFloat("Kg masa",&(cargasLibres[0]->masa),0.0f,0.0f,"%.10f");
         
         if(mostrarEjeCordenado){
             cargasLibres[0]->offsetX=origenX;
@@ -1001,9 +1001,9 @@ void cargaLibreConfi(){
 
 void puntoEstudioConfi(){
     ImGui::Text("Punto de Estudio");
-    if(ImGui::InputFloat("Posicion en X: ",&(cargaEstudio->x_original))){
+    if(ImGui::InputFloat("Metros Posicion en X: ",&(cargaEstudio->x_original))){
     }
-    if(ImGui::InputFloat("Posicion en Y: ",&(cargaEstudio->y_original))){
+    if(ImGui::InputFloat("Metros Posicion en Y: ",&(cargaEstudio->y_original))){
         cargaEstudio->y_original = cargaEstudio->y_original*(-1);
     }
     if(mostrarEjeCordenado){
@@ -1017,19 +1017,19 @@ void puntoEstudioConfi(){
     }
     ImGui::Checkbox("Mostrar Datos del punto",&mostrarDatosPuntoEstudio);
     if(mostrarDatosPuntoEstudio){
-        ImGui::InputFloat("Componente X Campo Elextrico",&campoElectricoPuntoEstudio.x);
+        ImGui::InputFloat("C Componente X Campo Elextrico",&campoElectricoPuntoEstudio.x);
         float valorY = (campoElectricoPuntoEstudio.y*(-1));
-        ImGui::InputFloat("Componente Y Campo Elextrico",&(valorY));
-        ImGui::InputFloat("Valor Potencial",&potencialPuntoEstudio);
+        ImGui::InputFloat("C Componente Y Campo Elextrico",&(valorY));
+        ImGui::InputFloat("V Valor Potencial",&potencialPuntoEstudio);
     }
 }
 
 void planoConfi(int i){
     ImGui::PushID(i);
-    if(ImGui::InputFloat("Posicion en X: ",&(planos[i]->x_original)),0.0f,0.0f,"%.10f"){
+    if(ImGui::InputFloat("M Posicion en X: ",&(planos[i]->x_original)),0.0f,0.0f,"%.10f"){
         planos[i]->setearTamaño();
     }
-    ImGui::InputFloat("Densidad de Carga",&(planos[i]->densidadCarga),0.000f,0.0f,"%.15f");
+    ImGui::InputFloat("C/M^2 Densidad de Carga",&(planos[i]->densidadCarga),0.000f,0.0f,"%.15f");
     if(mostrarEjeCordenado){
         planos[i]->offsetX=origenX;
     }
@@ -1079,20 +1079,20 @@ void mostrarDatosCargaLibre(){
         ImGui::Text("Datos de la carga: ");
         float posx=(cargasLibres[i]->x-origenX);
         float posy = (cargasLibres[i]->y-origenY)*(-1); //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
-        ImGui::InputFloat("Posicion X : ",&posx);
-        ImGui::InputFloat("Posicion Y : ",&posy);
+        ImGui::InputFloat("M Posicion X : ",&posx);
+        ImGui::InputFloat("M Posicion Y : ",&posy);
         float velocidadModulo = calcularDistancia(vectorVelocidad[0].position.x,vectorVelocidad[0].position.y,vectorVelocidad[1].position.x,vectorVelocidad[1].position.y);
-        ImGui::InputFloat("Velocidad Modulo : ",&(velocidadModulo));
+        ImGui::InputFloat("M/s Velocidad Modulo : ",&(velocidadModulo));
         float velocidadcompX = vectorVelocidad[1].position.x-vectorVelocidad[0].position.x;
         float velocidadcompY = (vectorVelocidad[1].position.y-vectorVelocidad[0].position.y)*-1; //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
-        ImGui::InputFloat("Velocidad componenteX : ",&(velocidadcompX),0.000f,0.0f,"%.10f");
-        ImGui::InputFloat("Velocidad componenteY : ",&(velocidadcompY),0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("M/s Velocidad componenteX : ",&(velocidadcompX),0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("M/s Velocidad componenteY : ",&(velocidadcompY),0.000f,0.0f,"%.10f");
         float fuerzaModulo = calcularDistancia(vectorFuerza[0].position.x,vectorFuerza[0].position.y,vectorFuerza[1].position.x,vectorFuerza[1].position.y);
         float fuerzacompX =vectorFuerza[1].position.x - vectorFuerza[0].position.x;
         float fuerzacompY = (vectorFuerza[1].position.y - vectorFuerza[0].position.y)*(-1); //le cambiamos de signo para que se el eje y sea positivo para arriba como lo veria el usuario
-        ImGui::InputFloat("Fuerza Modulo",&fuerzaModulo,0.000f,0.0f,"%.10f");
-        ImGui::InputFloat("Fuerza componenteX",&fuerzacompX,0.000f,0.0f,"%.10f");
-        ImGui::InputFloat("Fuerza componenteY",&fuerzacompY,0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("N Fuerza Modulo",&fuerzaModulo,0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("N Fuerza componenteX",&fuerzacompX,0.000f,0.0f,"%.10f");
+        ImGui::InputFloat("N Fuerza componenteY",&fuerzacompY,0.000f,0.0f,"%.10f");
         ImGui::PopID();
     }
     
