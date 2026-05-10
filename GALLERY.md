@@ -16,6 +16,8 @@
 ![imagenProblema1](docs/ejercicios/Problema1/Solucion.png)
 - chequeamos que la solucion es corrercta y que las diferencias son despreciables debidas a como la computadora redondea decimales.
 ![alt text](docs/ejercicios/Problema1/SolucionZemba.png)
+- Confirmamos que el campo Dibujado con el programa se condice con el presentado en la solucion
+![solucion campo](docs/ejercicios/dibujasConfirmacion.png)
 
 
 ## Problema 2
