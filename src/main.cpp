@@ -443,15 +443,16 @@ std::map<float,std::string> mapaPotencialElectrico(std::vector<std::vector<float
                 rgb[2]+=1;
             }else if(i<=255*4){
                 rgb[1]-=1;
-            }else if(i<=255*5){
-                rgb[0]+=1;
-            }else if(i<(255*6)/2){
-                rgb[2]-=1;
-            }else{
-                rgb[0]=0;
-                rgb[1]=0;
-                rgb[2]=0;
             }
+            //else if(i<=255*5){
+            //     rgb[0]+=1;
+            // }else if(i<(255*6)/2){
+            //     rgb[2]-=1;
+            // }else{
+            //     rgb[0]=0;
+            //     rgb[1]=0;
+            //     rgb[2]=0;
+            // }
             hexaString = rgbToHex(rgb);
             hexTorgb(hexaString,rgbAux);
             mapaColor.insert({arrAux[i],hexaString});
@@ -640,8 +641,8 @@ void cargasConfi(int i){
     }
     ImGui::PushID(i);
     bool radio =ImGui::InputFloat("radio",&(cargasFijas[i]->radio));
-    ImGui::InputFloat("posicion en x",&(cargasFijas[i]->x_original));//es un areglo de Cargas
-    if(ImGui::InputFloat("posicion en y",&(cargasFijas[i]->y_original))){
+    ImGui::InputFloat("posicion en x",&(cargasFijas[i]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
+    if(ImGui::InputFloat("posicion en y",&(cargasFijas[i]->y_original),0.0f,0.0f,"%.10f")){
         cargasFijas[i]->y_original = cargasFijas[i]->y_original*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
     } 
     bool valor = ImGui::InputFloat("valor",&(cargasFijas[i]->valor),0.0f,0.0f,"%.10f");
@@ -941,8 +942,8 @@ void esferaConfi(int i,int id){
     ImGui::PushID(id);
     ImGui::InputFloat("radio Exterior",&(esferas[i]->radio));
     ImGui::InputFloat("radio Interior",&(esferas[i]->radio_int));
-    ImGui::InputFloat("posicion en x",&(esferas[i]->x_static));
-    if(ImGui::InputFloat("posicion en y",&(esferas[i]->y_static))){
+    ImGui::InputFloat("posicion en x",&(esferas[i]->x_static),0.0f,0.0f,"%.10f");
+    if(ImGui::InputFloat("posicion en y",&(esferas[i]->y_static),0.0f,0.0f,"%.10f")){
         esferas[i]->y_static = esferas[i]->y_static*(-1); //cambiamos el signo para que el eje y sea positivo para arriba
     } 
     ImGui::InputFloat("valor",&(esferas[i]->valor),0.0f,0.0f,"%.10f");
@@ -974,8 +975,8 @@ void cargaLibreConfi(){
 
     ImGui::InputFloat("radio",&(cargasLibres[0]->radio));
    
-        ImGui::InputFloat("posicion en x",&(cargasLibres[0]->x_original));//es un areglo de Cargas
-        if(ImGui::InputFloat("posicion en y",&(cargasLibres[0]->y_original))){
+        ImGui::InputFloat("posicion en x",&(cargasLibres[0]->x_original),0.0f,0.0f,"%.10f");//es un areglo de Cargas
+        if(ImGui::InputFloat("posicion en y",&(cargasLibres[0]->y_original),0.0f,0.0f,"%.10f")){
             cargasLibres[0]->y_original = cargasLibres[0]->y_original * (-1);
         }
         ImGui::InputFloat("valor",&(cargasLibres[0]->valor),0.0f,0.0f,"%.10f");
@@ -1025,7 +1026,7 @@ void puntoEstudioConfi(){
 
 void planoConfi(int i){
     ImGui::PushID(i);
-    if(ImGui::InputFloat("Posicion en X: ",&(planos[i]->x_original))){
+    if(ImGui::InputFloat("Posicion en X: ",&(planos[i]->x_original)),0.0f,0.0f,"%.10f"){
         planos[i]->setearTamaño();
     }
     ImGui::InputFloat("Densidad de Carga",&(planos[i]->densidadCarga),0.000f,0.0f,"%.15f");
