@@ -77,7 +77,7 @@ const int _ANCHO=1900,_LARGO=1000;
 const int cant_cuadriculasX = 50;
 const int cant_cuadriculasY = 50;
 const sf::Vector2i cant_cuadriculas(cant_cuadriculasX,cant_cuadriculasY);
-float tiempo=0.001; // constante que indica cada cuantos segundos actualizo la ventana
+float tiempo=1.0; // constante que indica cada cuantos segundos actualizo la ventana
 const sf::Color _color_cargaFija(0,0,255);
 const sf::Color _color_cargaLibre(255,247,0);
 
@@ -302,6 +302,7 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
             calcularVectorFuerza(vectorFuerza,fuerzaX,fuerzaY,cargasLibres[i]);
         }
         if(mostrarVectorVelocidad){
+            std::cout<<"Velocidad X: "<<cargasLibres[i]->vX<<std::endl;
             calcularVectorVelocidad(vectorVelocidad,(*(cargasLibres[i])).vX,(*(cargasLibres[i])).vY,cargasLibres[i]);
         }
         (*(cargasLibres[i])).update(fuerzaX,fuerzaY,tiempo);
@@ -549,7 +550,7 @@ void hexTorgb(std::string hexa, int rgb[3]){
 
 void calcularVectorFuerza(sf::VertexArray* vectorFuerza,float fuerzaX, float fuerzaY, Carga* carga){
     sf::Vector2f origen(carga->x,carga->y);
-    sf::Vector2f destino(carga->x+fuerzaX*10,carga->y+fuerzaY*10);
+    sf::Vector2f destino(carga->x+fuerzaX,carga->y+fuerzaY);
     
     //sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
     (*vectorFuerza)[0].position=origen;
@@ -561,7 +562,7 @@ void calcularVectorFuerza(sf::VertexArray* vectorFuerza,float fuerzaX, float fue
 //podria hacer que estas 2 funciones sean una sola: verterFuerzaCarga y calcularVectorVelocidad
 void calcularVectorVelocidad(sf::VertexArray* vectorVelocidad,float velocidadX, float velocidadY, Carga* carga){
     sf::Vector2f origen(carga->x,carga->y);
-    sf::Vector2f destino(carga->x+velocidadX*5,carga->y+velocidadY*5);
+    sf::Vector2f destino(carga->x+velocidadX,carga->y+velocidadY);
 
     //sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
     (*vectorVelocidad)[0].position=origen;
