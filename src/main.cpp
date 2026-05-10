@@ -302,7 +302,6 @@ void calculoFuerzas(sf::VertexArray* vectorFuerza,sf::VertexArray* vectorVelocid
             calcularVectorFuerza(vectorFuerza,fuerzaX,fuerzaY,cargasLibres[i]);
         }
         if(mostrarVectorVelocidad){
-            std::cout<<"Velocidad X: "<<cargasLibres[i]->vX<<std::endl;
             calcularVectorVelocidad(vectorVelocidad,(*(cargasLibres[i])).vX,(*(cargasLibres[i])).vY,cargasLibres[i]);
         }
         (*(cargasLibres[i])).update(fuerzaX,fuerzaY,tiempo);
@@ -336,7 +335,8 @@ void verificarColisiones(){
                 (*(cargasLibres[i])).aX = 0;
                 (*(cargasLibres[i])).aY = 0;
                 programaDetenido=true;
-                std::cout<<"Velocidad X= "<<cargasLibres[i]->vX<<std::endl;
+                std::cout<<"Velocidad Final enX= "<<cargasLibres[i]->vX<<std::endl;
+                std::cout<<"Velocidad Final enY= "<<cargasLibres[i]->vY<<std::endl;
             }
         }   
     }

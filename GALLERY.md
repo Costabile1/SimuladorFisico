@@ -31,3 +31,21 @@
 - el punto b) nos pide averiguar el potencial sobre todo el eje x. Podemos ayudarnos de la funcion dibujar Heatmap Potencial para poder ver y entender como se distribuyen los valores del Potencial
 ![sol3](docs/ejercicios/Problema2/Solucion3.png)
 - Adicionalmente podemos usar el Punto Estudio y moverlo por todo el eje x, para averiguar los valores presicion se campo Electrico y Potencial.
+
+## Problema 3
+![problema3](docs/ejercicios/Problema3/2placas1Libre(2).png)
+-En este Problema tenemos 2 Planos que se pueden considerar Infinitos y una carga Libre que se va a estar moviento. Cargamos todo en el Programa con los datos dados por el problema teniendo en cuenta de convertir las unidades correctamente. Tambien notamos que al ser distancias muy pequeñas, sera recomendable aumentar la presicion del programa cambiando la variable tiempo probramos un valor inicial de 0.01.
+![sol1](docs/ejercicios/Problema3/Solucion1.gif)
+- Esto nos Esclarece en gran medida que es lo que sucede en el sistema.
+- Aun asi El Problema nos pide averiguar el valor final de la Velocidad justo antes de impactar con la placa. Afortunadamente nuestro programa detecta las colisiones y guarda las velocidades en el momento del impacto y las imprime por consola.
+- Si usamos la Diposicion actual que muestro en el gift anterior, la velocidad en el momento es esta, y es Incorrecta.
+![alt text](docs/ejercicios/Problema3/Solucion2.png)
+- Esto se debe a que en ejercicios anteriores poniamos radios grandes para visualizar correctamente las cargas, si queremos datos mas preisos vamos a tener que poner un radio muy pequeño, que tienda a 0 como el de una carga puntual y aumentar la presicion del programa disminuyendo la variable tiempo.
+- Aun asi seguimos teniendo otro Problema, Hay que tener en cuenta que estamos trabajando con planos que consideramos infinitos que en la teoria crean un campo constante en ambas direcciones. Cuando Escalamos el Programa y las placas se aleja, el campo sigue siendo constante sea cual sea la distancia entre ellas, lo que no representa fielmente la realidad, ya que si alejamos el campo de un plano no infito disminuye, y si las accercamos el campo es mucho mas fuerte. Al no poder representar eso de forma correcta, en la practica del programa cuando Cambiamos el factor Escala, estamos agregando artificialmente distancia entre ellas, haciendo que la carga que antes recorria una distancia con cierto campo Electrico, Ahora recorre una distancia mucho mayor sometida al MISMO campo. Por ende Enctramos una limitacion Teoria que no podemos representar en el Programa. Escalar en este Problema solo nos sirve para visualizar correctamente el sistema y como se mueve.
+- Aun asi esto no nos detiene y aun asi podemos encontrar la solucion, ya que escalar no es un paso necesario, solo sirve para visualizar correctamente las cosas.
+- Si NO escalamos el sistema, utilizamos un radio que represente mas a una carga puntual y aumentamos las presicion en gran medida llegamos al resultado correcto.
+- Entonces Desescalamos el programa y lo asignamos en escala 1, cambiamos a un radio mas pequeño como 0.001 y aumentamos las presicion, colocando tiempo en 0.00001
+-![sol3](docs/ejercicios/Problema3/Solucion4.gif)
+![sol3](docs/ejercicios/Problema3/Solucion3.png)
+- La solucion se accerca mucho a la dada en el Ejercicio, las diferenias se dan en gran medida por el tamaño del radio.
+- Resolviendo este probrema demostramos que aunque para obtener el resultado correcto no podiamos ver lo que pasaba. si fuimos capaces de entender y analizar el problema, representando lo que pasaba de forma escalada y entendiendo las limitaciones de los planos que consideramos infinitos.
