@@ -1,10 +1,13 @@
 name: macOS Build
 
+# on:
+#   push:
+#     branches: [ main ] # Se dispara cada vez que subís algo a la rama main
+#   pull_request:
+#     branches: [ main ]
+
 on:
-  push:
-    branches: [ main ] # Se dispara cada vez que subís algo a la rama main
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch: # Permite ejecución manual
 
 jobs:
   build:
