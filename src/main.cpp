@@ -120,7 +120,6 @@ int primera = 1;
 
 int main(){
     // Crea la ventana principal
-
     sf::RenderWindow window(sf::VideoMode({_ANCHO, _LARGO}), "MLyM Simulador Fisico!");
     ImGui::SFML::Init(window);
     //limita los fps
@@ -579,7 +578,7 @@ void calcularVectorVelocidad(sf::VertexArray* vectorVelocidad,float velocidadX, 
 sf::Texture drawPotencialHeatMap(sf::Texture &textura){
     std::vector<std::vector<float>> potenciales = potencialElectrico();
     std::map<float,std::string> mapaColor = mapaPotencialElectrico(potenciales);
-    sf::Image fondo({_ANCHO, _LARGO});
+    sf::Image fondo(sf::Vector2u(_ANCHO, _LARGO));
     
     int hexa;
     int rgb[4];
