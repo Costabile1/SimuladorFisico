@@ -25,9 +25,12 @@ jobs:
           
           # Compilamos ImGui y tus archivos .cpp
           # Nota: Ajustá los nombres de tus archivos si es necesario
-          g++ -std=c++17 src/main.cpp ImGui/*.cpp \
-          -I./include -I./src/imgui -I/usr/local/include \
-          -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system \
+          g++ -std=c++17 src/*.cpp ImGui/*.cpp \
+          -Iinclude \
+          -IImGui \
+          -I/opt/homebrew/include \
+          -L/opt/homebrew/lib \
+          -lsfml-graphics -lsfml-window -lsfml-system \
           -o simulador_mac
           
       - name: Subir binario como Artefacto
