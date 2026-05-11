@@ -37,8 +37,9 @@
 
 # Decargar Y usar Ejecutable
 ### Descargar ultima version
-- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases)
-- [Descargar Ultima Version para MACos](https://github.com/Costabile1/SimuladorFisico/releases)
+- [ir a descargas](https://github.com/Costabile1/SimuladorFisico/releases/latest)
+- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_windows.zip)
+- [Descargar Ultima Version para MACos](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_macOS.zip)
 
 
 
