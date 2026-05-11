@@ -40,6 +40,9 @@
 - [ir a descargas](https://github.com/Costabile1/SimuladorFisico/releases/latest)
 - [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_windows.zip)
 - [Descargar Ultima Version para MACos](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_macOS.zip)
+- Instrucciones para macOS:
+- Permisos: Abrir la terminal en la carpeta y ejecutar: chmod +x simulador_mac.
+- Primer Inicio: No hacer doble click. Hacer Click Derecho -> Abrir. Cuando aparezca el cartel de "Desarrollador no identificado", darle a Abrir de todos modos.
 
 
 
