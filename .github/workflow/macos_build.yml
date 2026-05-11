@@ -1,0 +1,37 @@
+name: macOS Build
+
+on:
+  push:
+    branches: [ main ] # Se dispara cada vez que subís algo a la rama main
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest # GitHub nos presta una Mac virtual actualizada
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Instalar SFML via Homebrew
+        run: |
+          brew install sfml
+
+      - name: Compilar el proyecto
+        run: |
+          # Creamos la carpeta para los objetos
+          mkdir -p obj
+          
+          # Compilamos ImGui y tus archivos .cpp
+          # Nota: Ajustá los nombres de tus archivos si es necesario
+          g++ -std=c++17 src/main.cpp src/ImGui/*.cpp \
+          -I./include -I./src/imgui -I/usr/local/include \
+          -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system \
+          -o simulador_mac
+          
+      - name: Subir binario como Artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulador-macOS
+          path: simulador_mac
