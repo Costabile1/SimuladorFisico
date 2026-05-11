@@ -31,6 +31,9 @@ jobs:
           -I/opt/homebrew/include \
           -L/opt/homebrew/lib \
           -lsfml-graphics -lsfml-window -lsfml-system \
+          -Wno-null-conversion \
+          -Wno-macro-redefined \
+          -ferror-limit=0 \
           -o simulador_mac
           
       - name: Subir binario como Artefacto
