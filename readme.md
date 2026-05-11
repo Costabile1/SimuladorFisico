@@ -35,13 +35,14 @@
 - Permite colocar un eje coordenado.
 - Permite escalar el sistema para representar distancias muy pequeñas.
 
-
+# Decargar Y usar Ejecutable
 ### Descargar ultima version
-[Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases)
+- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases)
+- [Descargar Ultima Version para MACos](https://github.com/Costabile1/SimuladorFisico/releases)
 
 
 
-# Requisitos
+# Requisitos para Usar la Repo
 - instalar MingWL
 - instalar SMFL para windows
 - incluir el payh del archivo include, descargado en SFML en properties.json

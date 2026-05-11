@@ -64,6 +64,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: simulador-macOS
-          path: simulador_mac
+          path: simulador_dist/
 
           
