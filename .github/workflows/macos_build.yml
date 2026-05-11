@@ -34,6 +34,7 @@ jobs:
           -Wno-null-conversion \
           -Wno-macro-redefined \
           -ferror-limit=0 \
+          -framework OpenGL \
           -o simulador_mac
           
       - name: Subir binario como Artefacto
