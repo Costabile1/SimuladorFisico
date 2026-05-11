@@ -41,25 +41,23 @@ jobs:
           mkdir -p simulador_dist
           cp simulador_mac simulador_dist/
 
-          # 3. Descubrir dónde están REALMENTE las librerías
-          # Esto evita el error si GitHub cambia la Mac o la ruta de instalación
+          # 3. Descubrir directorio real
           REAL_LIB_DIR=$(pkg-config --variable=libdir sfml-all)
-          echo "Las librerías están en: $REAL_LIB_DIR"
+          
+          # 4. Copiar SOLO la versión principal (ej. 3.0.dylib) para no duplicar
+          # Ajustamos el patrón para que no agarre las versiones completas (.3.0.2)
+          cp -L $REAL_LIB_DIR/libsfml-graphics.3.0.dylib simulador_dist/
+          cp -L $REAL_LIB_DIR/libsfml-window.3.0.dylib simulador_dist/
+          cp -L $REAL_LIB_DIR/libsfml-system.3.0.dylib simulador_dist/
 
-          # 4. Copiar los archivos REALES (-L sigue el symlink hasta el archivo pesado)
-          cp -L $REAL_LIB_DIR/libsfml-graphics*.dylib simulador_dist/
-          cp -L $REAL_LIB_DIR/libsfml-window*.dylib simulador_dist/
-          cp -L $REAL_LIB_DIR/libsfml-system*.dylib simulador_dist/
+          # 5. Cambiar las rutas internas del ejecutable
+          # install_name_tool cambia la ruta absoluta del sistema por @executable_path
+          install_name_tool -change "$REAL_LIB_DIR/libsfml-graphics.3.0.dylib" "@executable_path/libsfml-graphics.3.0.dylib" simulador_dist/simulador_mac
+          install_name_tool -change "$REAL_LIB_DIR/libsfml-window.3.0.dylib" "@executable_path/libsfml-window.3.0.dylib" simulador_dist/simulador_mac
+          install_name_tool -change "$REAL_LIB_DIR/libsfml-system.3.0.dylib" "@executable_path/libsfml-system.3.0.dylib" simulador_dist/simulador_mac
 
-          # 5. Configurar el programa para que use las librerías locales
-          # Para cada .dylib que hayamos copiado, cambiamos su referencia interna
-          for lib in simulador_dist/*.dylib; do
-             libname=$(basename $lib)
-             install_name_tool -change "$REAL_LIB_DIR/$libname" "@executable_path/$libname" simulador_dist/simulador_mac
-          done
-
-          # 6. Mostrar el resultado final en los logs
-          echo "=== ARCHIVOS LISTOS PARA EL ZIP ==="
+          # 6. Verificación final
+          echo "=== ARCHIVOS LIMPIOS PARA EL ZIP ==="
           ls -lh simulador_dist/
           
       - name: Subir binario como Artefacto
