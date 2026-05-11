@@ -37,8 +37,7 @@
 
 
 ### Descargar ultima version
-[Descargar Versión para Windows (v1.0.0)]
-https://github.com/Costabile1/SimuladorFisico/releases
+[Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases)
 
 
 
