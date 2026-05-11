@@ -36,6 +36,19 @@ jobs:
           -ferror-limit=0 \
           -framework OpenGL \
           -o simulador_mac
+
+          # 2. Crear carpeta de distribución
+          mkdir -p simulador_dist/assets
+          cp simulador_mac simulador_dist/
+          cp -r assets/* simulador_dist/assets/ 2>/dev/null || true
+
+          # 3. Copiar las librerías .dylib reales (no los links) al lado del ejecutable
+          # Esto busca donde Homebrew instaló SFML y copia los archivos
+          for lib in graphics window system; do
+            cp /opt/homebrew/lib/libsfml-$lib.3.0.dylib simulador_dist/
+            # Le decimos al ejecutable que use la librería que está al lado de él
+            install_name_tool -change /opt/homebrew/opt/sfml/lib/libsfml-$lib.3.0.dylib @executable_path/libsfml-$lib.3.0.dylib simulador_dist/simulador_mac
+          done
           
       - name: Subir binario como Artefacto
         uses: actions/upload-artifact@v4
