@@ -1477,7 +1477,7 @@ void dibujarCargasNegativas(sf::RenderWindow &window,float radio,int n_esfera,in
         float x =radio*cos(radian_titha)  + esferas[n_esfera]->x_static + esferas[n_esfera]->offsetX;
         float y= radio*sin(radian_titha) + esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
         //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
-        int largo=8,alto=3;
+        float largo=8,alto=3;
         sf::RectangleShape menos({largo,alto});
         menos.setFillColor(sf::Color::Blue);
         menos.setPosition({x,y});
@@ -1493,9 +1493,9 @@ void dibujarCargasPositivas(sf::RenderWindow &window,float radio,int n_esfera, i
         float y= radio*sin(radian_titha)+ esferas[n_esfera]->y_static + esferas[n_esfera]->offsetY;
         //float punto = sqrt(pow(esferas[n_esfera]->radio_int,2)*(pow(cos(titha),2)+pow(sin(titha),2)));
         sf::ConvexShape mas(12);
-        int radio=4;
-        int eje=1;
-        int ancho=1;
+        float radio=4;
+        float eje=1;
+        float ancho=1;
         mas.setPoint(1,{-radio,-ancho});
         mas.setPoint(2,{-radio,+ancho});
         mas.setPoint(3,{-eje,+eje});
