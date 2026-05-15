@@ -1,3 +1,16 @@
+# Objetivos 
+- Crear una Herramienta para ayudar a estudiantes y Profesores a entender y explicar de forma mas facil conceptos de Elextrodinamica y Electroestatica, de forma dinamica, podiendo ajustar los valores para representar problemas tipicos y situaciones tipicas dictadas en clases.
+- Simular correctamente las interaciones Electrodinamicas entre cargas de distintas formas y tamaños, utilizando las ecuaciones fisicas de la electroestatica y electrodinamica clasica.
+- Facilitar el Entendimiento de topicos como:
+- movimiento de una carga en un Campo Electrico.
+- Campos Generados por cargas, Planos y conductores.
+- Interacciones entre cargas.
+- Potenciale Electrico.
+- Induccion de carga en conductores.
+- interaccion de campos generados por planos infinitos
+- para faciliar el estudio y aprendizaje de estos topicos dificiles de entender por su nivel de abstraccion y por ser cosas que no nos encontramos en el dia a dia.
+
+
 # Pautas Seguidas en la Creacion del Proyecto
 - Este proyecto fue creado con fines educativos, no solo para ayudar a estudiantes y profesores como se planteo en los [objetivos], sino tambien para mi propio aprendizaje sobre el lenguaje C++, librerias y mas importante enfrentarme a crear un proyecto solos.
 - Este proyecto fue creado desde 0 por mi, con la intecios de enfrentarme a los problemas que eso implica uno a vez y poder superarlos sin ayuda de la Inteligencia Artifical.
@@ -89,3 +102,12 @@
 - Representar cuerpos que no sean simetricos, como varillas cortas o cruvas
 - integrar el campo magnetico en la simulacion
 - considerar simulaciones 3d
+
+
+# Requisitos para Usar la Repo
+- instalar MingWL
+- instalar SMFL para windows
+- incluir el payh del archivo include, descargado en SFML en properties.json
+- crear el archivo makefile con:
+- compile con la ruta al archivo include de SFML
+- ejecutar: con la ruta al lib del archivo SFML 
