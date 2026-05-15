@@ -1,5 +1,5 @@
 # Aprende Haciendo
-- Aca vas a poder crear tu primer Programa paso a paso ya aprender en el camino ;).
+- Aca vas a poder crear tu primer Programa paso a paso y aprender en el camino ;).
 
 ## Que vamos a crear?
 ![alt text](docs/AprenderHaciendo/Objetivo.png)
@@ -14,7 +14,7 @@
 ![](docs/AprenderHaciendo/Menu.png)
 - ingresamos el valor: 500 en ambos ejes y se desplegara la checkbox: dibujar eje cordenado, la clickeamos para setarlo.
 ![](docs/AprenderHaciendo/Eje.png)
-- Vamos a configurar la variable tiempo, la cual le dice al programa con que precision simular los movimientos de la particula libre. arriba de todo de la ventana confi y seteamos la variable Tiempo de 1 (como estaba por default) a 0.1.
+- Vamos a configurar la variable tiempo, la cual le dice al programa con que precision simular los movimientos de la particula libre. Arriba de todo de la ventana confi y seteamos la variable Tiempo de 1 (como estaba por default) a 0.1.
 ![](docs/AprenderHaciendo/Menu_varTiempo.png)
 
 
@@ -53,11 +53,11 @@
 ![](docs/AprenderHaciendo/MenuCargasPlanos.png)
 - se desplegara un menu dentro de la ventana, para que podamos ingresar los datos.
 - Ingresaremos los siguientes datos:
-Plano 1:
+- Plano 1:
 - Posicion X: -300.
 - Densidad de Carga: 0.0000000008
 - el valor del potencial: 0.
-Plano 2:
+- Plano 2:
 - Posicion X: 900.
 - Densidad de Carga: -0.0000000008
 - el valor del potencial: 0.
@@ -66,7 +66,7 @@ Plano 2:
 
 ## Ultimo Paso: La Carga Libre.
 - Esta es por lejos la mas interesante
-- Esta es la carga que se sentira las fuerzas Electricas y movera por nuesto sistema.
+- Esta es la carga que sentira las fuerzas Electricas y movera por nuesto sistema.
 - El menu de la carga Libre siempre esta desplegado en nuestro menu.
 - Ingresaremos los siguientes valores:
 - Radio=5.

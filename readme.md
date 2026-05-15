@@ -43,12 +43,12 @@
 
 
 # Crea tu Primera Simulacion.
-- si queres arrancar por lo grande y aprender a usar esta Herramienta para crear cosas como las imagenes que estan mas arriba visita [Aprender haciendo](/APRENDER_HACIENDO).
+- si queres arrancar por lo grande y aprender a usar esta Herramienta para crear cosas como las imagenes que estan mas arriba visita [Aprender haciendo](/APRENDER_HACIENDO.md).
 
 # Tutoriales
 ## Basico
 - Lo primero que debrias hacer es aprender las cosas basicas.
-- Si te gusta Aprender haciendo y queres crear tu primera simulacion visita [Aprender haciendo](/APRENDER_HACIENDO).
+- Si te gusta Aprender haciendo y queres crear tu primera simulacion visita [Aprender haciendo](/APRENDER_HACIENDO.md).
 - Si te gusta leer que hace cada cosa visita [Tutorial Basico](/TUTORIAL.md) para un tutorial basico o [Guia](/GUIA.md) para mayor profundidad.
 ## Resolviendo Ejericios
 - si queres Aprender mientras resolvermos ejercicios reales paso a paso visita [Resolviendo Ejericios](/EJERCICIOS.md)

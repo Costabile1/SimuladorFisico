@@ -111,3 +111,16 @@
 - crear el archivo makefile con:
 - compile con la ruta al archivo include de SFML
 - ejecutar: con la ruta al lib del archivo SFML 
+
+
+
+
+# Estructura del Proyecto
+## Diagrama de Clases
+![diagrama clases](docs/diagramas/Simulador_Fisico-Página-3.drawio.png)
+## Arquitectura principal
+![arquitectura Principal](docs/diagramas/Simulador_Fisico-Página-2.drawio.png)
+## Orden de IMGUI
+![orden Imgui](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
+## diagrama Induccion de Cargas
+![induccion de cagras diagrama](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)
