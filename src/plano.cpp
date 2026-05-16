@@ -13,6 +13,7 @@ Plano::Plano(){
     this->offsetX = 0;
     this->x_original = 0;
     this->x = 0;
+    this->potencial_ref=0;
 }
 
 double Plano::cacularCampoElectrico(){
