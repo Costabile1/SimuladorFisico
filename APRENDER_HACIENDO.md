@@ -78,7 +78,7 @@
 
 ## Simular
 - Ahora solo queda darle a guardar Cambios e iniciar simulacion.
-- Una vez Con la simulacion funcionando nuestra ventana de confi que conociamos desaparecera y veremos una nueva. que sera nuestra ventana mientras el programa esta corriendo.
+- Una vez con la simulacion funcionando nuestra ventana de configuracion que conociamos desaparecera y veremos una nueva, que sera nuestra ventana mientras el programa esta corriendo.
 - Alli podras ver datos importantes.
 - Si le damos a dibujar vector velocidad y vector Fuerza
 ![](docs/AprenderHaciendo/ProgramaCorriendo.png)

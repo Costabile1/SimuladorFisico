@@ -566,3 +566,11 @@ cambios:
     -Hacer la constten tiempo mas baja, aumenta la presicion del programa, para problemas muy presicios como los de calcular la velocidad de impacto de una carga contra un plano infinito, donde podemos setear un radio muy pequeño  un tiempo muy pequeño, para tener una gran presicion a la hora de obtener el resultado.
 
     Problemas: encontre una lmitacion encuanto a la simulacion de cargas libres con planos Infinitos, los planos inifitos tienen campo constante en la teoria y en el programa tambien, ponerlos muy juntos o muy separados no cambia el valor del campo electrico, ni la fuerza que siente un carga, que en la teoria, en planos no infinitos, si cambia el valor del campo electrico, como el programa no tiene encuenta actualmente planos finitos, escaalr un sistema de 2 planos, hace que la carga que antes reocrria 0.1m ahora recorra muchos mas metros, afectando la velocidad con la que impacta uno de los planos, por ende, escalar planos infinitos no tiene mucho sentido fisico, ya que esto altera los resultados en gran medida, es como si estariamos separando los planos artificialmente y no "Escalando el sistema".
+
+
+# 15/05/2026
+    - Solucione el problema que hacia que solo se cierre la ventan y no el programa, ahora el if que pregunta si el evento es de cierre, cierra la ventana y tambien setea la variable de control cerrarPrograma = true, y tambien se cierra el programa
+
+    - Tambien solucione el problema de que el programa explotaba cuando le dabas a calcular campo electrico y no habia nada apra calcularlo
+    - el problema era que se llamaba a la fucnion que lo calculaba, no calculaba nada, y luego se iteraba por todo el mapa sobre ese vector vacio y se entraba a memroai no asignada
+    - Lo solucione creando una variable de control que te verifica si el campo se calculo con cargas de forma correcta y luego se asiga a un puntero, si ese puntero sigue en null, no se itera y no explota todo

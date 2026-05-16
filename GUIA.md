@@ -12,7 +12,7 @@
 - clikear mostrar datos, mostrara un punto en las cordenadas elegidas los vectores y los datos numericos, !importante, para que se muestre correctamente, previamente se debera haber iniciado la simulacion o mostrado el campo electrico de las cargas.
 ![alt text](docs/img/PuntoEstudio.png)
 - Ingresar cantidad de cargas Fijas: estas no se mueven a lo largo de la simulacion, y cargamos sus datos respetando el eje de cordenadas. Represetadas con color azul o naranja segun el signo de su carga
-- Ingresar Datos carga Libre: esta carga es la sentira las fuerzas generadas por el campo electrico y se movera respecto a ellas. Representada siempre con un color amarillo independientemente de su carga
+- Ingresar Datos carga Libre: esta carga es la sentira las fuerzas generadas por el campo electrico y se movera respecto a ellas. Representada siempre con un color amarillo independientemente de su carga.
 ![alt text](docs/img/cargasFijasLibres.png)
 - Ingresar Plano Infinito: te permitira ingresar su cordenada en X segun el eje,(los planos solo pueden moverse sobre el eje x) y su densidad superficial de carga.
 ![alt text](docs/img/Plano.png)
@@ -44,14 +44,3 @@
 - Pausar Y Reanudar Programa
 - Detener Simulacion: retorna la carga Libre a su punto incial y te devuelve a la ventana Programa Detenido [ver Programa Detendio](#programa-detendio)
 - El programa se detendra Automaticamente cuadno la particula Libre colisione, ya sea con una carga fija o un Plano Ifinito.
-
-
-# Estructura del Proyecto
-## Diagrama de Clases
-![diagrama clases](docs/diagramas/Simulador_Fisico-Página-3.drawio.png)
-## Arquitectura principal
-![arquitectura Principal](docs/diagramas/Simulador_Fisico-Página-2.drawio.png)
-## Orden de IMGUI
-![orden Imgui](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
-## diagrama Induccion de Cargas
-![induccion de cagras diagrama](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)

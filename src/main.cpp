@@ -139,13 +139,17 @@ int main(){
         //calcula el campo electrico
         std::vector<std::vector<sf::Vector2f>> vectorCE;
         std::vector<std::vector<sf::Vector2f>> vectorePlano;
-        void *p_vectorCE;
+        bool var_control_vectorePlano=false;
+        void *p_vectorCE = NULL;
         if(mostrarCampoELectrico){
             if(cantidadPlanos!=0){
                 vectorePlano = calcularCEPlano();
+                var_control_vectorePlano = true;
             }
             if(cargasFijas.size()==0){
-                p_vectorCE = &vectorePlano;
+                if(var_control_vectorePlano==true){
+                    p_vectorCE = &vectorePlano;
+                }    
             }else{
                 calcularCampoElectrico(&vectorCE,vectorePlano);
                 p_vectorCE=&vectorCE;
@@ -159,8 +163,11 @@ int main(){
             while (const std::optional event = window.pollEvent()) //pollEvento ejecuta los procesos en cola, sino devuevle null
             {
                 ImGui::SFML::ProcessEvent(window, *event);
-                if (event->is<sf::Event::Closed>()) //verifica si en el evento es de cierre
+                if (event->is<sf::Event::Closed>()){ //verifica si en el evento es de cierre
                     window.close();
+                    std::cout<<"estoy entrando jiji"<<std::endl;
+                    cerrarPrograma=true;
+                } 
             }
 
             ImGui::SFML::Update(window, clock.restart());
@@ -204,7 +211,7 @@ int main(){
                 window.draw(ejeY);
             }
             
-            if(mostrarCampoELectrico){
+            if(mostrarCampoELectrico && p_vectorCE!=NULL){
                 drawVectoresCE(window,(std::vector<std::vector<sf::Vector2f>> *)p_vectorCE);
             }
             
