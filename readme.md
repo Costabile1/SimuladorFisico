@@ -59,8 +59,8 @@
 # Descargas
 ## Descargar ultima version
 - [ir a descargas](https://github.com/Costabile1/SimuladorFisico/releases/latest)
-- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_windows.zip)
-- [Descargar Ultima Version para MACos](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.1_macOS.zip)
+- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.2_windows.zip)
+
 ## Como instalarme?
 - installa el zip MLyMSimuladorFisicovx.x.x.zip 
 - haz cli en el ejecutable sfml-simulador_fisico-app.exe
