@@ -13,3 +13,5 @@ imgui.ini
 *.exe
 *.o
 .vscode/
+
+*.iss

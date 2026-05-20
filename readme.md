@@ -3,10 +3,18 @@
 # Descargas
 ## Como descargarme?
 
-- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSF_windows.zip)
-- se te instalara un zip, decomprimilo.
-- haz click en el ejecutable INICIAR_PROGRAMA.exe
-- se arbira una interfaz y lo primer que deberias ver es:
+- [Descargar Instalador Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/instalador_MLyMSF.exe)
+- comenzara a descargarse el instalador.
+- Una vez descargado, búsquelo en su carpeta de Descargas y hágale doble clic para abrirlo.
+- Si aparece una pantalla azul que dice "Windows protegió su PC", haga clic en la opción que dice "Más información" (suele estar subrayada) y luego presione el botón "Ejecutar de todas formas".
+- Si salta una ventana con un escudo preguntando "¿Quieres permitir que esta aplicación haga cambios en el dispositivo?", haga clic en Sí.
+- Si es su computadora personal: Seleccione "Instalar para todos los usuarios" (Administrative install mode). Esto lo guardará en la carpeta principal del sistema.
+- Si está en una computadora de la universidad o laboratorio: Seleccione "Instalar solo para mí" (Non-administrative install mode). Elija esta opción si no tiene permisos de administrador o no conoce la contraseña de la PC.
+- Siga las instrucciones del asistente haciendo clic en Siguiente.
+- Asegúrese de dejar marcada la casilla "Crear un acceso directo en el escritorio" cuando se lo pregunte.
+- Haga clic en Instalar y espere a que la barra verde se complete.
+- Al finalizar, presione Terminar.
+- Se abrira una interfaz y lo primero que deberias ver es:
 ![alt text](docs/img/Mapa.png)
 
 
