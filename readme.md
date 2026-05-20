@@ -70,6 +70,10 @@
 - Explicaciones complejas simplificadas: Muestra de forma visual la Induccion de carga en conductores, facilitando su explicacion.
 - Análisis cuantitativo (Punto de Estudio): La Herramienta cuenta con Punto Estudio, que te permite dibujar y calcular las componentes del vector, modulo y el valor del potencial electrico en un punto exacto.
 
+# Contacto
+- si encotraste errores o enviarme algun comentario podes hacerlo aqui:
+- santiagocostabile@uca.edu.ar
+
 
 
 
