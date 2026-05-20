@@ -5,7 +5,7 @@
 
 - [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSF_windows.zip)
 - se te instalara un zip, decomprimilo.
-- haz click en el ejecutable INICIAL_PROGRAMA.exe
+- haz click en el ejecutable INICIAR_PROGRAMA.exe
 - se arbira una interfaz y lo primer que deberias ver es:
 ![alt text](docs/img/Mapa.png)
 
