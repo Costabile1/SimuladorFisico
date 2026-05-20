@@ -8,8 +8,25 @@
 - haz click en el ejecutable sfml-simulador_fisico-app.exe
 - se arbira una interfaz y lo primer que deberias ver es:
 ![alt text](docs/img/Mapa.png)
-- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [TUTORIAL](#tutoriales)
-- O podes ir a ver [Ejemplos de como utilizamos este programa para entender y solucionar ejercicios reales](/EJERICICIOS.md).
+
+
+# Tutoriales
+## Basico
+- Lo primero que debrias hacer es aprender las cosas basicas.
+- Si te gusta Aprender haciendo y queres crear tu primera simulacion visita [Aprender haciendo](/APRENDER_HACIENDO.md).
+- Si te gusta leer que hace cada cosa visita [Tutorial Basico](/TUTORIAL.md) para un tutorial basico o [Guia](/GUIA.md) para mayor profundidad.
+## Resolviendo Ejericios
+- si queres Aprender mientras resolvermos ejercicios reales paso a paso visita [Resolviendo Ejericios](/EJERCICIOS.md)
+
+![Induccion](docs/img/inducciones.png)
+- Induccion de Cargas en Conductores Esfericos Huecos y su Campo Electrico.
+
+![Potencial](docs/img/poteenciales.png)
+- Mapa a color del Potencial de 2 cargas.
+
+![Cargas](docs/img/2cargas.png)
+- Campo Electrico Generado por 2 Cargas de signo opuesto.
+
 
 # Que es esto?
 - Un simulador Visual de Campos Electricos, Potencial Electrico, sobre cargas, planos y Esferas Conductoras.
@@ -28,14 +45,7 @@
 - Permite colocar un eje coordenado.
 - Permite escalar el sistema para representar distancias muy pequeñas.
 
-![Induccion](docs/img/inducciones.png)
-- Induccion de Cargas en Conductores Esfericos Huecos y su Campo Electrico.
 
-![Potencial](docs/img/poteenciales.png)
-- Mapa a color del Potencial de 2 cargas.
-
-![Cargas](docs/img/2cargas.png)
-- Campo Electrico Generado por 2 Cargas de signo opuesto.
 
 
 # USO
@@ -53,16 +63,6 @@
 - Análisis cuantitativo (Punto de Estudio): La Herramienta cuenta con Punto Estudio, que te permite dibujar y calcular las componentes del vector, modulo y el valor del potencial electrico en un punto exacto.
 
 
-# Crea tu Primera Simulacion.
-- si queres arrancar por lo grande y aprender a usar esta Herramienta para crear cosas como las imagenes que estan mas arriba visita [Aprender haciendo](/APRENDER_HACIENDO.md).
-
-# Tutoriales
-## Basico
-- Lo primero que debrias hacer es aprender las cosas basicas.
-- Si te gusta Aprender haciendo y queres crear tu primera simulacion visita [Aprender haciendo](/APRENDER_HACIENDO.md).
-- Si te gusta leer que hace cada cosa visita [Tutorial Basico](/TUTORIAL.md) para un tutorial basico o [Guia](/GUIA.md) para mayor profundidad.
-## Resolviendo Ejericios
-- si queres Aprender mientras resolvermos ejercicios reales paso a paso visita [Resolviendo Ejericios](/EJERCICIOS.md)
 
 
 
