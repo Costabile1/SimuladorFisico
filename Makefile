@@ -26,9 +26,9 @@ compile:
 
 	g++ -I$(IMGUI_DIR) -I$(SFML_PATH)\include -c $(IMGUI_DIR)/imgui-SFML.cpp -o imgui-SFML.o -DSFML_STATIC
 	
-
+	windres recursos.rc -O coff -o recursos.o
 link:
-	g++ main.o Carga.o CargaLibre.o CargaEsferica.o Plano.o imgui.o imgui_draw.o imgui_widgets.o imgui_tables.o imgui-SFML.o -o sfml-simulador_fisico-app -L$(SFML_PATH)\lib -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -lsfml-main
+	g++ main.o Carga.o CargaLibre.o CargaEsferica.o Plano.o imgui.o imgui_draw.o imgui_widgets.o imgui_tables.o imgui-SFML.o recursos.o -o sfml-simulador_fisico-app -L$(SFML_PATH)\lib -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -lsfml-main
 
 ejecute:
 	./sfml-simulador_fisico-app.exe

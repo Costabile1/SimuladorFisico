@@ -1,7 +1,18 @@
 # Simulador Fisico Electroestatica y Electrodinamica en C++ #
 
+# Descargas
+## Como descargarme?
+
+- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.2_windows.zip)
+- se te instalara un zip, decomprimilo.
+- haz click en el ejecutable sfml-simulador_fisico-app.exe
+- se arbira una interfaz y lo primer que deberias ver es:
+![alt text](docs/img/Mapa.png)
+- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [TUTORIAL](#tutoriales)
+- O podes ir a ver [Ejemplos de como utilizamos este programa para entender y solucionar ejercicios reales](/EJERICICIOS.md).
+
 # Que es esto?
-- Un simulador Visual de Campos Electricos, Potencial Electrico, sobre cargas, planos y Esferas Conductoras
+- Un simulador Visual de Campos Electricos, Potencial Electrico, sobre cargas, planos y Esferas Conductoras.
 ## Que hace?
 - Permite crear simulaciones en un entorno 2D con cargas puntuales,planos y esferas.
 - Visualizar el Campo ELectrico como vectores.
@@ -56,21 +67,7 @@
 
 
 
-# Descargas
-## Descargar ultima version
-- [ir a descargas](https://github.com/Costabile1/SimuladorFisico/releases/latest)
-- [Descargar Ultima Versión para Windows ](https://github.com/Costabile1/SimuladorFisico/releases/latest/download/MLyMSFv2.1.2_windows.zip)
 
-## Como instalarme?
-- installa el zip MLyMSimuladorFisicovx.x.x.zip 
-- haz cli en el ejecutable sfml-simulador_fisico-app.exe
-- se arbira una interfaz y lo primer que deberias ver es:
-![alt text](docs/img/Mapa.png)
-- Instrucciones para macOS:
-- Permisos: Abrir la terminal en la carpeta y ejecutar: chmod +x simulador_mac.
-- Primer Inicio: No hacer doble click. Hacer Click Derecho -> Abrir. Cuando aparezca el cartel de "Desarrollador no identificado", darle a Abrir de todos modos.
-- si llegaste aca, lo intalaste y ejecutaste correctamente y deberias ir [TUTORIAL](#tutoriales)
-- O podes ir a ver [Ejemplos de como utilizamos este programa para entender y solucionar ejercicios reales](/EJERICICIOS.md).
 
 
 
