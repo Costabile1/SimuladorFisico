@@ -124,3 +124,8 @@
 ![orden Imgui](docs/diagramas/Simulador_Fisico-Página-5.drawio.png)
 ## diagrama Induccion de Cargas
 ![induccion de cagras diagrama](docs/diagramas/Simulador_Fisico-Página-4.drawio.png)
+
+
+- Instrucciones para macOS:
+- Permisos: Abrir la terminal en la carpeta y ejecutar: chmod +x simulador_mac.
+- Primer Inicio: No hacer doble click. Hacer Click Derecho -> Abrir. Cuando aparezca el cartel de "Desarrollador no identificado", darle a Abrir de todos modos.
