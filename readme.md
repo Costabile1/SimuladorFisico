@@ -62,7 +62,7 @@
 - Puente teoría-práctica: Facilita llevar a la realidad los sistemas complejos que aparecen estáticos en los libros de texto.
 - Versatilidad de estudio: podes usarlo para resolver y comprender problemas de guias o parciales dados en las materias, hasta "JUGAR" con la herramienta y aprender mientras combinas y moves las cargas a placer.
 - Control total: haciendo que puedas cambiar un monton de variables. Te permite realizar la simulacion tan lenta y precisa tanto como quieras.
-- Laboratorio de "Qué pasa si...": te Permite resolver esas dudas que pondrian de mal Humor a cualquier profesor como: que pasa si la carga es 0.0001 mayor, o si se invierte la polaridad, o si la muevo 0.01m mas arriba o mas cerca.
+- Laboratorio de "Qué pasa si...": te Permite resolver esas dudas que pondrian de mal Humor a cualquier profesor como: que pasa si la carga es 0.0001 mayor, o si se invierte el signo de la carga, o si la muevo 0.01m mas arriba o mas cerca.
 ## Profesores
 - Dinámica de clase: permite mostrar campos eléctricos y potenciales de forma viva y fluida durante la clase, manteniendo la atención de los alumnos.
 - Llamativo y rapido: para poder retener la atencion de los alumnos. Saliendo de aburridas y escasas imagenes en libros o presentaciones.
