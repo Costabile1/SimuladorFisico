@@ -574,3 +574,17 @@ cambios:
     - Tambien solucione el problema de que el programa explotaba cuando le dabas a calcular campo electrico y no habia nada apra calcularlo
     - el problema era que se llamaba a la fucnion que lo calculaba, no calculaba nada, y luego se iteraba por todo el mapa sobre ese vector vacio y se entraba a memroai no asignada
     - Lo solucione creando una variable de control que te verifica si el campo se calculo con cargas de forma correcta y luego se asiga a un puntero, si ese puntero sigue en null, no se itera y no explota todo
+
+
+# 23/05/2026
+- Hasta ahora me doy cuenta que habia un pequeño y recalco MUY PEQUEÑO, QUE hacia que los vectores se dibujen re rancios, cuestio el error en si: linea 1198: cuando seteaba el punto final del vector, osea el destino hacia adonde apuntaba. en lugar de hacerlo hacia donde deberia en Y, lo hacia ahcia Y+1, osea al vector destino siguiente, por eso el error de los vectores al inicio era grandisico, y luego se disimulaba y muy discretamente se movian los vectores, cuestion linea del error: 
+sf::Vector2f destino(origen.x+(*vectorCE)[i-1][j-1].x ,origen.y+(*vectorCE)[i-1][j-1].y); PONIA [J] EN LUAGR DE [J-1].
+-en fina 2hs haciendo print para encontrar eso.
+- puedo decir fielmente que haora los vectores se dibujan bien, simepre se calcularon bien. solo que los dibujaba maal. 
+- otra cuestion, todas las fotos los hice con los vectores dibujandose mal. me quiero re matar. LITERAL TODAS LAS IMAGENES EN GIT ESTAN CON ESE ERROR.
+- cuestion porlomenos lo solucione
+
+# 25/05/2026
+- Agregue que los vectore ahora por fin tengan una flecha indicando el sentido.
+- lo hice calculando angulos, calculo el arctan() de las compoenntes del vector campo electrico, con eso consigo el angulo. a ese angulo le sumo 90. para poder crear una linea perpendicular a donde apunta el vector campo electrioco. con eso tengo la base de mi trianguo que va a ser la flecha. luego al mismo angulo que calcule al principio, le sumo 60 si la compoente x del vector campo eelctrico es positiva o resto en el caso contrario. a partir de ahi consigo las 2 ultimas lineas de mi flecha. dependiendo del signo de la componente x del campoe elctrico, sumo las el largo que quiero de mi flecha, por coseno y seno del angulo que calcule, asi consigo las componentes de mi nueva linea (parte de la flecha).
+- A partir de ahi sumo todoas las lineas dentro de una clase sfml que las dibuja y une. y asi tengo la flecha, funciona correctaamente para. cargas positivas Saliente y Cargas Negativas Entrante. se ve correctamente.

@@ -1158,10 +1158,27 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
                 (*(cargasFijas[k])).cacularCampoElectrico(vectorCampoElectricoAux,distanciaTotal,distanciaX,distanciaY);
                 if(vectorCEPlano.size()!=0){
                     vectorCampoElectrico.x += (vectorCampoElectricoAux.x + vectorCEPlano[i-1][j-1].x);
-                    vectorCampoElectrico.y += (vectorCampoElectricoAux.y +vectorCEPlano[i-1][j-1].y);
+                   // vectorCampoElectrico.y += (vectorCampoElectricoAux.y +vectorCEPlano[i-1][j-1].y);
                 } else{
                     vectorCampoElectrico.x += (vectorCampoElectricoAux.x);
-                    vectorCampoElectrico.y += (vectorCampoElectricoAux.y );
+                    vectorCampoElectrico.y += (vectorCampoElectricoAux.y);
+                }
+                if(i==13 && j==24){
+                    std::cout<<"cantidad de cuadriculas y"<<cant_cuadriculas.y<<std::endl;
+                    std::cout<<"LArgo "<<_LARGO<<std::endl;
+                    std::cout<<"largo cuad "<<largoCuadriculado<<std::endl;
+
+                    std::cout<<"a calcular X: "<<x_calcular<<std::endl;
+                    std::cout<<"a calcular Y "<<y_calcular<<std::endl;
+                    std::cout<<"distancia Total: "<<distanciaTotal<<std::endl;
+                    std::cout<<"distancia X: "<<distanciaX<<std::endl;
+                    std::cout<<"distnaica Y: "<<distanciaY<<std::endl;
+                    std::cout<<"pos X: "<<cargasFijas[k]->x<<std::endl;
+                    std::cout<<"pos  Y: "<<cargasFijas[k]->y<<std::endl;
+
+                    std::cout<<"Componente X: "<<vectorCampoElectrico.x<<std::endl;
+                    std::cout<<"Componente Y: "<<vectorCampoElectrico.y<<std::endl;
+
                 }
             }
             fila.push_back(vectorCampoElectrico);
@@ -1173,24 +1190,89 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
 }
 
 void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2f>> *vectorCE){
-    int k=0;
+    int k=0; int var=0;
+    float largoFlecha = 5;
     for(int i=1;i<cant_cuadriculas.x;i++){
         for(int j=1;j<cant_cuadriculas.y;j++,k++){
             sf::Vector2f origen((i-1)*(_ANCHO/cant_cuadriculas.x) + (_ANCHO/cant_cuadriculas.x)/2,(j-1)*(_LARGO/cant_cuadriculas.y) + (_LARGO/cant_cuadriculas.y)/2);       
         
-            sf::Vector2f destino(origen.x+(*vectorCE)[i-1][j-1].x ,origen.y+(*vectorCE)[i-1][j].y);
+            sf::Vector2f destino(origen.x+(*vectorCE)[i-1][j-1].x ,origen.y+(*vectorCE)[i-1][j-1].y);
           
-            sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 2);
+            sf::VertexArray vectores(sf::PrimitiveType::LineStrip, 6);
             vectores[0].position=origen;
-            vectores[0].color=sf::Color::White;
+            vectores[0].color=sf::Color::Red;
             vectores[1].position=destino;
             vectores[1].color=sf::Color::Red;
+
+
+            //dibujo de flechas
+            float anguloHorizontal=(atan((*vectorCE)[i-1][j-1].y/(*vectorCE)[i-1][j-1].x))*(180/M_PI);
+            float modulo = calcularDistancia(origen.x,origen.y,destino.x,destino.y);
+            float nuevoAngulo = 90 + (anguloHorizontal);
+            nuevoAngulo = nuevoAngulo*(M_PI/180);
+            vectores[4].position = {destino.x+(largoFlecha*cos(nuevoAngulo)),destino.y+(largoFlecha*sin(nuevoAngulo))};
+            vectores[4].color = sf::Color::Red;
+            vectores[2].position = {destino.x-largoFlecha*cos(nuevoAngulo),destino.y-largoFlecha*sin(nuevoAngulo)};
+            vectores[2].color = sf::Color::Red;
+            float nuevoAngulo2 = (60 + (anguloHorizontal))*(M_PI/180);
+            if((*vectorCE)[i-1][j-1].x>0){
+                nuevoAngulo2=(60 + (anguloHorizontal))*(M_PI/180);
+                vectores[3].position = {vectores[2].position.x + largoFlecha*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*sin(nuevoAngulo2)};
+                vectores[3].color = sf::Color::Red;
+            }else{
+                nuevoAngulo2=(-60+(anguloHorizontal))*(M_PI/180);
+                vectores[3].position = {vectores[2].position.x - largoFlecha*cos(nuevoAngulo2),vectores[2].position.y - largoFlecha*sin(nuevoAngulo2)};
+                vectores[3].color = sf::Color::Red;
+            }
+            
+            vectores[5].position = destino;
+            vectores[5].color = sf::Color::Red;
+
+             if(i==13 && j==24){
+                    std::cout<<"Angulo Horizontal degrre"<<anguloHorizontal<<std::endl;
+                    std::cout<<"Angulo Horizontal RAD"<<anguloHorizontal*(M_PI/180)<<std::endl;
+                    std::cout<<"modulo "<<modulo<<std::endl;
+                    std::cout<<"nuevoAngulo degre"<<nuevoAngulo2*(180/M_PI)<<std::endl;
+                    std::cout<<"nuevoAngulo RAD"<<nuevoAngulo2<<std::endl;
+
+                    std::cout<<"coseno nuevo angulo "<<cos(nuevoAngulo2)<<std::endl;
+                    std::cout<<"seno nuevo angulo"<<sin(nuevoAngulo2)<<std::endl;
+                    std::cout<<"largo * cos "<<largoFlecha*cos(nuevoAngulo2)<<std::endl;
+                    std::cout<<"lago * sen"<<(largoFlecha*sin(nuevoAngulo2))<<std::endl;
+                    std::cout<<"POS X "<<vectores[2].position.x - largoFlecha*cos(nuevoAngulo2)<<std::endl;
+                    std::cout<<"POS Y "<<vectores[2].position.x - largoFlecha*sin(nuevoAngulo2)<<std::endl;
+        
+
+                }
            
             if(calcularDistancia(origen.x,origen.y,destino.x,destino.y)>60){
               
                 escalarVector(vectores);
-         
-            }
+
+                    //dibujo de flechas
+                float anguloHorizontal=(atan((*vectorCE)[i-1][j-1].y/(*vectorCE)[i-1][j-1].x))*(180/M_PI);
+                float modulo = calcularDistancia(origen.x,origen.y,vectores[1].position.x,vectores[1].position.y);
+                float nuevoAngulo = 90 + (anguloHorizontal);
+                nuevoAngulo = nuevoAngulo*(M_PI/180);
+                vectores[4].position = {vectores[1].position.x+(largoFlecha*cos(nuevoAngulo)),vectores[1].position.y+(largoFlecha*sin(nuevoAngulo))};
+                vectores[4].color = sf::Color::Red;
+                vectores[2].position = {vectores[1].position.x-largoFlecha*cos(nuevoAngulo),vectores[1].position.y-largoFlecha*sin(nuevoAngulo)};
+                vectores[2].color = sf::Color::Red;
+                float nuevoAngulo2 = (60 + (anguloHorizontal))*(M_PI/180);
+                if((*vectorCE)[i-1][j-1].x>0){
+                    nuevoAngulo2=(60 + (anguloHorizontal))*(M_PI/180);
+                    vectores[3].position = {vectores[2].position.x + largoFlecha*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*sin(nuevoAngulo2)};
+                    vectores[3].color = sf::Color::Red;
+                }else{
+                    nuevoAngulo2=(-60+(anguloHorizontal))*(M_PI/180);
+                    vectores[3].position = {vectores[2].position.x - largoFlecha*cos(nuevoAngulo2),vectores[2].position.y - largoFlecha*sin(nuevoAngulo2)};
+                    vectores[3].color = sf::Color::Red;
+                }
+                
+                vectores[5].position = vectores[1].position;
+                vectores[5].color = sf::Color::Red;
+            
+                }
             window.draw(vectores);
         }
     }
@@ -1198,8 +1280,8 @@ void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2
 
 void escalarVector(sf::VertexArray &vector){
     float largoVector = calcularDistancia(vector[0].position.x,vector[0].position.y,vector[1].position.x,vector[1].position.y);
-    //float componenteUnitariaX = calcularDistanciaX(vector[0].position.x,vector[1].position.x)/largoVector;
-    //float componenteUnitariaY = calcularDistanciaY(vector[0].position.y,vector[1].position.y)/largoVector;
+    // //float componenteUnitariaX = calcularDistanciaX(vector[0].position.x,vector[1].position.x)/largoVector;
+    // //float componenteUnitariaY = calcularDistanciaY(vector[0].position.y,vector[1].position.y)/largoVector;
 
     float factorScalar = 60/largoVector;
 
@@ -1211,6 +1293,8 @@ void escalarVector(sf::VertexArray &vector){
 
     vector[1].position.x = disTotalX;
     vector[1].position.y = disTotalY;
+
+     
 
    
 }
@@ -1244,6 +1328,16 @@ void calcularCEPE(){
         (*(cargasFijas[i])).cacularCampoElectrico(aux,distanciaTotal,distanciaX,distanciaY);
         campoElectricoPuntoEstudio.x+=aux.x;
         campoElectricoPuntoEstudio.y+=aux.y;
+        std::cout<<"a calcular X: "<<posX<<std::endl;
+        std::cout<<"a calcular Y "<<posY<<std::endl;
+        std::cout<<"distancia Total: "<<distanciaTotal<<std::endl;
+                    std::cout<<"distancia X: "<<distanciaX<<std::endl;
+                    std::cout<<"distnaica Y: "<<distanciaY<<std::endl;
+                    std::cout<<"pos X: "<<cargasFijas[i]->x<<std::endl;
+                    std::cout<<"pos  Y: "<<cargasFijas[i]->y<<std::endl;
+                    std::cout<<"Componente X: "<<campoElectricoPuntoEstudio.x<<std::endl;
+                    std::cout<<"Componente Y: "<<campoElectricoPuntoEstudio.y<<std::endl;
+                    std::cout<<"------------------------------------"<<std::endl;
     }
     campoElectricoPuntoEstudio.x+=CEPlano;
 }
