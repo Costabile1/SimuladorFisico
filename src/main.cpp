@@ -1163,23 +1163,6 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
                     vectorCampoElectrico.x += (vectorCampoElectricoAux.x);
                     vectorCampoElectrico.y += (vectorCampoElectricoAux.y);
                 }
-                if(i==13 && j==24){
-                    std::cout<<"cantidad de cuadriculas y"<<cant_cuadriculas.y<<std::endl;
-                    std::cout<<"LArgo "<<_LARGO<<std::endl;
-                    std::cout<<"largo cuad "<<largoCuadriculado<<std::endl;
-
-                    std::cout<<"a calcular X: "<<x_calcular<<std::endl;
-                    std::cout<<"a calcular Y "<<y_calcular<<std::endl;
-                    std::cout<<"distancia Total: "<<distanciaTotal<<std::endl;
-                    std::cout<<"distancia X: "<<distanciaX<<std::endl;
-                    std::cout<<"distnaica Y: "<<distanciaY<<std::endl;
-                    std::cout<<"pos X: "<<cargasFijas[k]->x<<std::endl;
-                    std::cout<<"pos  Y: "<<cargasFijas[k]->y<<std::endl;
-
-                    std::cout<<"Componente X: "<<vectorCampoElectrico.x<<std::endl;
-                    std::cout<<"Componente Y: "<<vectorCampoElectrico.y<<std::endl;
-
-                }
             }
             fila.push_back(vectorCampoElectrico);
         }
@@ -1192,6 +1175,7 @@ void calcularCampoElectrico(std::vector<std::vector<sf::Vector2f>> *vectorCE,std
 void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2f>> *vectorCE){
     int k=0; int var=0;
     float largoFlecha = 5;
+    float ANG_ataqueFlecha=30;
     for(int i=1;i<cant_cuadriculas.x;i++){
         for(int j=1;j<cant_cuadriculas.y;j++,k++){
             sf::Vector2f origen((i-1)*(_ANCHO/cant_cuadriculas.x) + (_ANCHO/cant_cuadriculas.x)/2,(j-1)*(_LARGO/cant_cuadriculas.y) + (_LARGO/cant_cuadriculas.y)/2);       
@@ -1214,36 +1198,20 @@ void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2
             vectores[4].color = sf::Color::Red;
             vectores[2].position = {destino.x-largoFlecha*cos(nuevoAngulo),destino.y-largoFlecha*sin(nuevoAngulo)};
             vectores[2].color = sf::Color::Red;
-            float nuevoAngulo2 = (60 + (anguloHorizontal))*(M_PI/180);
+            float nuevoAngulo2 = (ANG_ataqueFlecha + (anguloHorizontal))*(M_PI/180);
             if((*vectorCE)[i-1][j-1].x>0){
-                nuevoAngulo2=(60 + (anguloHorizontal))*(M_PI/180);
-                vectores[3].position = {vectores[2].position.x + largoFlecha*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*sin(nuevoAngulo2)};
+                nuevoAngulo2=(ANG_ataqueFlecha + (anguloHorizontal))*(M_PI/180);
+                vectores[3].position = {vectores[2].position.x + largoFlecha*2*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*2*sin(nuevoAngulo2)};
                 vectores[3].color = sf::Color::Red;
             }else{
-                nuevoAngulo2=(-60+(anguloHorizontal))*(M_PI/180);
-                vectores[3].position = {vectores[2].position.x - largoFlecha*cos(nuevoAngulo2),vectores[2].position.y - largoFlecha*sin(nuevoAngulo2)};
+                nuevoAngulo2=(-ANG_ataqueFlecha+(anguloHorizontal))*(M_PI/180);
+                vectores[3].position = {vectores[2].position.x - (largoFlecha*2)*cos(nuevoAngulo2),vectores[2].position.y - (largoFlecha*2)*sin(nuevoAngulo2)};
                 vectores[3].color = sf::Color::Red;
             }
             
             vectores[5].position = destino;
             vectores[5].color = sf::Color::Red;
 
-             if(i==13 && j==24){
-                    std::cout<<"Angulo Horizontal degrre"<<anguloHorizontal<<std::endl;
-                    std::cout<<"Angulo Horizontal RAD"<<anguloHorizontal*(M_PI/180)<<std::endl;
-                    std::cout<<"modulo "<<modulo<<std::endl;
-                    std::cout<<"nuevoAngulo degre"<<nuevoAngulo2*(180/M_PI)<<std::endl;
-                    std::cout<<"nuevoAngulo RAD"<<nuevoAngulo2<<std::endl;
-
-                    std::cout<<"coseno nuevo angulo "<<cos(nuevoAngulo2)<<std::endl;
-                    std::cout<<"seno nuevo angulo"<<sin(nuevoAngulo2)<<std::endl;
-                    std::cout<<"largo * cos "<<largoFlecha*cos(nuevoAngulo2)<<std::endl;
-                    std::cout<<"lago * sen"<<(largoFlecha*sin(nuevoAngulo2))<<std::endl;
-                    std::cout<<"POS X "<<vectores[2].position.x - largoFlecha*cos(nuevoAngulo2)<<std::endl;
-                    std::cout<<"POS Y "<<vectores[2].position.x - largoFlecha*sin(nuevoAngulo2)<<std::endl;
-        
-
-                }
            
             if(calcularDistancia(origen.x,origen.y,destino.x,destino.y)>60){
               
@@ -1258,14 +1226,14 @@ void drawVectoresCE(sf::RenderWindow &window,std::vector<std::vector<sf::Vector2
                 vectores[4].color = sf::Color::Red;
                 vectores[2].position = {vectores[1].position.x-largoFlecha*cos(nuevoAngulo),vectores[1].position.y-largoFlecha*sin(nuevoAngulo)};
                 vectores[2].color = sf::Color::Red;
-                float nuevoAngulo2 = (60 + (anguloHorizontal))*(M_PI/180);
+                float nuevoAngulo2 = (ANG_ataqueFlecha + (anguloHorizontal))*(M_PI/180);
                 if((*vectorCE)[i-1][j-1].x>0){
-                    nuevoAngulo2=(60 + (anguloHorizontal))*(M_PI/180);
-                    vectores[3].position = {vectores[2].position.x + largoFlecha*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*sin(nuevoAngulo2)};
+                    nuevoAngulo2=(ANG_ataqueFlecha + (anguloHorizontal))*(M_PI/180);
+                    vectores[3].position = {vectores[2].position.x + largoFlecha*2*cos(nuevoAngulo2),vectores[2].position.y + largoFlecha*2*sin(nuevoAngulo2)};
                     vectores[3].color = sf::Color::Red;
                 }else{
-                    nuevoAngulo2=(-60+(anguloHorizontal))*(M_PI/180);
-                    vectores[3].position = {vectores[2].position.x - largoFlecha*cos(nuevoAngulo2),vectores[2].position.y - largoFlecha*sin(nuevoAngulo2)};
+                    nuevoAngulo2=(-ANG_ataqueFlecha+(anguloHorizontal))*(M_PI/180);
+                    vectores[3].position = {vectores[2].position.x - (largoFlecha*2)*cos(nuevoAngulo2),vectores[2].position.y - (largoFlecha*2)*sin(nuevoAngulo2)};
                     vectores[3].color = sf::Color::Red;
                 }
                 
